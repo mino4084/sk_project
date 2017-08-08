@@ -32,7 +32,7 @@ router.post('/login', function(req, res, next){
 		check.code = 0;
 		console.log('doc =', doc); // 실패할 경우 null
 		if(doc){
-			req.session.user_id = id;
+			//req.session.user_id = id;
 			// res.send('<script>location.href="/users/";</script>');
 
 		}
