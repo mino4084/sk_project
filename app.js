@@ -43,4 +43,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+app.listen(3000);
+console.log('Servert started port 3000 by connected to git!!!!!!!');
+
 module.exports = app;
