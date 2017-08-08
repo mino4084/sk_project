@@ -15,14 +15,33 @@ router.post('/login', function(req, res, next){
 	console.log('req.body =', req.body);
 	var id = req.body.id;
 	var pw = req.body.pw;
-
-	var data = {
+	var code = 1
+	var check = {
+		code : code
+	};
+	/*var data = {
 		"status" : true,
 		"result" : "OK",
 		"id" : id,
 		"pw" : pw
 	};
 	res.json(data);
+    */
+	UserModel.findOne({user_id : id, user_pw : pw}, function(err, doc){
+		if(err) console.log('err =', err);
+		check.code = 0;
+		console.log('doc =', doc); // 실패할 경우 null
+		if(doc){
+			req.session.user_id = id;
+			// res.send('<script>location.href="/users/";</script>');
+
+		}
+		else{
+			check.code = 0;
+			// res.send('<script>alert("로그인 실패.");history.back();</script>');
+		}
+		res.json(check);
+	});
 });
 
 router.get('/join', function(req, res, next){
