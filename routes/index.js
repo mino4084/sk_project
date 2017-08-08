@@ -28,8 +28,11 @@ router.post('/login', function(req, res, next){
 	res.json(data);
     */
 	UserModel.findOne({user_id : id, user_pw : pw}, function(err, doc){
-		if(err) console.log('err =', err);
-		check.code = 0;
+		if(err) {
+			console.log('err =', err);
+			check.code = 0;
+		}
+
 		console.log('doc =', doc); // 실패할 경우 null
 		if(doc){
 			//req.session.user_id = id;
