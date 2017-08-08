@@ -5,15 +5,16 @@ var db = require('./db');
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
-var UserShcema = new Schema({
+var UserSchema = new Schema({
 	user_id : String,
+	//push_id : String,
 	user_pw : String,
 	user_nick : String,
 	user_uuid : String,
 	user_token : String,
-	del_yn : { type : String, default : 'N'}
+	user_image : { type : String, default : 'default.jpg'}
 });
 
-var UserModel = db.model('User', UserShcema);
+var UserModel = db.model('User', UserSchema);
 
 module.exports = UserModel;
