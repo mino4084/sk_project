@@ -1,4 +1,4 @@
-/*// models/comment.js
+// models/comment.js
 var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
@@ -11,4 +11,5 @@ var CandidateSchema = new Schema({
 	cand_list : [Item]
 });
 
-module.exports = CandidateSchema;*/
+var Candidate = db.model('Candidate', CandidateSchema);
+module.exports = Candidate;

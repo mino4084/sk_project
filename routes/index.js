@@ -15,32 +15,28 @@ router.post('/login', function(req, res, next){
 	console.log('req.body =', req.body);
 	var id = req.body.id;
 	var pw = req.body.pw;
-	var code = 1
+	var code = 1;
+	var message = "OK";
 	var check = {
-		code : code
+		code : code,
+		message : message,
 	};
-	/*var data = {
-		"status" : true,
-		"result" : "OK",
-		"id" : id,
-		"pw" : pw
-	};
-	res.json(data);
-    */
+
 	UserModel.findOne({user_id : id, user_pw : pw}, function(err, doc){
 		if(err) {
 			console.log('err =', err);
-			check.code = 0;
+			data.code = 0;
+			data.meesage = err;
 		}
 
 		console.log('doc =', doc); // 실패할 경우 null
 		if(doc){
 			//req.session.user_id = id;
 			// res.send('<script>location.href="/users/";</script>');
-
 		}
 		else{
-			check.code = 0;
+			data.code = 0;
+			data.meesage = err;
 			// res.send('<script>alert("로그인 실패.");history.back();</script>');
 		}
 		res.json(check);
@@ -58,7 +54,8 @@ router.post('/join', function(req, res, next){
 	var user_token = req.body.token;
 	var user_uuid = req.body.uuid;
 	var user_nick = req.body.nick;
-	var code = 1
+	var code = 1;
+	var message = "OK";
 	var data = {
 		user_id : user_id,
 		user_pw : user_pw,
@@ -66,14 +63,16 @@ router.post('/join', function(req, res, next){
 		user_uuid : user_uuid,
 		user_nick : user_nick
 	};
-	var check = {
-		code : code
+	var data = {
+		code : code,
+		message : message
 	};
 	// res.json(data);
 	var user = new UserModel(data);
 	user.save(function(err, doc){
 		if(err){
 			check.code = 0;
+			data.meesage = err;
 			return next(err);
 		}
 		console.log('doc =', doc);

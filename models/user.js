@@ -15,6 +15,6 @@ var UserSchema = new Schema({
 	user_image : { type : String, default : 'default.jpg'}
 });
 
-var UserModel = db.model('User', UserSchema);
+var User = db.model('User', UserSchema);
 
-module.exports = UserModel;
+module.exports = User;
