@@ -135,26 +135,35 @@ router.get('/nick', function(req, res, next){
 
 router.post('/nick', function(req, res, next){
 	console.log('req.body =', req.body);
+	var id = req.body.id;
 	var nick = req.body.nick;
-	var nick = '';
+	var nickname = '';
 	var code = 1;
 	var message = "OK";
 	var check = {
 		code : code,
 		message : message,
-		nick : nick
+		nickname : nickname
 	};
 
-	UserModel.updateOne({user_nick : nick}, function(err, doc){
+	UserModel.updateOne({user_id : id}, {$set : {user_nick : nick}}, function(err, doc){
 		if(err) {
 			console.log('err =', err);
 			data.code = 0;
 			data.meesage = err;
 		}
+		if(doc){
+			check.nickname = nick;
+		}
+		else{
+			data.code = 0;
+			data.meesage = '존재하지 아이디이거나 오류';
+		}
 		console.log('doc =', doc);
-		check.nick = doc.user_nick;
 		res.json(check);
 	});
+
+
 });
 
 module.exports = router;

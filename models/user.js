@@ -9,10 +9,10 @@ var UserSchema = new Schema({
 	user_id : String,
 	//push_id : String,
 	user_pw : String,
-	user_nick : String,
+	user_nick : { type : String, default : '닉네임을 설정해주세요.' },
 	user_uuid : String,
 	user_token : String,
-	user_image : { type : String, default : 'default.jpg'}
+	user_image : { type : String, default : 'default.jpg' }
 });
 
 var User = db.model('User', UserSchema);
