@@ -89,4 +89,43 @@ router.post('/join', function(req, res, next){
 
 });
 
+router.get('/findpw', function(req, res, next){
+	res.render('findpw', {title : "findpw"});
+});
+
+router.post('/findpw', function(req, res, next){
+	console.log('req.body =', req.body);
+	var id = req.body.id;
+	var pw = '';
+	var code = 1;
+	var message = "OK";
+	var check = {
+		code : code,
+		message : message,
+		pw : pw
+	};
+
+	UserModel.findOne({user_id : id}, function(err, doc){
+		if(err) {
+			console.log('err =', err);
+			data.code = 0;
+			data.meesage = err;
+
+		}
+
+		console.log('doc =', doc); // 실패할 경우 null
+		if(doc){
+			check.pw = doc.user_pw;
+			//req.session.user_id = id;
+			// res.send('<script>location.href="/users/";</script>');
+		}
+		else{
+			data.code = 0;
+			data.meesage = err;
+			// res.send('<script>alert("로그인 실패.");history.back();</script>');
+		}
+		res.json(check);
+	});
+});
+
 module.exports = router;
