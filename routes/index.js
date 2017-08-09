@@ -122,8 +122,37 @@ router.post('/findpw', function(req, res, next){
 		else{
 			data.code = 0;
 			data.meesage = err;
+			check.pw = '존재하지 않는 아이디입니다.';
 			// res.send('<script>alert("로그인 실패.");history.back();</script>');
 		}
+		res.json(check);
+	});
+});
+
+router.get('/nick', function(req, res, next){
+	res.render('nick', {title : "nick"});
+});
+
+router.post('/nick', function(req, res, next){
+	console.log('req.body =', req.body);
+	var nick = req.body.nick;
+	var nick = '';
+	var code = 1;
+	var message = "OK";
+	var check = {
+		code : code,
+		message : message,
+		nick : nick
+	};
+
+	UserModel.updateOne({user_nick : nick}, function(err, doc){
+		if(err) {
+			console.log('err =', err);
+			data.code = 0;
+			data.meesage = err;
+		}
+		console.log('doc =', doc);
+		check.nick = doc.user_nick;
 		res.json(check);
 	});
 });
