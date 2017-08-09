@@ -162,8 +162,41 @@ router.post('/nick', function(req, res, next){
 		console.log('doc =', doc);
 		res.json(check);
 	});
+});
 
+router.get('/changepw', function(req, res, next){
+	res.render('changepw', {title : "change pw"});
+});
 
+router.post('/changepw', function(req, res, next){
+	console.log('req.body =', req.body);
+	var id = req.body.id;
+	var pw = req.body.pw;
+	var password = '';
+	var code = 1;
+	var message = "OK";
+	var check = {
+		code : code,
+		message : message,
+		password : password
+	};
+
+	UserModel.updateOne({user_id : id}, {$set : {user_pw : pw}}, function(err, doc){
+		if(err) {
+			console.log('err =', err);
+			data.code = 0;
+			data.meesage = err;
+		}
+		if(doc){
+			check.password = password;
+		}
+		else{
+			data.code = 0;
+			data.meesage = '존재하지 아이디이거나 오류';
+		}
+		console.log('doc =', doc);
+		res.json(check);
+	});
 });
 
 module.exports = router;
