@@ -63,7 +63,7 @@ router.post('/join', function(req, res, next){
 		user_uuid : user_uuid,
 		user_nick : user_nick
 	};
-	var data = {
+	var check = {
 		code : code,
 		message : message
 	};
