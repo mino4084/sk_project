@@ -188,7 +188,7 @@ router.post('/changepw', function(req, res, next){
 			data.meesage = err;
 		}
 		if(doc){
-			check.password = password;
+			check.password = pw;
 		}
 		else{
 			data.code = 0;
