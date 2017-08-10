@@ -12,8 +12,8 @@ var TripSchema = new Schema({
 	trip_title : String,
 	start_date : { type : Date, default : Date.now },
 	end_date : { type : Date, default : Date.now },
-    user_no : { type : Number, ref : 'User' },
-    partner_no : { type : Number, ref : 'User' },
+    user_id : { type : String, ref : 'User' },
+    partner_id : { type : String, ref : 'User' },
     hashtag : { type : String, default : ' '},
     trip_list : [ Candidate ]
 });

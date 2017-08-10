@@ -27,7 +27,7 @@ router.post('/login', function(req, res, next){
 		if(err) {
 			console.log('err =', err);
 			data.code = 0;
-			data.meesage = err;
+			data.message = err;
 		}
 
 		console.log('doc =', doc); // 실패할 경우 null
@@ -37,7 +37,7 @@ router.post('/login', function(req, res, next){
 		}
 		else{
 			data.code = 0;
-			data.meesage = err;
+			data.message = err;
 			// res.send('<script>alert("로그인 실패.");history.back();</script>');
 		}
 		res.json(check);
@@ -78,7 +78,7 @@ router.post('/join', function(req, res, next){
 	user.save(function(err, doc){
 		if(err){
 			check.code = 0;
-			data.meesage = err;
+			data.message = err;
 			return next(err);
 		}
 		console.log('doc =', doc);
@@ -115,7 +115,7 @@ router.post('/findpw', function(req, res, next){
 		if(err) {
 			console.log('err =', err);
 			data.code = 0;
-			data.meesage = err;
+			data.message = err;
 
 		}
 
@@ -127,7 +127,7 @@ router.post('/findpw', function(req, res, next){
 		}
 		else{
 			data.code = 0;
-			data.meesage = err;
+			data.message = err;
 			check.pw = '존재하지 않는 아이디입니다.';
 			// res.send('<script>alert("로그인 실패.");history.back();</script>');
 		}
@@ -156,14 +156,14 @@ router.post('/nick', function(req, res, next){
 		if(err) {
 			console.log('err =', err);
 			data.code = 0;
-			data.meesage = err;
+			data.message = err;
 		}
 		if(doc){
 			check.nickname = nick;
 		}
 		else{
 			data.code = 0;
-			data.meesage = '존재하지 아이디이거나 오류';
+			data.message = '존재하지 아이디이거나 오류';
 		}
 		console.log('doc =', doc);
 		res.json(check);
@@ -191,14 +191,14 @@ router.post('/changepw', function(req, res, next){
 		if(err) {
 			console.log('err =', err);
 			data.code = 0;
-			data.meesage = err;
+			data.message = err;
 		}
 		if(doc){
 			check.password = pw;
 		}
 		else{
 			data.code = 0;
-			data.meesage = '존재하지 아이디이거나 오류';
+			data.message = '존재하지 아이디이거나 오류';
 		}
 		console.log('doc =', doc);
 		res.json(check);
@@ -214,21 +214,31 @@ router.post('/create_trip', function(req, res, next){
 	var trip_title = req.body.title;
 	var start_date = req.body.start;
 	var end_date = req.body.end;
-	var user_no =
-	var user_uuid = req.body.uuid;
-	var user_nick = req.body.nick;
+	var user_id = req.body.id;
+	var partner_id = req.body.partner;
+	var hashtag = req.body.tag;
 	var code = 1;
 	var message = "OK";
+
+	var data = {
+		trip_title : trip_title,
+		start_date : start_date,
+		end_date : end_date,
+		user_id : user_id,
+		partner_id : partner_id,
+		hashtag : hashtag
+	};
 
 	var check = {
 		code : code,
 		message : message
 	};
+
 	var user = new UserModel(data);
 	user.save(function(err, doc){
 		if(err){
 			check.code = 0;
-			data.meesage = err;
+			data.message = err;
 			return next(err);
 		}
 		console.log('doc =', doc);
