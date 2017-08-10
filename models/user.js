@@ -1,12 +1,13 @@
 // users.js
 var mongoose = require('mongoose');
 var db = require('./db');
+var autoIncrement = require('mongoose-auto-increment');
+autoIncrement.initialize(db);
 
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
-var autoIncrement = require('mongoose-auto-increment');
-autoIncrement.initialize(db);
+
 
 var UserSchema = new Schema({
 	user_id : String,

@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var bcrypt = require('bcrypt-node');
 var UserModel = require('../models/user');
+var TripModel = require('../models/trip');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -59,9 +60,9 @@ router.post('/join', function(req, res, next){
 	var code = 1;
 	var message = "OK";
 	bcrypt.hash(user_pw, null, null, function(err, hash){
-		hash_pw = hash;
+		user_pw = hash;
 	});
-	console.log('hash_pw = ', hash_pw);
+	console.log('user_pw = ', user_pw);
 
 	var data = {
 		user_id : user_id,
