@@ -75,7 +75,6 @@ router.post('/join', function(req, res, next){
 	};
 	// res.json(data);
 	var user = new UserModel(data);
-	user.createIndex( { user_no : 1 } );
 	user.save(function(err, doc){
 		if(err){
 			check.code = 0;
