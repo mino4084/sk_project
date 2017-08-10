@@ -61,6 +61,7 @@ router.post('/join', function(req, res, next){
 	bcrypt.hash(user_pw, null, null, function(err, hash){
 		hash_pw = hash;
 	});
+	console.log('hash_pw = ', hash_pw);
 
 	var data = {
 		user_id : user_id,
