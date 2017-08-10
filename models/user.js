@@ -17,14 +17,16 @@ var UserSchema = new Schema({
 	user_token : String,
 	user_image : { type : String, default : 'default.jpg' }
 });
-var User = db.model('User', UserSchema);
-module.exports = User;
+
 UserSchema.plugin(autoIncrement.plugin, { model : 'User', field : 'user_no', startAt : 1, incrementBy : 1});
 
 UserSchema.virtual('myregdate')
 	.get(function(){
 		return formatDate(this.regdate);
 	});
+
+var User = db.model('User', UserSchema);
+module.exports = User;
 
 function formatDate(date){
 	var y = date.getFullYear();
