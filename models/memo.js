@@ -1,5 +1,6 @@
 // memo.js
 var mongoose = require('mongoose');
+var db = require('./db');
 
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
