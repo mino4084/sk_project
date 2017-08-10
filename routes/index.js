@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var bcrypt = require('bcrypt-node');
 var UserModel = require('../models/user');
 
 /* GET home page. */
@@ -51,14 +52,19 @@ router.post('/join', function(req, res, next){
 	console.log('req body =', req.body);
 	var user_id = req.body.id;
 	var user_pw = req.body.pw;
+	var hash_pw = '';
 	var user_token = req.body.token;
 	var user_uuid = req.body.uuid;
 	var user_nick = req.body.nick;
 	var code = 1;
 	var message = "OK";
+	bcrypt.hash(user_pw, null, null, function(err, hash){
+		hash_pw = hash;
+	});
+
 	var data = {
 		user_id : user_id,
-		user_pw : user_pw,
+		user_pw : hash_pw,
 		user_token : user_token,
 		user_uuid : user_uuid,
 		user_nick : user_nick
@@ -197,6 +203,39 @@ router.post('/changepw', function(req, res, next){
 		console.log('doc =', doc);
 		res.json(check);
 	});
+});
+
+router.get('/create_trip', function(req, res, next){
+	res.render('create_trip', {title : "create_trip"});
+});
+
+router.post('/create_trip', function(req, res, next){
+	console.log('req body =', req.body);
+	var trip_title = req.body.title;
+	var start_date = req.body.start;
+	var end_date = req.body.end;
+	var user_no =
+	var user_uuid = req.body.uuid;
+	var user_nick = req.body.nick;
+	var code = 1;
+	var message = "OK";
+
+	var check = {
+		code : code,
+		message : message
+	};
+	var user = new UserModel(data);
+	user.save(function(err, doc){
+		if(err){
+			check.code = 0;
+			data.meesage = err;
+			return next(err);
+		}
+		console.log('doc =', doc);
+		res.json(check);
+	});
+
+
 });
 
 module.exports = router;
