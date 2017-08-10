@@ -8,7 +8,6 @@ var ObjectId = Schema.ObjectId;
 var Candidate = require('./candidate');
 
 var TripSchema = new Schema({
-	trip_no : Number,
 	trip_title : String,
 	start_date : { type : Date, default : Date.now },
 	end_date : { type : Date, default : Date.now },

@@ -222,7 +222,6 @@ router.post('/create_trip', function(req, res, next){
 	var message = "OK";
 
 	var data = {
-		trip_no :
 		trip_title : trip_title,
 		start_date : start_date,
 		end_date : end_date,
