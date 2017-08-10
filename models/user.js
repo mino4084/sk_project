@@ -7,11 +7,8 @@ autoIncrement.initialize(db);
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
-
-
 var UserSchema = new Schema({
 	user_id : String,
-	//push_id : String,
 	user_pw : String,
 	user_nick : { type : String, default : '닉네임을 설정해주세요.' },
 	user_uuid : String,
@@ -19,14 +16,30 @@ var UserSchema = new Schema({
 	user_image : { type : String, default : 'default.jpg' }
 });
 
-/*UserSchema.virtual('myregdate')
-	.get(function(){
-		return formatDate(this.regdate);
-});*/
+
 UserSchema.plugin(autoIncrement.plugin, { model : 'User', field : 'user_no', startAt : 1, incrementBy : 1});
 
 var User = db.model('User', UserSchema);
 module.exports = User;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*UserSchema.virtual('myregdate')
+	.get(function(){
+		return formatDate(this.regdate);
+});*/
 
 /*function formatDate(date){
 	var y = date.getFullYear();
