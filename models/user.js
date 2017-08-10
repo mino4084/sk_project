@@ -9,6 +9,7 @@ var autoIncrement = require('mongoose-auto-increment');
 autoIncrement.initialize(db);
 
 var UserSchema = new Schema({
+	user_no : Number,
 	user_id : String,
 	//push_id : String,
 	user_pw : String,
