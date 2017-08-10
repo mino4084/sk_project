@@ -4,6 +4,8 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
+var Memo = require('./memo');
+
 var ItemSchema = new Schema({
 	item_no : Number,
 	item_url :String,
