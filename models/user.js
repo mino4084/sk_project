@@ -18,13 +18,14 @@ var UserSchema = new Schema({
 	user_image : { type : String, default : 'default.jpg' }
 });
 
-UserSchema.plugin(autoIncrement.plugin, { model : 'User', field : 'user_no', startAt : 1, incrementBy : 1});
+UserSchema.set('toJSON', { virtuals : true });
 
 UserSchema.virtual('myregdate')
 	.get(function(){
 		return formatDate(this.regdate);
 	});
 
+UserSchema.plugin(autoIncrement.plugin, { model : 'User', field : 'user_no', startAt : 1, incrementBy : 1});
 var User = db.model('User', UserSchema);
 module.exports = User;
 
