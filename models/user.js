@@ -9,7 +9,6 @@ var autoIncrement = require('mongoose-auto-increment');
 autoIncrement.initialize(db);
 
 var UserSchema = new Schema({
-	user_no : Number,
 	user_id : String,
 	//push_id : String,
 	user_pw : String,
@@ -22,11 +21,10 @@ var UserSchema = new Schema({
 /*UserSchema.virtual('myregdate')
 	.get(function(){
 		return formatDate(this.regdate);
-	});*/
-
-var User = db.model('User', UserSchema);
+});*/
 UserSchema.plugin(autoIncrement.plugin, { model : 'User', field : 'user_no', startAt : 1, incrementBy : 1});
 
+var User = db.model('User', UserSchema);
 module.exports = User;
 
 /*function formatDate(date){
