@@ -11,5 +11,5 @@ var CandidateSchema = new Schema({
 	cand_list : [Item]
 });
 
-var Candidate = db.model('Candidate', CandidateSchema);
-module.exports = Candidate;
+// var Candidate = db.model('Candidate', CandidateSchema);
+module.exports = CandidateSchema;

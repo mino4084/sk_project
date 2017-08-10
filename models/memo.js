@@ -1,6 +1,5 @@
 // memo.js
 var mongoose = require('mongoose');
-var db = require('./db');
 
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
@@ -10,5 +9,5 @@ var MemoSchema = new Schema({
 	memo_content : String
 });
 
-var Memo = db.model('Memo', MemoSchema);
-module.exports = Memo;
+// var Memo = db.model('Memo', MemoSchema);
+module.exports = MemoSchema;

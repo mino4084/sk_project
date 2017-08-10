@@ -22,5 +22,5 @@ var ItemSchema = new Schema({
 	item_time : String
 });
 
-var Item = db.model('Item', ItemSchema);
-module.exports = Item;
+// var Item = db.model('Item', ItemSchema);
+module.exports = ItemSchema;

@@ -9,5 +9,5 @@ var CategorySchema = new Schema({
 	cate_name : String
 });
 
-var Category = db.model('Category', CategorySchema);
-module.exports = Category;
+// var Category = db.model('Category', CategorySchema);
+module.exports = CategorySchema;
