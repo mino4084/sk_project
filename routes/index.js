@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var bcrypt = require('bcrypt-node');
+// var bcrypt = require('bcrypt-node');
 var UserModel = require('../models/user');
 var TripModel = require('../models/trip');
 
@@ -58,7 +58,7 @@ router.post('/join', function(req, res, next){
 	var user_nick = req.body.nick;
 	var code = 1;
 	var message = "OK";
-	var hash = bcrypt.hashSync(user_pw);
+	// var hash = bcrypt.hashSync(user_pw);
 	console.log('user_pw = ', user_pw);
 
 	var data = {
