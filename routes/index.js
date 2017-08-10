@@ -75,6 +75,7 @@ router.post('/join', function(req, res, next){
 	};
 	// res.json(data);
 	var user = new UserModel(data);
+	user.createIndex( { user_no : 1 } );
 	user.save(function(err, doc){
 		if(err){
 			check.code = 0;
@@ -221,6 +222,7 @@ router.post('/create_trip', function(req, res, next){
 	var message = "OK";
 
 	var data = {
+		trip_no :
 		trip_title : trip_title,
 		start_date : start_date,
 		end_date : end_date,
