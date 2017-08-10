@@ -53,20 +53,17 @@ router.post('/join', function(req, res, next){
 	console.log('req body =', req.body);
 	var user_id = req.body.id;
 	var user_pw = req.body.pw;
-	var hash_pw = '';
 	var user_token = req.body.token;
 	var user_uuid = req.body.uuid;
 	var user_nick = req.body.nick;
 	var code = 1;
 	var message = "OK";
-	bcrypt.hash(user_pw, null, null, function(err, hash){
-		user_pw = hash;
-	});
+	var hash = bcrypt.hashSync(user_pw);
 	console.log('user_pw = ', user_pw);
 
 	var data = {
 		user_id : user_id,
-		user_pw : hash_pw,
+		user_pw : hash,
 		user_token : user_token,
 		user_uuid : user_uuid,
 		user_nick : user_nick
