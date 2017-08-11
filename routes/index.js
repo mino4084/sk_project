@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var moment = require('moment');
 // var bcrypt = require('bcrypt-node');
 var UserModel = require('../models/user');
 var TripModel = require('../models/trip');
@@ -258,8 +259,6 @@ router.post('/create_trip', function(req, res, next){
 	var message = "OK";
 	var result = {};
 
-	var schedule = 0;
-
 	var data = {
 		trip_title : trip_title,
 		start_date : start_date,
@@ -281,7 +280,6 @@ router.post('/create_trip', function(req, res, next){
 			check.message = err;
 			return next(err);
 		}
-		schedule = doc.end_date - doc.start_date;
 		console.log('schedule =', schedule);
 		check.result = doc;
 		console.log('doc =', doc);
@@ -342,6 +340,9 @@ router.post('/update_trip', function(req, res, next){
 	var code = 1;
 	var message = "OK";
 	var result = {};
+
+	var schedule = 0;
+
 	var check = {
 		code : code,
 		message : message,
@@ -355,6 +356,8 @@ router.post('/update_trip', function(req, res, next){
 			check.message = err;
 		}
 		if(doc){
+			schedule = moment(doc.start_date, "MM-DD-YYYY");
+			console.log('schedule =', schedule);
 			check.result = doc;
 		}
 		else{
