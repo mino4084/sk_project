@@ -19,7 +19,6 @@ var TripSchema = new Schema({
     trip_list : [ Candidate ]
 });
 
-TripSchema.set('toJSON', { virtuals : true });
 
 TripSchema.plugin(autoIncrement.plugin, { model : 'Trip', field : 'trip_no', startAt : 1, incrementBy : 1});
 
