@@ -189,18 +189,27 @@ router.post('/changepw', function(req, res, next){
 	UserModel.updateOne({user_id : id}, {$set : {user_pw : pw}}, function(err, doc){
 		if(err) {
 			console.log('err =', err);
-			data.code = 0;
-			data.message = err;
+			check.code = 0;
+			check.message = err;
 		}
 		if(doc){
 			check.password = pw;
 		}
 		else{
-			data.code = 0;
-			data.message = '존재하지 아이디이거나 오류';
+			check.code = 0;
+			check.message = '존재하지 아이디이거나 오류';
 		}
 		console.log('doc =', doc);
 		res.json(check);
+	});
+});
+
+router.get('/find_partner/:trip_no', function(req, res, next){
+	var trip_no = req.params.trip_no;
+	console.log('trip_no =', trip_no);
+	UserModel.findOne({trip_no : trip_no}, function(err, doc){
+		console.log('read doc =', doc);
+		res.render('find_partner', {title : "find_partner", doc : doc}); //web
 	});
 });
 
