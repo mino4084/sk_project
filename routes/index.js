@@ -308,4 +308,16 @@ router.get('/list_trip', function(req, res, next){
 	//res.render('list_trip', {title : "list_trip"});
 });
 
+router.get('/change_trip/:trip_no', function(req, res, next){
+	var trip_no = req.params.trip_no;
+	console.log('trip_no =', trip_no);
+	TripModel.find({}, null, {sort : {trip_no : -1}}, function(err, docs){
+		if(err) return next(err);
+		console.log('list docs =', docs);
+		//res.json(check);  //json으로 하면 모바일이 된다.
+		res.render('change_trip', {title : "change_trip", docs : docs}); //웹서버
+	});
+
+});
+
 module.exports = router;
