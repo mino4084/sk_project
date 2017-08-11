@@ -213,6 +213,38 @@ router.get('/find_partner/:trip_no', function(req, res, next){
 	});
 });
 
+router.post('/find_partner', function(req, res, next){
+	console.log('req body =', req.body);
+	var trip_no = req.body.trip_no;
+	var partner_id = req.body.partner;
+	var code = 1;
+	var message = "OK";
+	var result = {};
+	var check = {
+		code : code,
+		message : message,
+		result : result
+	};
+
+	TripModel.updateOne({trip_no : trip_no}, {$set : {partner_id : partner_id}}, {safe : true, upsert : true, new : true}, function(err, doc){
+		if(err) {
+			console.log('err =', err);
+			check.code = 0;
+			check.message = err;
+		}
+		if(doc){
+			check.result = doc;
+		}
+		else{
+			check.code = 0;
+			check.message = '파트너를 찾는데에 실패했습니다.';
+		}
+		console.log('doc =', doc);
+		res.json(check);
+	});
+
+});
+
 router.get('/create_trip', function(req, res, next){
 	res.render('create_trip', {title : "create_trip"});
 });
