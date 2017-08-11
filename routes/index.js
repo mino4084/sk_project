@@ -280,7 +280,6 @@ router.post('/create_trip', function(req, res, next){
 			check.message = err;
 			return next(err);
 		}
-		console.log('schedule =', schedule);
 		check.result = doc;
 		console.log('doc =', doc);
 		res.json(check);

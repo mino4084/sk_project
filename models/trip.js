@@ -11,8 +11,8 @@ var Candidate = require('./candidate');
 
 var TripSchema = new Schema({
 	trip_title : String,
-	start_date : { type : Date, default : Date.now },
-	end_date : { type : Date, default : Date.now },
+	start_date : String,
+	end_date : String,
     user_id : String,
     partner_id : String,
     hashtag : String,
