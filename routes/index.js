@@ -311,11 +311,19 @@ router.get('/list_trip', function(req, res, next){
 router.get('/change_trip/:trip_no', function(req, res, next){
 	var trip_no = req.params.trip_no;
 	console.log('trip_no =', trip_no);
-	TripModel.find({}, null, {sort : {trip_no : -1}}, function(err, docs){
-		if(err) return next(err);
-		console.log('list docs =', docs);
-		//res.json(check);  //json으로 하면 모바일이 된다.
-		res.render('change_trip', {title : "change_trip", docs : docs}); //웹서버
+	UserModel.findOne({trip_no : trip_no}, function(err, doc){
+		if(err) {
+			console.log('err =', err);
+		}
+
+		console.log('doc =', doc); // 실패할 경우 null
+		if(doc){
+			res.render('change_trip', {title : "change_trip", doc : doc});
+		}
+		else{
+			res.send('<script>alert("실패");history.back();</script>');
+		}
+		res.json(check);
 	});
 
 });
