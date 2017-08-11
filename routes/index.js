@@ -308,7 +308,7 @@ router.get('/list_trip', function(req, res, next){
 	//res.render('list_trip', {title : "list_trip"});
 });
 
-router.get('/change_trip/:trip_no', function(req, res, next){
+router.get('/update_trip/:trip_no', function(req, res, next){
 	var trip_no = req.params.trip_no;
 	console.log('trip_no =', trip_no);
 	TripModel.findOne({trip_no : trip_no}, function(err, doc){
@@ -319,13 +319,47 @@ router.get('/change_trip/:trip_no', function(req, res, next){
 
 		console.log('doc =', doc); // 실패할 경우 null
 		if(doc){
-			res.render('change_trip', {title : "change_trip", doc : doc});
+			res.render('update_trip', {title : "update_trip", doc : doc});
 		}
 		else{
 			res.send('<script>alert("실패");history.back();</script>');
 		}
 	});
 
+});
+
+router.post('/update_trip', function(req, res, next){
+	console.log('req.body = ', req.body);
+	var trip_title = req.body.trip_title;
+	var start_date = req.body.start_date;
+	var end_date = req.body.end_date;
+	var partner_id = req.body.partner_id;
+	var hashtag = req.body.hashtag;
+	var code = 1;
+	var message = "OK";
+	var result = {};
+	var check = {
+		code : code,
+		message : message,
+		result : result
+	};
+
+	TripModel.update({trip_title : trip_title, start_date : start_date, end_date : end_date, partner_id : partner_id, hashtag : hashtag}, function(err, doc){
+		if(err) {
+			console.log('err =', err);
+			check.code = 0;
+			check.message = err;
+		}
+		if(doc){
+			check.result = doc;
+		}
+		else{
+			check.code = 0;
+			check.message = '실패';
+		}
+		console.log('doc =', doc);
+		res.json(check);
+	});
 });
 
 module.exports = router;
