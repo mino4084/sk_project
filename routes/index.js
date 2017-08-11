@@ -9,6 +9,7 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Tripco Main Page' });
 });
 
+// 로그인
 router.get('/login', function(req, res, next){
 	res.render('loginform', {title : "login"});
 });
@@ -45,6 +46,7 @@ router.post('/login', function(req, res, next){
 	});
 });
 
+// 회원가입
 router.get('/join', function(req, res, next){
 	res.render('joinform', {title : "회원가입"});
 });
@@ -83,17 +85,9 @@ router.post('/join', function(req, res, next){
 		console.log('doc =', doc);
 		res.json(check);
 	});
-	/*res.json(data, function(err){
-		if(err){
-			code = 0;
-			res.json(data);
-		}
-		code = 1;
-		res.json(data);
-	});*/
-
 });
 
+// 비밀번호 찾기
 router.get('/findpw', function(req, res, next){
 	res.render('findpw', {title : "findpw"});
 });
@@ -134,6 +128,7 @@ router.post('/findpw', function(req, res, next){
 	});
 });
 
+// 닉네임 설정
 router.get('/nick', function(req, res, next){
 	res.render('nick', {title : "nick"});
 });
@@ -169,6 +164,7 @@ router.post('/nick', function(req, res, next){
 	});
 });
 
+// 비밀번호 찾기
 router.get('/changepw', function(req, res, next){
 	res.render('changepw', {title : "change pw"});
 });
@@ -204,6 +200,7 @@ router.post('/changepw', function(req, res, next){
 	});
 });
 
+// 파트너 찾기
 router.get('/find_partner/:trip_no', function(req, res, next){
 	var trip_no = req.params.trip_no;
 	console.log('trip_no =', trip_no);
@@ -245,6 +242,7 @@ router.post('/find_partner', function(req, res, next){
 
 });
 
+// 여행 생성
 router.get('/create_trip', function(req, res, next){
 	res.render('create_trip', {title : "create_trip"});
 });
@@ -259,6 +257,8 @@ router.post('/create_trip', function(req, res, next){
 	var code = 1;
 	var message = "OK";
 	var result = {};
+
+	var schedule = 0;
 
 	var data = {
 		trip_title : trip_title,
@@ -281,12 +281,15 @@ router.post('/create_trip', function(req, res, next){
 			check.message = err;
 			return next(err);
 		}
+		schedule = doc.end_date - doc.start_date;
+		console.log('schedule =', schedule);
 		check.result = doc;
 		console.log('doc =', doc);
 		res.json(check);
 	});
 });
 
+// 여행 리스트 조회
 router.get('/list_trip', function(req, res, next){
 	console.log('req body =', req.body);
 	var code = 1;
@@ -308,6 +311,7 @@ router.get('/list_trip', function(req, res, next){
 	//res.render('list_trip', {title : "list_trip"});
 });
 
+// 여행 수정
 router.get('/update_trip/:trip_no', function(req, res, next){
 	var trip_no = req.params.trip_no;
 	console.log('trip_no =', trip_no);
@@ -362,6 +366,7 @@ router.post('/update_trip', function(req, res, next){
 	});
 });
 
+// 여행 삭제
 router.get('/delete_trip/:trip_no', function(req, res, next){
 	var trip_no = req.params.trip_no;
 	console.log('trip_no =', trip_no);
@@ -415,6 +420,11 @@ router.post('/delete_trip', function(req, res, next){
 		console.log('doc =', doc);
 		res.json(check);
 	});
+});
+
+// 후보지 URL 단순 생성
+router.get('/create_item_url', function(req, res, next){
+	res.render('create_item_url', {title : "create_item_url"});
 });
 
 module.exports = router;
