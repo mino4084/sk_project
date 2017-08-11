@@ -285,8 +285,18 @@ router.post('/create_trip', function(req, res, next){
 		console.log('doc =', doc);
 		res.json(check);
 	});
+});
 
+router.get('/list_trip', function(req, res, next){
 
+	TripModel.find({}, null, {sort : {trip_no : -1}}, function(err, docs){
+		if(err) return next(err);
+		console.log('list docs =', docs);
+		res.json({docs : docs});  //json으로 하면 모바일이 된다.
+		//res.render('list_trip', {title : "list_trip", docs : docs}); //웹서버
+	});
+
+	//res.render('list_trip', {title : "list_trip"});
 });
 
 module.exports = router;
