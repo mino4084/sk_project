@@ -288,11 +288,20 @@ router.post('/create_trip', function(req, res, next){
 });
 
 router.get('/list_trip', function(req, res, next){
-
+	console.log('req body =', req.body);
+	var code = 1;
+	var message = "OK";
+	var result = {};
+	var check = {
+		code : code,
+		message : message,
+		result : result
+	};
 	TripModel.find({}, null, {sort : {trip_no : -1}}, function(err, docs){
 		if(err) return next(err);
 		console.log('list docs =', docs);
-		res.json({docs : docs});  //json으로 하면 모바일이 된다.
+		check.result = docs;
+		res.json(check);  //json으로 하면 모바일이 된다.
 		//res.render('list_trip', {title : "list_trip", docs : docs}); //웹서버
 	});
 
