@@ -1,7 +1,5 @@
 // models/comment.js
 var mongoose = require('mongoose');
-
-
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
@@ -22,5 +20,4 @@ var ItemSchema = new Schema({
 	item_time : String
 });
 
-// var Item = db.model('Item', ItemSchema);
 module.exports = ItemSchema;

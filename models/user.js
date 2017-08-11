@@ -10,7 +10,7 @@ var ObjectId = Schema.ObjectId;
 var UserSchema = new Schema({
 	user_id : String,
 	user_pw : String,
-	user_nick : { type : String, default : '닉네임을 설정해주세요.' },
+	user_nick : String,
 	user_uuid : String,
 	user_token : String,
 	user_image : { type : String, default : 'default.jpg' }
