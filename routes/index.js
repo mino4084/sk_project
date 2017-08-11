@@ -207,7 +207,7 @@ router.post('/changepw', function(req, res, next){
 router.get('/find_partner/:trip_no', function(req, res, next){
 	var trip_no = req.params.trip_no;
 	console.log('trip_no =', trip_no);
-	UserModel.findOne({trip_no : trip_no}, function(err, doc){
+	TripModel.findOne({trip_no : trip_no}, function(err, doc){
 		console.log('read doc =', doc);
 		res.render('find_partner', {title : "find_partner", doc : doc}); //web
 	});
