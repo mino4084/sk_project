@@ -311,9 +311,10 @@ router.get('/list_trip', function(req, res, next){
 router.get('/change_trip/:trip_no', function(req, res, next){
 	var trip_no = req.params.trip_no;
 	console.log('trip_no =', trip_no);
-	UserModel.findOne({trip_no : trip_no}, function(err, doc){
+	TripModel.findOne({trip_no : trip_no}, function(err, doc){
 		if(err) {
 			console.log('err =', err);
+			res.send('<script>alert("실패");history.back();</script>');
 		}
 
 		console.log('doc =', doc); // 실패할 경우 null
@@ -323,7 +324,6 @@ router.get('/change_trip/:trip_no', function(req, res, next){
 		else{
 			res.send('<script>alert("실패");history.back();</script>');
 		}
-		res.json(check);
 	});
 
 });
