@@ -113,8 +113,8 @@ router.post('/findpw', function(req, res, next){
 	UserModel.findOne({user_id : id}, function(err, doc){
 		if(err) {
 			console.log('err =', err);
-			data.code = 0;
-			data.message = err;
+			check.code = 0;
+			check.message = err;
 
 		}
 
@@ -125,8 +125,8 @@ router.post('/findpw', function(req, res, next){
 			// res.send('<script>location.href="/users/";</script>');
 		}
 		else{
-			data.code = 0;
-			data.message = err;
+			check.code = 0;
+			check.message = err;
 			check.pw = '존재하지 않는 아이디입니다.';
 			// res.send('<script>alert("로그인 실패.");history.back();</script>');
 		}
@@ -223,32 +223,33 @@ router.post('/create_trip', function(req, res, next){
 	var start_date = req.body.start;
 	var end_date = req.body.end;
 	var user_id = req.body.id;
-	var partner_id = req.body.partner;
 	var hashtag = req.body.tag;
 	var code = 1;
 	var message = "OK";
+	var result = {};
 
 	var data = {
 		trip_title : trip_title,
 		start_date : start_date,
 		end_date : end_date,
 		user_id : user_id,
-		partner_id : partner_id,
 		hashtag : hashtag
 	};
 
 	var check = {
 		code : code,
-		message : message
+		message : message,
+		result : result
 	};
 
-	var user = new UserModel(data);
-	user.save(function(err, doc){
+	var trip = new TripModel(data);
+	trip.save(function(err, doc){
 		if(err){
 			check.code = 0;
-			data.message = err;
+			check.message = err;
 			return next(err);
 		}
+		check.result = doc;
 		console.log('doc =', doc);
 		res.json(check);
 	});
