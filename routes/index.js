@@ -362,4 +362,24 @@ router.post('/update_trip', function(req, res, next){
 	});
 });
 
+router.get('/remove_trip/:trip_no', function(req, res, next){
+	var trip_no = req.params.trip_no;
+	console.log('trip_no =', trip_no);
+	TripModel.findOne({trip_no : trip_no}, function(err, doc){
+		if(err) {
+			console.log('err =', err);
+			res.send('<script>alert("실패");history.back();</script>');
+		}
+
+		console.log('doc =', doc); // 실패할 경우 null
+		if(doc){
+			res.render('remove_trip', {title : "remove_trip", doc : doc});
+		}
+		else{
+			res.send('<script>alert("실패");history.back();</script>');
+		}
+	});
+
+});
+
 module.exports = router;
