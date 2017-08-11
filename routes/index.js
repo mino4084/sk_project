@@ -151,7 +151,7 @@ router.post('/nick', function(req, res, next){
 		nickname : nickname
 	};
 
-	UserModel.updateOne({user_id : id}, {$set : {user_nick : nick}}, function(err, doc){
+	UserModel.findByIdAndUpdate({user_id : id}, {$push : {user_nick : nick}}, {safe : true, upsert : true, new : true}, function(err, doc){
 		if(err) {
 			console.log('err =', err);
 			data.code = 0;
