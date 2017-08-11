@@ -355,7 +355,7 @@ router.post('/update_trip', function(req, res, next){
 			check.message = err;
 		}
 		if(doc){
-			schedule = moment(doc.end_date)- (moment(doc.start_date));
+			schedule = moment(doc.end_date) - (moment(doc.start_date));
 			console.log('schedule =', schedule);
 			check.result = doc;
 		}
