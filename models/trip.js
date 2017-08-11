@@ -18,7 +18,7 @@ var TripSchema = new Schema({
     hashtag : String,
     trip_list : [ Candidate ]
 });
-TripSchema.virtual('start_date')
+TripSchema.virtual('trip_start')
 	.get(function(){
 		return formatDate(this.start_date);
 	});
