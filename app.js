@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session = require('express-session'); //세션 추가
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -21,6 +22,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+//세션 추가, 구문 넣는 위치도 중요
+app.use(session({
+	secret :'key',
+	resave : false, //다시 저장하지 않겠다.
+	saveUninitialized : true //초기화하지 않고 저장
+}));
 
 app.use('/', index);
 app.use('/users', users);

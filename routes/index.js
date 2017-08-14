@@ -35,7 +35,8 @@ router.post('/login', function(req, res, next){
 
 		console.log('doc =', doc); // 실패할 경우 null
 		if(doc){
-			//req.session.user_id = id;
+			req.session.user_id = id;
+			console.log('req.session.user_id =', req.session.user_id);
 			// res.send('<script>location.href="/users/";</script>');
 		}
 		else{
@@ -355,7 +356,7 @@ router.post('/update_trip', function(req, res, next){
 			check.message = err;
 		}
 		if(doc){
-			schedule = moment(doc.end_date) - (moment(doc.start_date));
+			schedule = moment(doc.end_date).diff(moment(doc.start_date), 'days');
 			console.log('schedule =', schedule);
 			check.result = doc;
 		}
