@@ -23,28 +23,29 @@ router.post('/login', function(req, res, next){
 	var pw = req.body.pw;
 	var code = 1;
 	var message = "OK";
+	var result = [];
 	var check = {
 		code : code,
 		message : message,
+		result : result
 	};
 
 	UserModel.findOne({user_id : id, user_pw : pw}, function(err, doc){
 		if(err) {
 			console.log('err =', err);
-			data.code = 0;
-			data.message = err;
+			check.code = 0;
+			check.message = err;
 		}
 
 		console.log('doc =', doc); // 실패할 경우 null
 		if(doc){
 			req.session.user_id = id;
 			console.log('req.session.user_id =', req.session.user_id);
-			// res.send('<script>location.href="/users/";</script>');
+			check.result = doc;
 		}
 		else{
 			data.code = 0;
 			data.message = '로그인 실패';
-			// res.send('<script>alert("로그인 실패.");history.back();</script>');
 		}
 		res.json(check);
 	});
@@ -70,8 +71,8 @@ router.post('/profile', function(req, res, next) {
   	UserModel.findOne({user_id : id}, function(err, doc){
   		if(err) {
   			console.log('err =', err);
-  			data.code = 0;
-  			data.message = err;
+  			check.code = 0;
+  			check.message = err;
   		}
 
   		console.log('doc =', doc); // 실패할 경우 null
@@ -81,8 +82,8 @@ router.post('/profile', function(req, res, next) {
   			console.log('req.session.user_id =', req.session.user_id);
   		}
   		else{
-  			data.code = 0;
-  			data.message = '로그인 실패';
+  			check.code = 0;
+  			check.message = '로그인 실패';
   		}
   		res.json(check);
   	});
@@ -90,15 +91,20 @@ router.post('/profile', function(req, res, next) {
 //프로필 조회
 
 //로그아웃
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Tripco Main Page' });
-});
-
 router.get('/logout', function(req, res, next){
+	var id = req.session.user_id;
+	var code = 1;
+	var message = "OK";
+	var result = [];
+	var check = {
+		code : code,
+		message : message,
+		result : result
+	};
 	req.session.destroy(function(err){
 		if(err) return console.log('err =', err);
 		console.log('logout req.session =', req.session);
-		res.send('<script>alert("로그아웃.");location.href="/users/";</script>');
+		res.json(check);
 	});
 });
 
