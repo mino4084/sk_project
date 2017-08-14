@@ -105,12 +105,13 @@ router.post('/logout', function(req, res, next){
 		if(err){
 			check.code = 0;
 			check.message = 'err';
-			console.log('err =', err);
+			return console.log('err =', err);
 		}
 		console.log('logout req.session =', req.session);
 		res.json(check);
 	});
 });
+//로그아웃
 
 // 회원가입
 router.get('/join', function(req, res, next){
@@ -126,8 +127,11 @@ router.post('/join', function(req, res, next){
 	var user_nick = req.body.nick;
 	var code = 1;
 	var message = "OK";
+	var result = [];
+
+	//bcrypt 사용
 	// var hash = bcrypt.hashSync(user_pw);
-	console.log('user_pw = ', user_pw);
+	//console.log('user_pw = ', user_pw);
 
 	var data = {
 		user_id : user_id,
@@ -138,20 +142,22 @@ router.post('/join', function(req, res, next){
 	};
 	var check = {
 		code : code,
-		message : message
+		message : message,
+		result : result
 	};
-	// res.json(data);
 	var user = new UserModel(data);
 	user.save(function(err, doc){
 		if(err){
 			check.code = 0;
-			data.message = err;
+			check.message = err;
 			return next(err);
 		}
+		check.result = doc;
 		console.log('doc =', doc);
 		res.json(check);
 	});
 });
+//회원가입
 
 // 비밀번호 찾기
 router.get('/findpw', function(req, res, next){
