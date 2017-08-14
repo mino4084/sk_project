@@ -126,11 +126,11 @@ router.get('/join', function(req, res, next){
 
 router.post('/join', function(req, res, next){
 	console.log('req body =', req.body);
-	var user_id = req.body.id;
-	var user_pw = req.body.pw;
-	var user_token = req.body.token;
-	var user_uuid = req.body.uuid;
-	var user_nick = req.body.nick;
+	var user_id = req.body.user_id;
+	var user_pw = req.body.user_pw;
+	var user_token = req.body.user_token;
+	var user_uuid = req.body.user_uuid;
+	var user_nick = req.body.user_nick;
 	var code = 1;
 	var message = "OK";
 	var result = {};
