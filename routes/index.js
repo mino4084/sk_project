@@ -389,7 +389,7 @@ router.post('/create_trip', function(req, res, next){
 		start_date : start_date,
 		end_date : end_date,
 		user_id : user_id,
-		partner_id : partner_id
+		partner_id : partner_id,
 		hashtag : hashtag
 	};
 
