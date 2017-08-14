@@ -266,7 +266,7 @@ router.post('/change_pw', function(req, res, next){
 		}
 		console.log('doc =', doc);
 		if(doc){
-			check.result = doc.user_pw;
+			check.result = pw;
 		}
 		else{
 			check.code = 0;
