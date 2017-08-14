@@ -8,6 +8,7 @@ var TripModel = require('../models/trip');
 /* GET home page. */
 router.get('/', function(req, res, next) {
 	var user_id = req.session.user_id;
+	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
 	console.log('user_id =', user_id);
   	res.render('index', { title: user_id });
 });
@@ -59,6 +60,7 @@ router.get('/profile', function(req, res, next){
 
 router.post('/profile', function(req, res, next) {
   	var id = req.session.user_id;
+  	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
   	var code = 1;
   	var message = "OK";
   	var result = [];
@@ -93,6 +95,7 @@ router.post('/profile', function(req, res, next) {
 //로그아웃
 router.post('/logout', function(req, res, next){
 	var id = req.session.user_id;
+	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
 	var code = 1;
 	var message = "OK";
 	var result = [];
@@ -167,6 +170,7 @@ router.get('/find_pw', function(req, res, next){
 router.post('/find_pw', function(req, res, next){
 	console.log('req.body =', req.body);
 	var id = req.session.user_id;
+	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
 	var code = 1;
 	var message = "OK";
 	var result = [];
@@ -193,6 +197,7 @@ router.post('/find_pw', function(req, res, next){
 		res.json(check);
 	});
 });
+//비밀번호 찾기
 
 // 닉네임 설정
 router.get('/nick', function(req, res, next){
@@ -201,15 +206,17 @@ router.get('/nick', function(req, res, next){
 
 router.post('/nick', function(req, res, next){
 	console.log('req.body =', req.body);
-	var id = req.body.id;
+	var id = req.session.user_id;
+	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
 	var nick = req.body.nick;
 	var nickname = '';
 	var code = 1;
 	var message = "OK";
+	var result = [];
 	var check = {
 		code : code,
 		message : message,
-		nickname : nickname
+		result : result
 	};
 
 	UserModel.updateOne({user_id : id}, {$set : {user_nick : nick}}, {safe : true, upsert : true, new : true}, function(err, doc){
@@ -218,19 +225,20 @@ router.post('/nick', function(req, res, next){
 			check.code = 0;
 			check.message = err;
 		}
+		console.log('doc =', doc);
 		if(doc){
-			check.nickname = nick;
+			check.result = nick;
 		}
 		else{
 			check.code = 0;
 			check.message = '존재하지 아이디이거나 오류';
 		}
-		console.log('doc =', doc);
 		res.json(check);
 	});
 });
+// 닉네임 설정
 
-// 비밀번호 찾기
+// 비밀번호 변경
 router.get('/changepw', function(req, res, next){
 	res.render('changepw', {title : "change pw"});
 });
