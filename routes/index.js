@@ -409,6 +409,44 @@ router.post('/find_partner', function(req, res, next){
 });
 // 파트너 찾기
 
+// 여행 파트너 끊기
+router.get('/cut_partner', function(req, res, next){
+	res.render('cut_partner', {title : "cut_partner"});
+});
+
+router.post('/cut_partner', function(req, res, next){
+	console.log('req.body =', req.body);
+	var trip_no = req.body.trip_no;
+	var partner_id = req.body.partner_id;
+	var stop = 1;
+	var code = 1;
+	var message = "OK";
+	var result = {};
+	var check = {
+		code : code,
+		message : message,
+		result : result
+	};
+
+	TripModel.findOneAndUpdate({trip_no : trip_no}, {partner_id:""}, function(err, doc){
+		if(err) {
+			console.log('err =', err);
+			check.code = 0;
+			check.message = err;
+		}
+		if(doc){
+			check.result = doc;
+		}
+		else{
+			check.code = 0;
+			check.message = '실패';
+		}
+		console.log('doc =', doc);
+		res.json(check);
+	});
+});
+// 여행 파트너 끊기
+
 // 여행 리스트 조회
 router.get('/list_trip', function(req, res, next){
 	console.log('req body =', req.body);
@@ -529,7 +567,7 @@ router.post('/delete_trip', function(req, res, next){
 		result : result
 	};
 
-	TripModel.deleteOne({trip_no : trip_no}, function(err, doc){
+	TripModel.findOneAndUpdate({trip_no : trip_no}, {partner_id:""}, function(err, doc){
 		if(err) {
 			console.log('err =', err);
 			check.code = 0;
