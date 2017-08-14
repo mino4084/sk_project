@@ -13,46 +13,6 @@ router.get('/', function(req, res, next) {
   	res.render('index', { title: user_id });
 });
 
-// 로그인
-router.get('/login', function(req, res, next){
-	res.render('loginform', {title : "login"});
-});
-
-router.post('/login', function(req, res, next){
-	console.log('req.body =', req.body);
-	var id = req.body.id;
-	var pw = req.body.pw;
-	var code = 1;
-	var message = "OK";
-	var result = [];
-	var check = {
-		code : code,
-		message : message,
-		result : result
-	};
-
-	UserModel.findOne({user_id : id, user_pw : pw}, function(err, doc){
-		if(err) {
-			console.log('err =', err);
-			check.code = 0;
-			check.message = err;
-		}
-
-		console.log('doc =', doc); // 실패할 경우 null
-		if(doc){
-			req.session.user_id = id;
-			console.log('req.session.user_id =', req.session.user_id);
-			check.result = doc;
-		}
-		else{
-			check.code = 0;
-			check.message = '로그인 실패';
-		}
-		res.json(check);
-	});
-});
-// 로그인
-
 //프로필 조회
 router.get('/profile', function(req, res, next){
 	res.render('profileform', {title : "profile"});
@@ -63,7 +23,7 @@ router.post('/profile', function(req, res, next) {
   	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
   	var code = 1;
   	var message = "OK";
-  	var result = [];
+  	var result = {};
   	var check = {
   		code : code,
   		message : message,
@@ -92,13 +52,56 @@ router.post('/profile', function(req, res, next) {
 });
 //프로필 조회
 
+// 로그인
+router.get('/login', function(req, res, next){
+	res.render('loginform', {title : "login"});
+});
+
+router.post('/login', function(req, res, next){
+	console.log('req.body =', req.body);
+	var id = req.body.user_id;
+	var pw = req.body.user_pw;
+	var code = 1;
+	var message = "OK";
+	var result = {};
+	var check = {
+		code : code,
+		message : message,
+		result : result
+	};
+
+	UserModel.findOne({user_id : id, user_pw : pw}, function(err, doc){
+		if(err) {
+			console.log('err =', err);
+			check.code = 0;
+			check.message = err;
+		}
+
+		console.log('doc =', doc); // 실패할 경우 null
+		if(doc){
+			req.session.user_id = id;
+			doc.user_yn = 0;
+			console.log('req.session.user_id =', req.session.user_id);
+			check.result = doc;
+		}
+		else{
+			check.code = 0;
+			check.message = '로그인 실패';
+		}
+		res.json(check);
+	});
+});
+// 로그인
+
+
+
 //로그아웃
 router.post('/logout', function(req, res, next){
 	var id = req.session.user_id;
 	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
 	var code = 1;
 	var message = "OK";
-	var result = [];
+	var result = {};
 	var check = {
 		code : code,
 		message : message,
@@ -130,7 +133,7 @@ router.post('/join', function(req, res, next){
 	var user_nick = req.body.nick;
 	var code = 1;
 	var message = "OK";
-	var result = [];
+	var result = {};
 
 	//bcrypt 사용
 	// var hash = bcrypt.hashSync(user_pw);
@@ -173,7 +176,7 @@ router.post('/find_pw', function(req, res, next){
 	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
 	var code = 1;
 	var message = "OK";
-	var result = [];
+	var result = {};
 	var check = {
 		code : code,
 		message : message,
@@ -208,11 +211,11 @@ router.post('/nick', function(req, res, next){
 	console.log('req.body =', req.body);
 	var id = req.session.user_id;
 	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
-	var nick = req.body.nick;
+	var nick = req.body.user_nick;
 	var nickname = '';
 	var code = 1;
 	var message = "OK";
-	var result = [];
+	var result = {};
 	var check = {
 		code : code,
 		message : message,
@@ -248,10 +251,10 @@ router.post('/change_pw', function(req, res, next){
 	console.log('req.body =', req.body);
 	var id = req.session.user_id;
 	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
-	var pw = req.body.pw;
+	var pw = req.body.user_pw;
 	var code = 1;
 	var message = "OK";
-	var result = [];
+	var result = {};
 	var check = {
 		code : code,
 		message : message,
@@ -280,6 +283,44 @@ router.post('/change_pw', function(req, res, next){
 //회원 탈퇴
 router.get('/stop', function(req, res, next){
 	res.render('stop', {title : "stop"});
+});
+
+router.post('/stop', function(req, res, next){
+	console.log('req.body =', req.body);
+	var id = req.session.user_id;
+	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
+	var stop = 1;
+	var code = 1;
+	var message = "OK";
+	var result = {};
+	var check = {
+		code : code,
+		message : message,
+		result : result
+	};
+
+	UserModel.updateOne({user_id : id}, {$set : {user_yn : stop}}, function(err, doc){
+		if(err) {
+			console.log('err =', err);
+			check.code = 0;
+			check.message = err;
+		}
+		console.log('doc =', doc);
+		if(doc){
+			check.result = doc.user_yn;
+			req.session.destroy(function(err){
+				if(err){
+					return console.log('err =', err);
+				}
+				console.log('logout req.session =', req.session);
+			});
+		}
+		else{
+			check.code = 0;
+			check.message = '존재하지 아이디이거나 오류';
+		}
+		res.json(check);
+	});
 });
 //회원 탈퇴
 
@@ -332,11 +373,13 @@ router.get('/create_trip', function(req, res, next){
 
 router.post('/create_trip', function(req, res, next){
 	console.log('req body =', req.body);
-	var trip_title = req.body.title;
-	var start_date = req.body.start;
-	var end_date = req.body.end;
-	var user_id = req.body.id;
-	var hashtag = req.body.tag;
+	var id = req.session.user_id;
+	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
+	var trip_title = req.body.trip_title;
+	var start_date = req.body.start_date;
+	var end_date = req.body.end_date;
+	var partner_id = req.body.partner_id;
+	var hashtag = req.body.hastag;
 	var code = 1;
 	var message = "OK";
 	var result = {};
@@ -346,6 +389,7 @@ router.post('/create_trip', function(req, res, next){
 		start_date : start_date,
 		end_date : end_date,
 		user_id : user_id,
+		partner_id : partner_id
 		hashtag : hashtag
 	};
 

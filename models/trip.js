@@ -7,7 +7,7 @@ autoIncrement.initialize(db);
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
-var Candidate = require('./candidate');
+var Schedule = require('./schedule');
 
 var TripSchema = new Schema({
 	trip_title : String,
@@ -16,7 +16,7 @@ var TripSchema = new Schema({
     user_id : String,
     partner_id : String,
     hashtag : String,
-    trip_list : [ Candidate ]
+    trip_list : [ Schedule ]
 });
 
 
