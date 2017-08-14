@@ -102,7 +102,11 @@ router.post('/logout', function(req, res, next){
 		result : result
 	};
 	req.session.destroy(function(err){
-		if(err) return console.log('err =', err);
+		if(err){
+			check.code = 0;
+			check.message = 'err';
+			console.log('err =', err);
+		}
 		console.log('logout req.session =', req.session);
 		res.json(check);
 	});
