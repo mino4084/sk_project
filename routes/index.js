@@ -52,8 +52,40 @@ router.post('/login', function(req, res, next){
 // 로그인
 
 //프로필 조회
-router.get('/', function(req, res, next) {
-  	res.render('index', { title: 'Tripco Main Page' });
+router.get('/profile', function(req, res, next){
+	res.render('profileform', {title : "profile"});
+});
+
+router.post('/profile', function(req, res, next) {
+  	var id = req.session.user_id;
+  	var code = 1;
+  	var message = "OK";
+  	var result = [];
+  	var check = {
+  		code : code,
+  		message : message,
+  		result : result
+  	};
+
+  	UserModel.findOne({user_id : id}, function(err, doc){
+  		if(err) {
+  			console.log('err =', err);
+  			data.code = 0;
+  			data.message = err;
+  		}
+
+  		console.log('doc =', doc); // 실패할 경우 null
+  		if(doc){
+  			req.session.user_id = id;
+  			check.result = doc;
+  			console.log('req.session.user_id =', req.session.user_id);
+  		}
+  		else{
+  			data.code = 0;
+  			data.message = '로그인 실패';
+  		}
+  		res.json(check);
+  	});
 });
 //프로필 조회
 
