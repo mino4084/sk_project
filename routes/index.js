@@ -240,21 +240,22 @@ router.post('/nick', function(req, res, next){
 // 닉네임 설정
 
 // 비밀번호 변경
-router.get('/changepw', function(req, res, next){
-	res.render('changepw', {title : "change pw"});
+router.get('/change_pw', function(req, res, next){
+	res.render('change_pw', {title : "change pw"});
 });
 
-router.post('/changepw', function(req, res, next){
+router.post('/change_pw', function(req, res, next){
 	console.log('req.body =', req.body);
-	var id = req.body.id;
+	var id = req.session.user_id;
+	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
 	var pw = req.body.pw;
-	var password = '';
 	var code = 1;
 	var message = "OK";
+	var result = [];
 	var check = {
 		code : code,
 		message : message,
-		password : password
+		result : result
 	};
 
 	UserModel.updateOne({user_id : id}, {$set : {user_pw : pw}}, function(err, doc){
@@ -263,17 +264,18 @@ router.post('/changepw', function(req, res, next){
 			check.code = 0;
 			check.message = err;
 		}
+		console.log('doc =', doc);
 		if(doc){
-			check.password = pw;
+			check.result = doc.user_pw;
 		}
 		else{
 			check.code = 0;
 			check.message = '존재하지 아이디이거나 오류';
 		}
-		console.log('doc =', doc);
 		res.json(check);
 	});
 });
+// 비밀번호 변경
 
 // 파트너 찾기
 router.get('/find_partner/:trip_no', function(req, res, next){
