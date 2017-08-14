@@ -91,7 +91,7 @@ router.post('/profile', function(req, res, next) {
 //프로필 조회
 
 //로그아웃
-router.get('/logout', function(req, res, next){
+router.post('/logout', function(req, res, next){
 	var id = req.session.user_id;
 	var code = 1;
 	var message = "OK";
