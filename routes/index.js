@@ -160,20 +160,20 @@ router.post('/join', function(req, res, next){
 //회원가입
 
 // 비밀번호 찾기
-router.get('/findpw', function(req, res, next){
-	res.render('findpw', {title : "findpw"});
+router.get('/find_pw', function(req, res, next){
+	res.render('find_pw', {title : "findpw"});
 });
 
-router.post('/findpw', function(req, res, next){
+router.post('/find_pw', function(req, res, next){
 	console.log('req.body =', req.body);
-	var id = req.body.id;
-	var pw = '';
+	var id = req.session.user_id;
 	var code = 1;
 	var message = "OK";
+	var result = [];
 	var check = {
 		code : code,
 		message : message,
-		pw : pw
+		result : result
 	};
 
 	UserModel.findOne({user_id : id}, function(err, doc){
@@ -181,20 +181,14 @@ router.post('/findpw', function(req, res, next){
 			console.log('err =', err);
 			check.code = 0;
 			check.message = err;
-
 		}
-
 		console.log('doc =', doc); // 실패할 경우 null
 		if(doc){
-			check.pw = doc.user_pw;
-			//req.session.user_id = id;
-			// res.send('<script>location.href="/users/";</script>');
+			check.result = doc.user_pw;
 		}
 		else{
 			check.code = 0;
 			check.message = err;
-			check.pw = '존재하지 않는 아이디입니다.';
-			// res.send('<script>alert("로그인 실패.");history.back();</script>');
 		}
 		res.json(check);
 	});
