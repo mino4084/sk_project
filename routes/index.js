@@ -45,8 +45,8 @@ router.post('/login', function(req, res, next){
 			check.result = doc;
 		}
 		else{
-			data.code = 0;
-			data.message = '로그인 실패';
+			check.code = 0;
+			check.message = '로그인 실패';
 		}
 		res.json(check);
 	});
