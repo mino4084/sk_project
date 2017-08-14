@@ -401,7 +401,7 @@ router.post('/find_partner', function(req, res, next){
 		}
 		else{
 			check.code = 0;
-			check.message = err;
+			check.message = "아이디가 존재하지 않습니다.";
 		}
 		res.json(check);
 	});
