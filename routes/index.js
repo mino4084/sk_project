@@ -373,6 +373,12 @@ router.post('/create_trip', function(req, res, next){
 // 여행 생성
 
 // 파트너 찾기
+///////////////
+//
+//자기 자신 파트너 방지하기 기능 추가해야함
+//
+//
+///////////////
 router.get('/find_partner', function(req, res, next){
 	res.render('find_partner', {title : "find_partner"});
 });
@@ -453,7 +459,7 @@ router.get('/list_trip', function(req, res, next){
 	res.render('list_trip', {title : "list_trip"});
 });
 
-router.get('/list_trip', function(req, res, next){
+router.post('/list_trip', function(req, res, next){
 	console.log('req body =', req.body);
 	var id = req.session.user_id;
 	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
