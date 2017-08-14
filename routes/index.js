@@ -227,6 +227,7 @@ router.post('/nick', function(req, res, next){
 		}
 		console.log('doc =', doc);
 		if(doc){
+
 			check.result = nick;
 		}
 		else{
