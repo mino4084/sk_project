@@ -13,7 +13,8 @@ var UserSchema = new Schema({
 	user_nick : String,
 	user_uuid : String,
 	user_token : String,
-	user_image : { type : String, default : 'default.jpg' }
+	user_image : { type : String, default : 'default.jpg' },
+	user_yn : { type : Number, default : 0 },
 });
 
 

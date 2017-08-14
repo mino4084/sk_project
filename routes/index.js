@@ -277,6 +277,12 @@ router.post('/change_pw', function(req, res, next){
 });
 // 비밀번호 변경
 
+//회원 탈퇴
+router.get('/stop', function(req, res, next){
+	res.render('stop', {title : "stop"});
+});
+//회원 탈퇴
+
 // 파트너 찾기
 router.get('/find_partner/:trip_no', function(req, res, next){
 	var trip_no = req.params.trip_no;
