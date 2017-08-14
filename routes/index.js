@@ -7,7 +7,9 @@ var TripModel = require('../models/trip');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Tripco Main Page' });
+	var user_id = req.session.user_id;
+	console.log('user_id =', user_id);
+  	res.render('index', { title: user_id });
 });
 
 // 로그인
@@ -41,10 +43,30 @@ router.post('/login', function(req, res, next){
 		}
 		else{
 			data.code = 0;
-			data.message = err;
+			data.message = '로그인 실패';
 			// res.send('<script>alert("로그인 실패.");history.back();</script>');
 		}
 		res.json(check);
+	});
+});
+// 로그인
+
+//프로필 조회
+router.get('/', function(req, res, next) {
+  	res.render('index', { title: 'Tripco Main Page' });
+});
+//프로필 조회
+
+//로그아웃
+router.get('/', function(req, res, next) {
+  res.render('index', { title: 'Tripco Main Page' });
+});
+
+router.get('/logout', function(req, res, next){
+	req.session.destroy(function(err){
+		if(err) return console.log('err =', err);
+		console.log('logout req.session =', req.session);
+		res.send('<script>alert("로그아웃.");location.href="/users/";</script>');
 	});
 });
 
