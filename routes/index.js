@@ -417,7 +417,6 @@ router.get('/cut_partner', function(req, res, next){
 router.post('/cut_partner', function(req, res, next){
 	console.log('req.body =', req.body);
 	var trip_no = req.body.trip_no;
-	var partner_id = req.body.partner_id;
 	var stop = 1;
 	var code = 1;
 	var message = "OK";
@@ -428,14 +427,14 @@ router.post('/cut_partner', function(req, res, next){
 		result : result
 	};
 
-	TripModel.findOneAndUpdate({trip_no : trip_no}, {partner_id:""}, function(err, doc){
+	TripModel.findOneAndUpdate({trip_no : trip_no}, {partner_id: ""}, function(err, doc){
 		if(err) {
 			console.log('err =', err);
 			check.code = 0;
 			check.message = err;
 		}
 		if(doc){
-			check.result = doc;
+			check.result = doc.trip_no;
 		}
 		else{
 			check.code = 0;
@@ -567,7 +566,7 @@ router.post('/delete_trip', function(req, res, next){
 		result : result
 	};
 
-	TripModel.findOneAndUpdate({trip_no : trip_no}, {partner_id:""}, function(err, doc){
+	TripModel.deleteOne({trip_no : trip_no}, function(err, doc){
 		if(err) {
 			console.log('err =', err);
 			check.code = 0;
