@@ -324,48 +324,6 @@ router.post('/stop', function(req, res, next){
 });
 //회원 탈퇴
 
-// 파트너 찾기
-router.get('/find_partner/:trip_no', function(req, res, next){
-	var trip_no = req.params.trip_no;
-	console.log('trip_no =', trip_no);
-	TripModel.findOne({trip_no : trip_no}, function(err, doc){
-		console.log('read doc =', doc);
-		res.render('find_partner', {title : "find_partner", doc : doc}); //web
-	});
-});
-
-router.post('/find_partner', function(req, res, next){
-	console.log('req body =', req.body);
-	var trip_no = req.body.trip_no;
-	var partner_id = req.body.partner;
-	var code = 1;
-	var message = "OK";
-	var result = {};
-	var check = {
-		code : code,
-		message : message,
-		result : result
-	};
-
-	TripModel.updateOne({trip_no : trip_no}, {$set : {partner_id : partner_id}}, {safe : true, upsert : true, new : true}, function(err, doc){
-		if(err) {
-			console.log('err =', err);
-			check.code = 0;
-			check.message = err;
-		}
-		if(doc){
-			check.result = doc;
-		}
-		else{
-			check.code = 0;
-			check.message = '파트너를 찾는데에 실패했습니다.';
-		}
-		console.log('doc =', doc);
-		res.json(check);
-	});
-
-});
-
 // 여행 생성
 router.get('/create_trip', function(req, res, next){
 	res.render('create_trip', {title : "create_trip"});
@@ -411,6 +369,45 @@ router.post('/create_trip', function(req, res, next){
 		res.json(check);
 	});
 });
+// 여행 생성
+
+// 파트너 찾기
+router.get('/find_partner', function(req, res, next){
+	res.render('find_partner', {title : "find_partner"});
+});
+
+router.post('/find_partner', function(req, res, next){
+	console.log('req body =', req.body);
+
+	var partner_id = req.body.partner_id;
+	var code = 1;
+	var message = "OK";
+	var result = {};
+	var check = {
+		code : code,
+		message : message,
+		result : result
+	};
+
+	UserModel.findOne({user_id : partner_id}, function(err, doc){
+		if(err) {
+			console.log('err =', err);
+			check.code = 0;
+			check.message = err;
+		}
+		console.log('doc =', doc); // 실패할 경우 null
+		if(doc){
+			check.result = doc.user_id;
+		}
+		else{
+			check.code = 0;
+			check.message = err;
+		}
+		res.json(check);
+	});
+
+});
+// 파트너 찾기
 
 // 여행 리스트 조회
 router.get('/list_trip', function(req, res, next){
