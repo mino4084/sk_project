@@ -433,6 +433,7 @@ router.post('/cut_partner', function(req, res, next){
 			check.code = 0;
 			check.message = err;
 		}
+		console.log('doc =', doc);
 		if(doc){
 			check.result = doc.trip_no;
 		}
@@ -440,7 +441,7 @@ router.post('/cut_partner', function(req, res, next){
 			check.code = 0;
 			check.message = '실패';
 		}
-		console.log('doc =', doc);
+
 		res.json(check);
 	});
 });
@@ -448,7 +449,14 @@ router.post('/cut_partner', function(req, res, next){
 
 // 여행 리스트 조회
 router.get('/list_trip', function(req, res, next){
+	res.render('list_trip', {title : "list_trip"});
+});
+
+router.get('/list_trip', function(req, res, next){
 	console.log('req body =', req.body);
+	var id = req.session.user_id;
+	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
+
 	var code = 1;
 	var message = "OK";
 	var result = {};
@@ -457,7 +465,8 @@ router.get('/list_trip', function(req, res, next){
 		message : message,
 		result : result
 	};
-	TripModel.find({}, null, {sort : {trip_no : -1}}, function(err, docs){
+
+	TripModel.find({$or: [{ user_id: id }, { partner_id : id } ]}, null, {sort : {trip_no : -1}}, function(err, docs){
 		if(err) return next(err);
 		console.log('list docs =', docs);
 		check.result = docs;
