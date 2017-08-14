@@ -338,7 +338,7 @@ router.post('/create_trip', function(req, res, next){
 	var end_date = req.body.end_date;
 	var user_id = id;
 	var partner_id = req.body.partner_id;
-	var hashtag = req.body.hastag;
+	var hashtag = req.body.hashtag;
 	var code = 1;
 	var message = "OK";
 	var result = {};
