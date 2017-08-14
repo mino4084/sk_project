@@ -518,6 +518,7 @@ router.post('/update_trip', function(req, res, next){
 		}
 		if(doc){
 			check.result = "수정 성공";
+
 		}
 		else{
 			check.code = 0;
@@ -554,6 +555,7 @@ router.post('/delete_trip', function(req, res, next){
 		}
 		if(doc){
 			check.result = "삭제 성공";
+
 		}
 		else{
 			check.code = 0;
