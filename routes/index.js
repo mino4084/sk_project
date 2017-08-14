@@ -517,7 +517,7 @@ router.post('/update_trip', function(req, res, next){
 			check.message = err;
 		}
 		if(doc){
-			check.result = doc;
+			check.result = "수정 성공";
 		}
 		else{
 			check.code = 0;
@@ -527,36 +527,16 @@ router.post('/update_trip', function(req, res, next){
 		res.json(check);
 	});
 });
+// 여행 수정
 
 // 여행 삭제
-router.get('/delete_trip/:trip_no', function(req, res, next){
-	var trip_no = req.params.trip_no;
-	console.log('trip_no =', trip_no);
-	TripModel.findOne({trip_no : trip_no}, function(err, doc){
-		if(err) {
-			console.log('err =', err);
-			res.send('<script>alert("실패");history.back();</script>');
-		}
-
-		console.log('doc =', doc); // 실패할 경우 null
-		if(doc){
-			res.render('delete_trip', {title : "delete_trip", doc : doc});
-		}
-		else{
-			res.send('<script>alert("실패");history.back();</script>');
-		}
-	});
-
+router.get('/delete_trip', function(req, res, next){
+	res.render('delete_trip', {title : "delete_trip"});
 });
 
 router.post('/delete_trip', function(req, res, next){
 	console.log('req.body = ', req.body);
 	var trip_no = req.body.trip_no;
-	var trip_title = req.body.trip_title;
-	var start_date = req.body.start_date;
-	var end_date = req.body.end_date;
-	var partner_id = req.body.partner_id;
-	var hashtag = req.body.hashtag;
 	var code = 1;
 	var message = "OK";
 	var result = {};
@@ -573,16 +553,17 @@ router.post('/delete_trip', function(req, res, next){
 			check.message = err;
 		}
 		if(doc){
-			check.result = doc;
+			check.result = "삭제 성공";
 		}
 		else{
 			check.code = 0;
-			check.message = '실패';
+			check.message = '삭제 실패';
 		}
 		console.log('doc =', doc);
 		res.json(check);
 	});
 });
+// 여행 삭제
 
 // 후보지 URL 단순 생성
 router.get('/create_item_url', function(req, res, next){
