@@ -647,17 +647,48 @@ router.post('/create_item', function(req, res, next){
 	var trip_no = req.body.trip_no;
 	var schedule_date = req.body.schedule_date;
 	var item_url = req.body.item_url;
-	if(req.body.cate_no == null){
+
+	if(req.body.cate_no == ""){ // 입력하는 칸에 아무것도 입력하지 않았을 때
 		var cate_no = 0;
 	}
-	else{
+	else{ // 입력한 경우
 		var cate_no = req.body.cate_no;
 	}
-	var item_lat = req.body.item_lat;
-	var item_long = req.body.item_long;
-	var item_placeid = req.body.item_placeid;
-	var item_title = req.body.item_title;
-	var item_memo = req.body.item_memo;
+
+	if(req.body.item_lat == ""){
+		var item_lat = null;
+	}
+	else{
+		var item_lat = req.body.item_lat;
+	}
+
+	if(req.body.item_long == ""){
+		var item_long = null;
+	}
+	else{
+ 		var item_long = req.body.item_long;
+	}
+
+	if(req.body.item_placeid == ""){
+		var item_placeid = null;
+	}
+	else{
+		var item_placeid = req.body.item_placeid;
+	}
+
+	if(req.body.item_title == ""){
+		var item_title = null;
+	}
+	else{
+		var item_title = req.body.item_title;
+	}
+
+	if(req.body.item_memo == ""){
+		var item_memo = null;
+	}
+	else{
+		var item_memo = req.body.item_memo;
+	}
 
 	var code = 1;
 	var message = "OK";
