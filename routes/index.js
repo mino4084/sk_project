@@ -501,8 +501,6 @@ router.post('/list_trip', function(req, res, next){
 		res.json(check);  //json으로 하면 모바일이 된다.
 		//res.render('list_trip', {title : "list_trip", docs : docs}); //웹서버
 	});
-
-	//res.render('list_trip', {title : "list_trip"});
 });
 // 여행 리스트 조회
 
@@ -589,8 +587,33 @@ router.post('/delete_trip', function(req, res, next){
 // 여행 삭제
 
 // 후보지 리스트 조회
-router.get('/create_item_url', function(req, res, next){
-	res.render('create_item_url', {title : "create_item_url"});
+router.get('/list_item', function(req, res, next){
+	res.render('list_item', {title : "list_item"});
+});
+
+router.post('/list_item', function(req, res, next){
+	console.log('req body =', req.body);
+	var id = req.session.user_id;
+	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
+	var trip_no = trip_no;
+	var schedule_date = req.session.schedule_date;
+	var code = 1;
+	var message = "OK";
+	var result = {};
+	var check = {
+		code : code,
+		message : message,
+		result : result
+	};
+
+	TripModel.find({$or: [{ trip_no: trip_no }, { schedule_date : schedule_date } ]}, null,
+		{sort : {trip_no : -1}}, function(err, docs){
+		if(err) return next(err);
+		console.log('list docs =', docs);
+		check.result = docs;
+		res.json(check);  //json으로 하면 모바일이 된다.
+		//res.render('list_trip', {title : "list_trip", docs : docs}); //웹서버
+	});
 });
 
 // 후보지 리스트 조회
