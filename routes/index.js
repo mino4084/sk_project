@@ -750,7 +750,7 @@ router.post('/create_item_map', function(req, res, next){
 		item_url : null,
 		item_lat : item_lat,
 		item_long : item_long,
-		item_placeid : item_placeid
+		item_placeid : item_placeid,
 		item_title : null,
 		item_memo : null
 	};
