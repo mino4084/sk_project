@@ -606,7 +606,7 @@ router.post('/list_item', function(req, res, next){
 		result : result
 	};
 
-	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" :schedule_date}, function(err, doc){
+	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
 		if(err) return next(err);
 		console.log('list doc =', doc);
 		check.result = doc;
@@ -652,7 +652,7 @@ router.post('/create_item_url', function(req, res, next){
 		result : result
 	};
 
-	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" :schedule_date}, function(err, doc){
+	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
 		if(err) return next(err);
 		check.result = doc;
 		// console.log('trip_list =', doc.trip_list);
