@@ -645,30 +645,12 @@ router.post('/create_item_url', function(req, res, next){
 		result : result
 	};
 
-	TripModel.findOne({trip_no : trip_no}, function(err, doc){
-		if(err) return console.log('err =', err);
-
-		console.log('doc =', doc);
-		if(doc){
-			check.result = doc;
-			/*ScheduleModel.findOneAndUpdate({schedule_date : schedule_date}, {$push : {"schedule_list" : data}},
-				{safe : true, upsert : true, new : true}, function(err, doc){
-				if(err) return next(err);
-				console.log('schedule_list update doc =', doc);
-			});*/
-			ScheduleModel.findOne({schedule_date : schedule_date}, function(err, doc){
-				if(err) return next(err);
-				console.log('doc =', doc);
-			});
-		}
-		else{
-			check.code = 0;
-			check.message = '로그인 실패';
-		}
-		res.json(check);
+	TripModel.findOneAndUpdate({trip_no : trip_no, schedule_date :schedule_date}, {$push : {"schedule_list" : data}},
+		{safe : true, upsert : true, new : true}, function(err, doc){
+		if(err) return next(err);
+		check.result = doc;
+		console.log('schedule_list update doc =', doc);
 	});
-
-
 });
 // 후보지 URL 단순 생성
 
