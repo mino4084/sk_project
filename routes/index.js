@@ -604,13 +604,7 @@ router.post('/create_item_url', function(req, res, next){
 	var result = {};
 
 	var data = {
-		item_url : item_url,
-		cate_no : cate_no,
-		item_lat : item_lat,
-		item_long : item_long,
-		item_placeid : item_placeid,
-		item_title : item_title,
-		item_memo : item_memo
+		item_url : item_url
 	};
 
 	var check = {
