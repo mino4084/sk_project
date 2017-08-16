@@ -606,11 +606,10 @@ router.post('/list_item', function(req, res, next){
 		result : result
 	};
 
-	TripModel.findOne({$or: [{ trip_no: trip_no }, { schedule_date : schedule_date } ]}, null,
-		{sort : {trip_no : -1}}, function(err, docs){
+	TripModel.findOne({$or: [{ trip_no: trip_no }, { schedule_date : schedule_date } ]}, function(err, doc){
 		if(err) return next(err);
-		console.log('list docs =', docs);
-		check.result = docs;
+		console.log('list doc =', doc);
+		check.result = doc;
 		res.json(check);  //json으로 하면 모바일이 된다.
 		//res.render('list_trip', {title : "list_trip", docs : docs}); //웹서버
 	});
