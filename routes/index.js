@@ -606,7 +606,7 @@ router.post('/list_item', function(req, res, next){
 		result : result
 	};
 
-	TripModel.find({$or: [{ trip_no: trip_no }, { schedule_date : schedule_date } ]}, null,
+	TripModel.findOne({$or: [{ trip_no: trip_no }, { schedule_date : schedule_date } ]}, null,
 		{sort : {trip_no : -1}}, function(err, docs){
 		if(err) return next(err);
 		console.log('list docs =', docs);
