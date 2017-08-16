@@ -385,7 +385,7 @@ router.post('/create_trip', function(req, res, next){
 	/*var scheduleDate = {
 		schedule_date :
 	};*/
-	var schedule = new ScheduleModel();
+	//var schedule = new ScheduleModel();
 });
 // 여행 생성
 
