@@ -606,7 +606,7 @@ router.post('/list_item', function(req, res, next){
 		result : result
 	};
 
-	TripModel.findOne({$and: [{ trip_no: trip_no }, { schedule_date : schedule_date } ]}, function(err, doc){
+	TripModel.findOne({trip_no : trip_no}, function(err, doc){
 		if(err) return next(err);
 		console.log('list doc =', doc);
 		check.result = doc;
