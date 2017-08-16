@@ -653,9 +653,13 @@ router.post('/create_item_url', function(req, res, next){
 			// console.log('trip_list['+i+'] =', doc.trip_list[i]);
 			if(doc.trip_list[i].schedule_date == schedule_date) {
 				console.log('trip_list['+i+'] =', doc.trip_list[i]);
+				doc.trip_list[i].schedule_list.push(data);
 			}
 		}// for
-		res.json(check);
+		doc.save(function(err, result){
+			if(err) console.log('err=', err);
+			res.json(check);
+		})
 	});
 
 	// TripModel.findOneAndUpdate({trip_no : trip_no, "trip_list.schedule_date" :schedule_date}, {$push : {"trip_list.schedule_list" : data}},
