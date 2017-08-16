@@ -8,7 +8,6 @@ var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
 var ItemSchema = new Schema({
-	item_no : Number,
 	item_url :String,
 	cate_no : { type : Number, default : 0, ref : 'Category' },
 	item_lat : String,
