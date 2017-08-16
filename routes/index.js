@@ -727,6 +727,57 @@ router.post('/create_item', function(req, res, next){
 });
 // 후보지 기본 생성
 
+// 후보지 지도 검색 생성
+router.get('/create_item_map', function(req, res, next){
+	res.render('create_item_map', {title : "create_item"});
+});
+
+router.post('/create_item_map', function(req, res, next){
+	console.log('req body =', req.body);
+	var id = req.session.user_id;
+	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
+	var trip_no = req.body.trip_no;
+	var schedule_date = req.body.schedule_date;
+ 	var item_lat = req.body.item_lat;
+ 	var item_long = req.body.item_long;
+ 	var item_placeid = req.body.item_placeid;
+
+	var code = 1;
+	var message = "OK";
+	var result = {};
+
+	var data = {
+		item_url : null,
+		item_lat : item_lat,
+		item_long : item_long,
+		item_placeid : item_placeid
+		item_title : null,
+		item_memo : null
+	};
+
+	var check = {
+		code : code,
+		message : message,
+		result : result
+	};
+
+	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
+		if(err) return next(err);
+		for(var i = 0; i < doc.trip_list.length; i++) {
+			if(doc.trip_list[i].schedule_date == schedule_date) {
+				console.log('trip_list[' + i + '] =', doc.trip_list[i]);
+				check.result = doc.trip_list[i];
+				doc.trip_list[i].schedule_list.push(data);
+			};
+		};// for
+		doc.save(function(err, result){
+			if(err) console.log('err=', err);
+			res.json(check);
+		})
+	});
+});
+// 후보지 지도 검색 생성
+
 // 후보지 리스트 조회
 router.get('/list_item', function(req, res, next){
 	res.render('list_item', {title : "list_item"});
