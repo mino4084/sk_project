@@ -4,6 +4,7 @@ var moment = require('moment');
 // var bcrypt = require('bcrypt-node');
 var UserModel = require('../models/user');
 var TripModel = require('../models/trip');
+var ScheduleModel = require('../models/schedule');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -358,6 +359,7 @@ router.post('/create_trip', function(req, res, next){
 		result : result
 	};
 
+	// DB에 trip 생성
 	var trip = new TripModel(data);
 	trip.save(function(err, doc){
 		if(err){
@@ -369,6 +371,21 @@ router.post('/create_trip', function(req, res, next){
 		console.log('doc =', doc);
 		res.json(check);
 	});
+
+	//DB에 schedule 생성
+	var day1 = moment(start_date);
+	var day2 = moment(end_date);
+	console.log('day1 =', day1);
+	console.log('day2 =', day2);
+	var num = day2.diff(day1, 'days');
+	console.log('num =', num);
+	for (var i = 0; i < Things.length; i++) {
+
+	}
+	var scheduleDate = {
+		schedule_date :
+	};
+	var schedule = new ScheduleModel();
 });
 // 여행 생성
 
@@ -567,9 +584,65 @@ router.post('/delete_trip', function(req, res, next){
 });
 // 여행 삭제
 
+// 후보지 리스트 조회
+router.get('/create_item_url', function(req, res, next){
+	res.render('create_item_url', {title : "create_item_url"});
+});
+
+// 후보지 리스트 조회
+
+
 // 후보지 URL 단순 생성
 router.get('/create_item_url', function(req, res, next){
 	res.render('create_item_url', {title : "create_item_url"});
 });
+
+const day1 = moment('2017-08-14');
+const day2 = moment('2017-08-17');
+
+router.post('/create_trip', function(req, res, next){
+	console.log('req body =', req.body);
+	var id = req.session.user_id;
+	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
+	var trip_title = req.body.trip_title;
+	var start_date = req.body.start_date;
+	var end_date = req.body.end_date;
+	var user_id = id;
+	var partner_id = req.body.partner_id;
+	var hashtag = req.body.hashtag;
+	var code = 1;
+	var message = "OK";
+	var result = {};
+
+	var data = {
+		trip_title : trip_title,
+		start_date : start_date,
+		end_date : end_date,
+		user_id : user_id,
+		partner_id : partner_id,
+		hashtag : hashtag
+	};
+
+	var check = {
+		code : code,
+		message : message,
+		result : result
+	};
+
+	var trip = new TripModel(data);
+	trip.save(function(err, doc){
+		if(err){
+			check.code = 0;
+			check.message = err;
+			return next(err);
+		}
+		check.result = doc;
+		console.log('doc =', doc);
+		res.json(check);
+	});
+});
+
+
+// 후보지 URL 단순 생성
 
 module.exports = router;
