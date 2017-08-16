@@ -751,9 +751,8 @@ router.post('/map_item', function(req, res, next){
 			// console.log('trip_list['+i+'] =', doc.trip_list[i]);
 			if(doc.trip_list[i].schedule_date == schedule_date) {
 				for (var j = 0; j < doc.trip_list[i].schedule_list.length; j++) {
-					if(doc.trip_list[i].schedule_list[j].cate_no == 1){
+					if(doc.trip_list[i].schedule_list[j].item_placeid !== 0){
 						check.result = doc.trip_list[i].schedule_list[j];
-
 					}
 				}
 				console.log('trip_list['+ i +'] =', doc.trip_list[i]);

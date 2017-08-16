@@ -9,7 +9,7 @@ var ItemSchema = new Schema({
 	cate_no : { type : Number, default : 0, ref : 'Category' },
 	item_lat : String,
 	item_long : String,
-	item_placeid : String,
+	item_placeid : { type : Number, default : 0 },
 	item_title : String,
 	item_memo : String,
 	item_check : { type : Number, default : 0 },
