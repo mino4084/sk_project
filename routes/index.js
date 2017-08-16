@@ -649,6 +649,7 @@ router.post('/create_item_url', function(req, res, next){
 		if(err) return next(err);
 		check.result = doc;
 		console.log('doc =', doc);
+		res.json(check);
 	});
 
 	// TripModel.findOneAndUpdate({trip_no : trip_no, "trip_list.schedule_date" :schedule_date}, {$push : {"trip_list.schedule_list" : data}},
