@@ -604,7 +604,12 @@ router.post('/create_item_url', function(req, res, next){
 	var result = {};
 
 	var data = {
-		item_url : item_url
+		item_url : item_url,
+		item_lat : null,
+		item_long : null,
+		item_placeid : null,
+		item_title : null,
+		item_memo : null
 	};
 
 	var check = {
@@ -643,9 +648,15 @@ router.post('/create_item', function(req, res, next){
 	var schedule_date = req.body.schedule_date;
 	var item_url = req.body.item_url;
 	var cate_no = req.body.cate_no;
+
 	var item_lat = req.body.item_lat;
 	var item_long = req.body.item_long;
-	var item_placeid = req.body.item_placeid;
+	if(req.body.item_placeid == null){
+		var item_placeid = 0;
+	}
+	else{
+		var item_placeid = req.body.item_placeid;
+	}
 	var item_title = req.body.item_title;
 	var item_memo = req.body.item_memo;
 
