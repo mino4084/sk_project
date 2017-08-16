@@ -604,7 +604,13 @@ router.post('/create_item_url', function(req, res, next){
 	var result = {};
 
 	var data = {
-		item_url : item_url
+		item_url : item_url,
+		cate_no : cate_no,
+		item_lat : item_lat,
+		item_long : item_long,
+		item_placeid : item_placeid,
+		item_title : item_title,
+		item_memo : item_memo
 	};
 
 	var check = {
@@ -743,7 +749,25 @@ router.post('/map_item', function(req, res, next){
 		result : result
 	};
 
+	//trip을 포함해서 item까지 다나온다.
 	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
+		if(err) return next(err);
+		console.log('list doc =', doc);
+		check.result = doc;
+		for(var i = 0; i < doc.trip_list.length; i++) {
+			// console.log('trip_list['+i+'] =', doc.trip_list[i]);
+			if(doc.trip_list[i].schedule_date == schedule_date) {
+				console.log('trip_list['+ i +'] =', doc.trip_list[i]);
+				check.result = doc.trip_list[i];
+			};
+		};// for
+		res.json(check);  //json으로 하면 모바일이 된다.
+		//res.render('list_trip', {title : "list_trip", docs : docs}); //웹서버
+	});
+
+	//result에 딱 item_placeid가 0이 아닌 item만 나온다.
+	//trip은 안나온다.
+	/*TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
 		if(err) return next(err);
 		console.log('list doc =', doc);
 		//check.result = doc;
@@ -761,9 +785,65 @@ router.post('/map_item', function(req, res, next){
 		};// for
 		res.json(check);  //json으로 하면 모바일이 된다.
 		//res.render('list_trip', {title : "list_trip", docs : docs}); //웹서버
-	});
+	});*/
 });
 // 후보지 지도 조회
 
+//후보지 수정
+router.get('/update_item', function(req, res, next){
+	res.render('update_item', {title : "update_item"});
+});
+
+router.post('/update_item', function(req, res, next){
+	console.log('req body =', req.body);
+	var id = req.session.user_id;
+	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
+
+	var trip_no = req.body.trip_no;
+	var schedule_date = req.body.schedule_date;
+	var item_url = req.body.item_url;
+	var cate_no = req.body.cate_no;
+	var item_lat = req.body.item_lat;
+	var item_long = req.body.item_long;
+	var item_placeid = req.body.item_placeid;
+	var item_title = req.body.item_title;
+	var item_memo = req.body.item_memo;
+
+	var code = 1;
+	var message = "OK";
+	var result = {};
+
+	var data = {
+		item_url : item_url,
+		cate_no : cate_no,
+		item_lat : item_lat,
+		item_long : item_long,
+		item_placeid : item_placeid,
+		item_title : item_title,
+		item_memo : item_memo
+	};
+
+	var check = {
+		code : code,
+		message : message,
+		result : result
+	};
+
+	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
+		if(err) return next(err);
+		for(var i = 0; i < doc.trip_list.length; i++) {
+			if(doc.trip_list[i].schedule_date == schedule_date) {
+				console.log('trip_list[' + i + '] =', doc.trip_list[i]);
+				check.result = doc.trip_list[i];
+				doc.trip_list[i].schedule_list.push(data);
+			};
+		};// for
+		doc.save(function(err, result){
+			if(err) console.log('err=', err);
+			res.json(check);
+		})
+	});
+});
+//후보지 수정
 
 module.exports = router;
