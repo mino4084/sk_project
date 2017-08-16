@@ -586,45 +586,6 @@ router.post('/delete_trip', function(req, res, next){
 });
 // 여행 삭제
 
-// 후보지 리스트 조회
-router.get('/list_item', function(req, res, next){
-	res.render('list_item', {title : "list_item"});
-});
-
-router.post('/list_item', function(req, res, next){
-	console.log('req body =', req.body);
-	var id = req.session.user_id;
-	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
-	var trip_no = req.body.trip_no;
-	var schedule_date = req.body.schedule_date;
-	var code = 1;
-	var message = "OK";
-	var result = {};
-	var check = {
-		code : code,
-		message : message,
-		result : result
-	};
-
-	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
-		if(err) return next(err);
-		console.log('list doc =', doc);
-		check.result = doc;
-		for(var i = 0; i < doc.trip_list.length; i++) {
-			// console.log('trip_list['+i+'] =', doc.trip_list[i]);
-			if(doc.trip_list[i].schedule_date == schedule_date) {
-				console.log('trip_list['+ i +'] =', doc.trip_list[i]);
-				check.result = doc.trip_list[i];
-			};
-		};// for
-		res.json(check);  //json으로 하면 모바일이 된다.
-		//res.render('list_trip', {title : "list_trip", docs : docs}); //웹서버
-	});
-});
-
-// 후보지 리스트 조회
-
-
 // 후보지 URL 단순 생성
 router.get('/create_item_url', function(req, res, next){
 	res.render('create_item_url', {title : "create_item_url"});
@@ -724,5 +685,85 @@ router.post('/create_item', function(req, res, next){
 	});
 });
 // 후보지 기본 생성
+
+// 후보지 리스트 조회
+router.get('/list_item', function(req, res, next){
+	res.render('list_item', {title : "list_item"});
+});
+
+router.post('/list_item', function(req, res, next){
+	console.log('req body =', req.body);
+	var id = req.session.user_id;
+	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
+	var trip_no = req.body.trip_no;
+	var schedule_date = req.body.schedule_date;
+	var code = 1;
+	var message = "OK";
+	var result = {};
+	var check = {
+		code : code,
+		message : message,
+		result : result
+	};
+
+	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
+		if(err) return next(err);
+		console.log('list doc =', doc);
+		check.result = doc;
+		for(var i = 0; i < doc.trip_list.length; i++) {
+			// console.log('trip_list['+i+'] =', doc.trip_list[i]);
+			if(doc.trip_list[i].schedule_date == schedule_date) {
+				console.log('trip_list['+ i +'] =', doc.trip_list[i]);
+				check.result = doc.trip_list[i];
+			};
+		};// for
+		res.json(check);  //json으로 하면 모바일이 된다.
+		//res.render('list_trip', {title : "list_trip", docs : docs}); //웹서버
+	});
+});
+// 후보지 리스트 조회
+
+// 후보지 지도 조회
+router.get('/map_item', function(req, res, next){
+	res.render('map_item', {title : "map_item"});
+});
+
+router.post('/map_item', function(req, res, next){
+	console.log('req body =', req.body);
+	var id = req.session.user_id;
+	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
+	var trip_no = req.body.trip_no;
+	var schedule_date = req.body.schedule_date;
+	var code = 1;
+	var message = "OK";
+	var result = {};
+	var check = {
+		code : code,
+		message : message,
+		result : result
+	};
+
+	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
+		if(err) return next(err);
+		console.log('list doc =', doc);
+		check.result = doc;
+		for(var i = 0; i < doc.trip_list.length; i++) {
+			// console.log('trip_list['+i+'] =', doc.trip_list[i]);
+			if(doc.trip_list[i].schedule_date == schedule_date) {
+				for (var j = 0; j < doc.trip_list[i].schedule_list.length; j++) {
+					if(doc.trip_list[i].schedule_list[j].cate_no == 1){
+						check.result = doc.trip_list[i].schedule_list[j]
+					}
+				}
+				console.log('trip_list['+ i +'] =', doc.trip_list[i]);
+				// check.result = doc.trip_list[i];
+			};
+		};// for
+		res.json(check);  //json으로 하면 모바일이 된다.
+		//res.render('list_trip', {title : "list_trip", docs : docs}); //웹서버
+	});
+});
+// 후보지 지도 조회
+
 
 module.exports = router;
