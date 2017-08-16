@@ -654,16 +654,17 @@ router.post('/create_item_url', function(req, res, next){
 
 	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
 		if(err) return next(err);
-		check.result = doc;
+
 		// console.log('trip_list =', doc.trip_list);
 		for(var i = 0; i < doc.trip_list.length; i++) {
 			// console.log('trip_list['+i+'] =', doc.trip_list[i]);
 			if(doc.trip_list[i].schedule_date == schedule_date) {
-				console.log('trip_list['+i+'] =', doc.trip_list[i]);
+				console.log('trip_list[' + i + '] =', doc.trip_list[i]);
 				doc.trip_list[i].schedule_list.push(data);
 			};
 		};// for
 		doc.save(function(err, result){
+			check.result = result;
 			if(err) console.log('err=', err);
 			res.json(check);
 		})
@@ -695,7 +696,13 @@ router.post('/create_item', function(req, res, next){
 	var result = {};
 
 	var data = {
-		item_url : item_url
+		item_url : item_url,
+		cate_no : cate_no,
+		item_lat : item_lat,
+		item_long : item_long,
+		item_placeid : item_placeid,
+		item_title : item_title,
+		item_memo : item_memo
 	};
 
 	var check = {
@@ -706,16 +713,14 @@ router.post('/create_item', function(req, res, next){
 
 	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
 		if(err) return next(err);
-		check.result = doc;
-		// console.log('trip_list =', doc.trip_list);
 		for(var i = 0; i < doc.trip_list.length; i++) {
-			// console.log('trip_list['+i+'] =', doc.trip_list[i]);
 			if(doc.trip_list[i].schedule_date == schedule_date) {
-				console.log('trip_list['+i+'] =', doc.trip_list[i]);
+				console.log('trip_list[' + i + '] =', doc.trip_list[i]);
 				doc.trip_list[i].schedule_list.push(data);
 			};
 		};// for
 		doc.save(function(err, result){
+			check.result = result;
 			if(err) console.log('err=', err);
 			res.json(check);
 		})
