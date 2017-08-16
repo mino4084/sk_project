@@ -736,7 +736,7 @@ router.post('/map_item', function(req, res, next){
 	var schedule_date = req.body.schedule_date;
 	var code = 1;
 	var message = "OK";
-	var result = new Object();
+	var result = new Array();
 	var check = {
 		code : code,
 		message : message,
@@ -752,7 +752,7 @@ router.post('/map_item', function(req, res, next){
 			if(doc.trip_list[i].schedule_date == schedule_date) {
 				for (var j = 0; j < doc.trip_list[i].schedule_list.length; j++) {
 					if(doc.trip_list[i].schedule_list[j].item_placeid !== 0){
-						check.result = result.push(doc.trip_list[i].schedule_list[j]);
+						check.result.push(doc.trip_list[i].schedule_list[j]);
 					}
 				}
 				console.log('trip_list['+ i +'] =', doc.trip_list[i]);
