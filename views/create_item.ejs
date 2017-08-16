@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title><%=title%></title>
+</head>
+<body>
+<h1><%=title%></h1>
+<form action="/create_item" method="post">
+	<table width="400" border="1">
+		<tr>
+			<th>trip_no</th>
+			<td><input type="text" name="trip_no"></td>
+		</tr>
+		<tr>
+			<th>schedule_date</th>
+			<td><input type="text" name="schedule_date"></td>
+		</tr>
+		<tr>
+			<th>item_url</th>
+			<td><input type="text" name="item_url"></td>
+		</tr>
+		<tr>
+			<th>cate_no</th>
+			<td><input type="text" name="cate_no"></td>
+		</tr>
+		<tr>
+			<th>item_lat</th>
+			<td><input type="text" name="item_lat"></td>
+		</tr>
+		<tr>
+			<th>item_long</th>
+			<td><input type="text" name="item_long"></td>
+		</tr>
+		<tr>
+			<th>item_placeid</th>
+			<td><input type="text" name="item_placeid"></td>
+		</tr>
+		<tr>
+			<th>item_title</th>
+			<td><input type="text" name="item_title"></td>
+		</tr>
+		<tr>
+			<th>item_memo</th>
+			<td><input type="text" name="item_memo"></td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<input type="submit" value="완료">
+				<input type="reset" value="취소">
+			</td>
+		</tr>
+	</table>
+</form>
+</body>
+</html>

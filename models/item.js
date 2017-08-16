@@ -1,9 +1,11 @@
 // models/comment.js
 var mongoose = require('mongoose');
+var db = require('./db');
+var autoIncrement = require('mongoose-auto-increment');
+autoIncrement.initialize(db);
+
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
-
-var Memo = require('./memo');
 
 var ItemSchema = new Schema({
 	item_no : Number,
@@ -18,4 +20,5 @@ var ItemSchema = new Schema({
 	item_time : String
 });
 
+ItemSchema.plugin(autoIncrement.plugin, { model : 'Item', field : 'item_no', startAt : 1, incrementBy : 1});
 module.exports = ItemSchema;
