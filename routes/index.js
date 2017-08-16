@@ -369,6 +369,7 @@ router.post('/create_trip', function(req, res, next){
 		}
 		check.result = doc;
 		console.log('doc =', doc);
+		console.log('trip_no =', doc.trip_no);
 		res.json(check);
 	});
 
@@ -379,13 +380,19 @@ router.post('/create_trip', function(req, res, next){
 	console.log('day2 =', day2);
 	var num = day2.diff(day1, 'days');
 	console.log('num =', num);
-	/*for (var i = 0; i < Things.length; i++) {
-
+	/*for (var i = 1; i <= num + 1; i++) {
+		console.log('i =', i);
+		var scheduleDate = {
+			schedule_date : i
+		};
+		TripModel.findOneAndUpdate({trip_no : id}, {$push : {"comments" : data}}, {safe : true, upsert : true, new : true}, function(err, doc){
+			if(err) return next(err);
+			console.log('comments update doc =', doc);
+			res.redirect('/blog/' + id);
+		});
 	}*/
-	/*var scheduleDate = {
-		schedule_date :
-	};*/
-	//var schedule = new ScheduleModel();
+
+
 });
 // 여행 생성
 
