@@ -367,32 +367,29 @@ router.post('/create_trip', function(req, res, next){
 			check.message = err;
 			return next(err);
 		}
-		check.result = doc;
 		console.log('doc =', doc);
 		console.log('trip_no =', doc.trip_no);
+		//DB에 schedule 생성
+		var day1 = moment(start_date);
+		var day2 = moment(end_date);
+		console.log('day1 =', day1);
+		console.log('day2 =', day2);
+		var num = day2.diff(day1, 'days');
+		console.log('num =', num);
+		for (var i = 1; i <= num + 1; i++) {
+			console.log('i =', i);
+			var scheduleDate = {
+				schedule_date : i
+			};
+			TripModel.findOneAndUpdate({trip_no : doc.trip_no}, {$push : {"trip_list" : scheduleDate}},
+				{safe : true, upsert : true, new : true}, function(err, doc){
+				if(err) return next(err);
+				console.log('schedule update doc =', doc);
+			});
+		}
+		check.result = doc;
 		res.json(check);
 	});
-
-	//DB에 schedule 생성
-	var day1 = moment(start_date);
-	var day2 = moment(end_date);
-	console.log('day1 =', day1);
-	console.log('day2 =', day2);
-	var num = day2.diff(day1, 'days');
-	console.log('num =', num);
-	/*for (var i = 1; i <= num + 1; i++) {
-		console.log('i =', i);
-		var scheduleDate = {
-			schedule_date : i
-		};
-		TripModel.findOneAndUpdate({trip_no : id}, {$push : {"comments" : data}}, {safe : true, upsert : true, new : true}, function(err, doc){
-			if(err) return next(err);
-			console.log('comments update doc =', doc);
-			res.redirect('/blog/' + id);
-		});
-	}*/
-
-
 });
 // 여행 생성
 
