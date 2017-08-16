@@ -606,10 +606,17 @@ router.post('/list_item', function(req, res, next){
 		result : result
 	};
 
-	TripModel.findOne({trip_no : trip_no}, function(err, doc){
+	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" :schedule_date}, function(err, doc){
 		if(err) return next(err);
 		console.log('list doc =', doc);
 		check.result = doc;
+		for(var i = 0; i < doc.trip_list.length; i++) {
+			// console.log('trip_list['+i+'] =', doc.trip_list[i]);
+			if(doc.trip_list[i].schedule_date == schedule_date) {
+				console.log('trip_list['+ i +'] =', doc.trip_list[i]);
+				check.result = doc.trip_list[i];
+			};
+		};// for
 		res.json(check);  //json으로 하면 모바일이 된다.
 		//res.render('list_trip', {title : "list_trip", docs : docs}); //웹서버
 	});
@@ -654,21 +661,13 @@ router.post('/create_item_url', function(req, res, next){
 			if(doc.trip_list[i].schedule_date == schedule_date) {
 				console.log('trip_list['+i+'] =', doc.trip_list[i]);
 				doc.trip_list[i].schedule_list.push(data);
-			}
-		}// for
+			};
+		};// for
 		doc.save(function(err, result){
 			if(err) console.log('err=', err);
 			res.json(check);
 		})
 	});
-
-	// TripModel.findOneAndUpdate({trip_no : trip_no, "trip_list.schedule_date" :schedule_date}, {$push : {"trip_list.schedule_list" : data}},
-	// 	{safe : true, upsert : true, new : true}, function(err, doc){
-	// 	if(err) return next(err);
-	// 	check.result = doc;
-	// 	console.log('schedule_list update doc =', doc);
-	// 	res.json(check);
-	// });
 });
 // 후보지 URL 단순 생성
 
