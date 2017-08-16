@@ -654,17 +654,14 @@ router.post('/create_item_url', function(req, res, next){
 
 	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
 		if(err) return next(err);
-
-		// console.log('trip_list =', doc.trip_list);
 		for(var i = 0; i < doc.trip_list.length; i++) {
-			// console.log('trip_list['+i+'] =', doc.trip_list[i]);
 			if(doc.trip_list[i].schedule_date == schedule_date) {
 				console.log('trip_list[' + i + '] =', doc.trip_list[i]);
+				check.result = doc.trip_list[i];
 				doc.trip_list[i].schedule_list.push(data);
 			};
 		};// for
 		doc.save(function(err, result){
-			check.result = result;
 			if(err) console.log('err=', err);
 			res.json(check);
 		})
@@ -716,11 +713,11 @@ router.post('/create_item', function(req, res, next){
 		for(var i = 0; i < doc.trip_list.length; i++) {
 			if(doc.trip_list[i].schedule_date == schedule_date) {
 				console.log('trip_list[' + i + '] =', doc.trip_list[i]);
+				check.result = doc.trip_list[i];
 				doc.trip_list[i].schedule_list.push(data);
 			};
 		};// for
 		doc.save(function(err, result){
-			check.result = result;
 			if(err) console.log('err=', err);
 			res.json(check);
 		})
