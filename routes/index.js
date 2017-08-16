@@ -650,7 +650,10 @@ router.post('/create_item_url', function(req, res, next){
 		check.result = doc;
 		// console.log('trip_list =', doc.trip_list);
 		for(var i = 0; i < doc.trip_list.length; i++) {
-			console.log('trip_list['+i+'] =', doc.trip_list[i]);
+			// console.log('trip_list['+i+'] =', doc.trip_list[i]);
+			if(doc.trip_list[i].schedule_date == schedule_date) {
+				console.log('trip_list['+i+'] =', doc.trip_list[i]);
+			}
 		}// for
 		res.json(check);
 	});
