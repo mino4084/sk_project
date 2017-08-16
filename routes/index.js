@@ -648,7 +648,7 @@ router.post('/create_item_url', function(req, res, next){
 	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" :schedule_date}, function(err, doc){
 		if(err) return next(err);
 		check.result = doc;
-		console.log('doc =', doc);
+		console.log('doc11111 =', doc);
 		res.json(check);
 	});
 
