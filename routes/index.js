@@ -379,9 +379,9 @@ router.post('/create_trip', function(req, res, next){
 	console.log('day2 =', day2);
 	var num = day2.diff(day1, 'days');
 	console.log('num =', num);
-	for (var i = 0; i < Things.length; i++) {
+	/*for (var i = 0; i < Things.length; i++) {
 
-	}
+	}*/
 	/*var scheduleDate = {
 		schedule_date :
 	};*/
