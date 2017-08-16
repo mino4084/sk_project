@@ -659,7 +659,7 @@ router.post('/create_item_url', function(req, res, next){
 		res.json(check);
 	});
 
-	ScheduleModel.findByIdAndUpdate({schedule_date : schedule_date}, {$push : {"schedule_list" : data}},
+	ScheduleModel.findOneAndUpdate({schedule_date : schedule_date}, {$push : {"schedule_list" : data}},
 		{safe : true, upsert : true, new : true}, function(err, doc){
 		if(err) return next(err);
 		console.log('schedule_list update doc =', doc);
