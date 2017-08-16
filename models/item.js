@@ -8,15 +8,13 @@ var Memo = require('./memo');
 var ItemSchema = new Schema({
 	item_no : Number,
 	item_url :String,
-	cate_no : { type : Number, ref : 'Category' },
-	latitude : String,
-	longitude : String,
-	item_location : String,
+	cate_no : { type : Number, default : 0, ref : 'Category' },
+	item_lat : String,
+	item_long : String,
+	item_placeid : String,
 	item_title : String,
-	item_memo : [ Memo ],
-	my_check : { type : Number, default : 0 },
-	your_check : { type : Number, default : 0 },
-	final_status : Boolean,
+	item_memo : String,
+	item_check : { type : Number, default : 0 },
 	item_time : String
 });
 

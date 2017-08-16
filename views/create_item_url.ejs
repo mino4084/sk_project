@@ -1,41 +1,35 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <form action="/create_trip" method="post">
-		<table width="300" border="1">
-			<tr>
-				<th>여행제목</th>
-				<td><input type="text" name="title"></td>
-			</tr>
-			<tr>
-				<th>출발일자</th>
-				<td><input type="text" name="start"></td>
-			</tr>
-			<tr>
-				<th>도착일자</th>
-				<td><input type="text" name="end"></td>
-			</tr>
-			<tr>
-				<th>사용자</th>
-				<td><input type="text" name="id"></td>
-			</tr>
-			<tr>
-				<th>해시태그</th>
-				<td><input type="text" name="tag"></td>
-			</tr>
-			<tr>
-				<td colspan="2">
-					<input type="submit" value="생성">
-					<input type="reset" value="취소">
-				</td>
-			</tr>
-
-		</table>
-    </form>
-  </body>
+<head>
+	<title><%=title%></title>
+</head>
+<body>
+<h1><%=title%></h1>
+<form action="/create_item_url" method="post">
+	<table width="400" border="1">
+		<tr>
+			<th>trip_no</th>
+			<td><input type="text" name="trip_no"></td>
+		</tr>
+		<tr>
+			<th>schedule_date</th>
+			<td><input type="text" name="schedule_date"></td>
+		</tr>
+		<tr>
+			<th>item_url</th>
+			<td><input type="text" name="item_url"></td>
+		</tr>
+		<tr>
+			<th>cate_no</th>
+			<td><input type="text" name="cate_no"></td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<input type="submit" value="완료">
+				<input type="reset" value="취소">
+			</td>
+		</tr>
+	</table>
+</form>
+</body>
 </html>

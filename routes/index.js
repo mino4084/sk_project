@@ -623,30 +623,20 @@ router.get('/create_item_url', function(req, res, next){
 	res.render('create_item_url', {title : "create_item_url"});
 });
 
-const day1 = moment('2017-08-14');
-const day2 = moment('2017-08-17');
-
-router.post('/create_trip', function(req, res, next){
+router.post('/create_item_url', function(req, res, next){
 	console.log('req body =', req.body);
 	var id = req.session.user_id;
 	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
-	var trip_title = req.body.trip_title;
-	var start_date = req.body.start_date;
-	var end_date = req.body.end_date;
-	var user_id = id;
-	var partner_id = req.body.partner_id;
-	var hashtag = req.body.hashtag;
+	var trip_no = req.body.trip_no;
+	var schedule_date = req.body.schedule_date;
+	var item_url = req.body.item_url;
+
 	var code = 1;
 	var message = "OK";
 	var result = {};
 
 	var data = {
-		trip_title : trip_title,
-		start_date : start_date,
-		end_date : end_date,
-		user_id : user_id,
-		partner_id : partner_id,
-		hashtag : hashtag
+		item_url : item_url
 	};
 
 	var check = {
@@ -655,20 +645,27 @@ router.post('/create_trip', function(req, res, next){
 		result : result
 	};
 
-	var trip = new TripModel(data);
-	trip.save(function(err, doc){
-		if(err){
-			check.code = 0;
-			check.message = err;
-			return next(err);
-		}
-		check.result = doc;
+	TripModel.findOne({trip_no : trip_no}, function(err, doc){
+		if(err) return console.log('err =', err);
+
 		console.log('doc =', doc);
+		if(doc){
+			check.result = doc;
+		}
+		else{
+			check.code = 0;
+			check.message = '로그인 실패';
+		}
 		res.json(check);
 	});
+
+	ScheduleModel.findByIdAndUpdate({schedule_date : schedule_date}, {$push : {"schedule_list" : data}},
+		{safe : true, upsert : true, new : true}, function(err, doc){
+		if(err) return next(err);
+		console.log('schedule_list update doc =', doc);
+
+	});
 });
-
-
 // 후보지 URL 단순 생성
 
 module.exports = router;
