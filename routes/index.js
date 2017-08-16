@@ -382,9 +382,9 @@ router.post('/create_trip', function(req, res, next){
 	for (var i = 0; i < Things.length; i++) {
 
 	}
-	var scheduleDate = {
+	/*var scheduleDate = {
 		schedule_date :
-	};
+	};*/
 	var schedule = new ScheduleModel();
 });
 // 여행 생성
