@@ -595,8 +595,8 @@ router.post('/list_item', function(req, res, next){
 	console.log('req body =', req.body);
 	var id = req.session.user_id;
 	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
-	var trip_no = req.session.trip_no;
-	var schedule_date = req.session.schedule_date;
+	var trip_no = req.body.trip_no;
+	var schedule_date = req.body.schedule_date;
 	var code = 1;
 	var message = "OK";
 	var result = {};
