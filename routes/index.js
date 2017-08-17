@@ -838,13 +838,21 @@ router.post('/map_item', function(req, res, next){
 	//trip을 포함해서 item까지 다나온다.
 	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
 		if(err) return next(err);
-		console.log('list doc =', doc);
+		// console.log('list doc =', doc);
 		check.result = doc;
+
 		for(var i = 0; i < doc.trip_list.length; i++) {
+			var arr = [];
 			// console.log('trip_list['+i+'] =', doc.trip_list[i]);
-			if(doc.trip_list[i].schedule_date == schedule_date && doc.trip_list[i].schedule_list[i].item_placeid == null) {
-				console.log('trip_list['+ i +'] =', doc.trip_list[i]);
+			if(doc.trip_list[i].schedule_date == schedule_date) {
+				// console.log('trip_list['+ i +'] =', doc.trip_list[i]);
 				check.result = doc.trip_list[i];
+				arr = doc.trip_list[i];
+				for (var j = 0; j < arr.schedule_list[j].length; j++) {
+					if(arr.schedule_list[j].item_placeid == null){
+						console.log('arr.schedule_list[' + j + '] =', arr.schedule_list[j]);
+					}
+				}
 			};
 		};// for
 		res.json(check);  //json으로 하면 모바일이 된다.
