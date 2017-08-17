@@ -959,16 +959,17 @@ router.post('/update_item', function(req, res, next){
 			};// for
 			for(var i = 0; i < doc.trip_list.length; i++) {
 				if(doc.trip_list[i].schedule_date == update_schedule_date) {
-					doc.trip_list[i].schedule_list.push(arr);
+					// doc.trip_list[i].schedule_list.push(arr);
+					console.log('doc.trip_list[i].schedule_list =', doc.trip_list[i].schedule_list);
 				};
 			};// for
-			for(var i = 0; i < doc.trip_list.length; i++) {
+			/*for(var i = 0; i < doc.trip_list.length; i++) {
 				if(doc.trip_list[i].schedule_date == update_schedule_date) {
 					for (var j = 0; j < doc.trip_list[i].schedule_list.length; j++) {
 						console.log('doc.trip_list[i].schedule_list[j] =', doc.trip_list[i].schedule_list[j]);
 					}
 				};
-			};// for
+			};// for*/
 			//console.log('arr = ', arr);
 			check.result = arr;
 			arr[0].cate_no = cate_no;
