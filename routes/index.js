@@ -933,6 +933,7 @@ router.post('/update_item', function(req, res, next){
 		//console.log('_id =', _id);
 	}
 	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
+		var index = 0;
 		if(err){
 			check.code = 0;
 			check.message = err;
@@ -943,11 +944,10 @@ router.post('/update_item', function(req, res, next){
 			if(doc.trip_list[i].schedule_date == schedule_date) {
 				for (var j = 0; j < doc.trip_list[i].schedule_list.length; j++) {
 					if(doc.trip_list[i].schedule_list[j]._id == _id){
-						return j;
+						index = j;
 						// console.log('doc.trip_list[i].schedule_list[j] =', doc.trip_list[i].schedule_list[j]);
 						// check.result = doc.trip_list[i].schedule_list[j];
 					}
-					var index = j;
 					console.log('index =', index);
 				}
 			};
