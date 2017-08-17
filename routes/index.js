@@ -892,7 +892,8 @@ router.post('/update_item', function(req, res, next){
 	console.log('req body =', req.body);
 	var id = req.session.user_id;
 	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
-
+	var _id =  req.body._id;
+	//5995003689e021714ada80a9
 	var trip_no = req.body.trip_no;
 	var schedule_date = req.body.schedule_date;
 	var cate_no = req.body.cate_no;
@@ -925,11 +926,13 @@ router.post('/update_item', function(req, res, next){
 		message : message,
 		result : result
 	};
+
 	if(schedule_date !== update_schedule_date){
 		console.log('schedule_date = ', schedule_date);
 		console.log('update_schedule_date = ', update_schedule_date);
+		console.log('_id =', _id);
 	}
-	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
+	/*TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
 		if(err){
 			check.code = 0;
 			check.message = err;
@@ -942,7 +945,7 @@ router.post('/update_item', function(req, res, next){
 				}
 			};
 		};
-	});
+	});*/
 	res.json(check);
 	/*TripModel.updateOne({trip_no : trip_no}, {$set : {trip_title : trip_title, start_date : start_date, end_date : end_date, hashtag : hashtag}}, function(err, doc){
 			if(err) {
