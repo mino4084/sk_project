@@ -896,6 +896,7 @@ router.post('/update_item', function(req, res, next){
 	//5995003689e021714ada80a9
 	var trip_no = req.body.trip_no;
 	var schedule_date = req.body.schedule_date;
+
 	var cate_no = req.body.cate_no;
 	var item_lat = req.body.item_lat;
 	var item_long = req.body.item_long;
@@ -918,7 +919,6 @@ router.post('/update_item', function(req, res, next){
 	};
 	var update_date = {
 		schedule_date : update_schedule_date
-
 	};
 
 	var check = {
@@ -930,7 +930,7 @@ router.post('/update_item', function(req, res, next){
 	if(schedule_date !== update_schedule_date){
 		TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
 			var index = 0;
-			var arr = null;
+			var arr = {};
 			if(err){
 				check.code = 0;
 				check.message = err;
@@ -962,9 +962,13 @@ router.post('/update_item', function(req, res, next){
 				};
 			};// for
 			console.log('arr = ', arr);
-			console.log('item_memo =', arr.item_memo);
-
-
+			check.result = arr;
+			arr[0].cate_no = cate_no;
+			arr[0].item_lat = item_lat;
+			arr[0].item_long = item_long;
+			arr[0].item_placeid = item_placeid;
+			arr[0].item_title = item_title;
+			arr[0].item_memo = item_memo;
 
 			res.json(check);
 		});
