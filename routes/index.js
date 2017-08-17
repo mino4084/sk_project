@@ -904,6 +904,7 @@ router.post('/update_item', function(req, res, next){
 	var item_placeid = req.body.item_placeid;
 	var item_title = req.body.item_title;
 	var item_memo = req.body.item_memo;
+	var item_check = req.body.item_check;
 	var update_schedule_date = req.body.update_schedule_date;
 
 	var code = 1;
@@ -948,6 +949,7 @@ router.post('/update_item', function(req, res, next){
 					arr[0].item_placeid = item_placeid;
 					arr[0].item_title = item_title;
 					arr[0].item_memo = item_memo;
+					arr[0].item_check = item_check;
 					doc.trip_list[i].schedule_list.push(arr[0]);
 					check.result = doc.trip_list[i].schedule_list;
 				};
@@ -976,6 +978,7 @@ router.post('/update_item', function(req, res, next){
 							doc.trip_list[i].schedule_list[j].item_placeid = item_placeid;
 							doc.trip_list[i].schedule_list[j].item_title = item_title;
 							doc.trip_list[i].schedule_list[j].item_memo = item_memo;
+							doc.trip_list[i].schedule_list[j].item_check = item_check;
 							console.log('doc.trip_list[i].schedule_list =', doc.trip_list[i].schedule_list);
 							check.result = doc.trip_list[i].schedule_list;
 						}
