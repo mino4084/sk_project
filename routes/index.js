@@ -1045,10 +1045,10 @@ router.post('/delete_item', function(req, res, next){
 				check.result = doc.trip_list[i].schedule_list;
 			};
 		};// for
-		doc.save(function(err, result){
+		/*doc.save(function(err, result){
 			if(err) console.log('err=', err);
 			res.json(check);
-		});
+		});*/
 	});
 });
 // 후보지 삭제
