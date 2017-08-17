@@ -846,11 +846,12 @@ router.post('/map_item', function(req, res, next){
 			// console.log('trip_list['+i+'] =', doc.trip_list[i]);
 			if(doc.trip_list[i].schedule_date == schedule_date) {
 				// console.log('trip_list['+ i +'] =', doc.trip_list[i]);
-				check.result = doc.trip_list[i];
+				// check.result = doc.trip_list[i];
 				arr = doc.trip_list[i];
 				for (var j = 0; j < arr.schedule_list[j].length; j++) {
 					if(arr.schedule_list[j].item_placeid == null){
 						console.log('arr.schedule_list[' + j + '] =', arr.schedule_list[j]);
+						check.result = arr.schedule_list[j];
 					}
 				}
 			};
