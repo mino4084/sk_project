@@ -849,7 +849,7 @@ router.post('/map_item', function(req, res, next){
 				// check.result = doc.trip_list[i];
 				arr = doc.trip_list[i];
 				for (var j = 0; j < arr.schedule_list[j].length; j++) {
-					console.log(arr.schedule_list[j].item_placeid);
+					console.log(arr.schedule_list[j]);
 					check.result = 2;
 					/*if(arr.schedule_list[j].item_placeid == null){
 						console.log('arr.schedule_list[' + j + '] =', arr.schedule_list[j]);
