@@ -952,6 +952,7 @@ router.post('/update_item', function(req, res, next){
 
 			for(var i = 0; i < doc.trip_list.length; i++) {
 				if(doc.trip_list[i].schedule_date == schedule_date) {
+					var arr = doc.trip_list[i].schedule_list.slice(index,1);
 					console.log('doc.trip_list[i].schedule_list = ', doc.trip_list[i].schedule_list);
 					/*for (var j = 0; j < doc.trip_list[i].schedule_list.length; j++) {
 						console.log('doc.trip_list[i].schedule_list[j].length = ', doc.trip_list[i].schedule_list[j].length);
