@@ -1089,7 +1089,12 @@ router.post('/check_item', function(req, res, next){
 			if(doc.trip_list[i].schedule_date == schedule_date) {
 				for (var j = 0; j < doc.trip_list[i].schedule_list.length; j++) {
 					if(doc.trip_list[i].schedule_list[j]._id == _id){
-						doc.trip_list[i].schedule_list[j].item_check = 1;
+						if(doc.trip_list[i].schedule_list[j].item_check == 1){
+							doc.trip_list[i].schedule_list[j].item_check = 0;
+						}
+						else{
+							doc.trip_list[i].schedule_list[j].item_check = 1;
+						}
 						console.log('doc.trip_list[i].schedule_list[j].item_check =', doc.trip_list[i].schedule_list[j].item_check);
 					}
 				}
