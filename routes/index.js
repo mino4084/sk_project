@@ -949,6 +949,15 @@ router.post('/update_item', function(req, res, next){
 				};
 			};// for
 			console.log('index = ', index);
+
+			for(var i = 0; i < doc.trip_list.length; i++) {
+				if(doc.trip_list[i].schedule_date == schedule_date) {
+					for (var j = 0; j < doc.trip_list[i].schedule_list.length; j++) {
+						console.log('doc.trip_list[i].schedule_list[j].length = ', doc.trip_list[i].schedule_list[j].length);
+					}
+				};
+			};// for
+
 			res.json(check);
 		});
 	}
