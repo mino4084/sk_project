@@ -837,7 +837,11 @@ router.post('/map_item', function(req, res, next){
 
 	//trip을 포함해서 item까지 다나온다.
 	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
-		if(err) return next(err);
+		if(err){
+			check.code = 0;
+			check.message = err;
+			return next(err);
+		};
 		// console.log('list doc =', doc);
 		for(var i = 0; i < doc.trip_list.length; i++) {
 			if(doc.trip_list[i].schedule_date == schedule_date) {
@@ -891,20 +895,19 @@ router.post('/update_item', function(req, res, next){
 
 	var trip_no = req.body.trip_no;
 	var schedule_date = req.body.schedule_date;
-	var item_url = req.body.item_url;
 	var cate_no = req.body.cate_no;
 	var item_lat = req.body.item_lat;
 	var item_long = req.body.item_long;
 	var item_placeid = req.body.item_placeid;
 	var item_title = req.body.item_title;
 	var item_memo = req.body.item_memo;
+	var update_schedule_date = req.body.update_schedule_date;
 
 	var code = 1;
 	var message = "OK";
 	var result = {};
 
 	var data = {
-		item_url : item_url,
 		cate_no : cate_no,
 		item_lat : item_lat,
 		item_long : item_long,
@@ -912,27 +915,37 @@ router.post('/update_item', function(req, res, next){
 		item_title : item_title,
 		item_memo : item_memo
 	};
+	var update_date = {
+		schedule_date : update_schedule_date;
+	};
 
 	var check = {
 		code : code,
 		message : message,
 		result : result
 	};
+	if(schedule_date !== update_schedule_date){
+		console.log('schedule_date = ', schedule_date);
+		console.log('update_schedule_date = ', update_schedule_date);
+	}
+	res.json(check);
+	/*TripModel.updateOne({trip_no : trip_no}, {$set : {trip_title : trip_title, start_date : start_date, end_date : end_date, hashtag : hashtag}}, function(err, doc){
+			if(err) {
+				console.log('err =', err);
+				check.code = 0;
+				check.message = err;
+			}
+			if(doc){
+				check.result = "수정 성공";
 
-	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
-		if(err) return next(err);
-		for(var i = 0; i < doc.trip_list.length; i++) {
-			if(doc.trip_list[i].schedule_date == schedule_date) {
-				console.log('trip_list[' + i + '] =', doc.trip_list[i]);
-				check.result = doc.trip_list[i];
-				doc.trip_list[i].schedule_list.push(data);
-			};
-		};// for
-		doc.save(function(err, result){
-			if(err) console.log('err=', err);
+			}
+			else{
+				check.code = 0;
+				check.message = '여행 수정 실패';
+			}
+			console.log('doc =', doc);
 			res.json(check);
-		})
-	});
+	});*/
 });
 //후보지 수정
 
