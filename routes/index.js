@@ -846,7 +846,9 @@ router.post('/map_item', function(req, res, next){
 			if(doc.trip_list[i].schedule_date == schedule_date) {
 				// console.log('trip_list['+ i +'] =', doc.trip_list[i]);
 				// check.result = doc.trip_list[i];
+				console.log('doc.trip_list[i].schedule_list[0] = ', doc.trip_list[i].schedule_list[0]);
 				console.log('doc.trip_list[i].schedule_list[1] = ', doc.trip_list[i].schedule_list[1]);
+				console.log('doc.trip_list[i].schedule_list[2] = ', doc.trip_list[i].schedule_list[2]);
 				/*for (var j = 0; j < doc.trip_list[i].schedule_list[j].length; j++) {
 					console.log('doc.trip_list[i].schedule_list[j] = ', doc.trip_list[i].schedule_list[j]);
 					if(arr.schedule_list[j].item_placeid == null){
