@@ -962,6 +962,8 @@ router.post('/update_item', function(req, res, next){
 				};
 			};// for
 			console.log('arr = ', arr);
+			console.log('item_memo =', item_memo);
+
 
 
 			res.json(check);
