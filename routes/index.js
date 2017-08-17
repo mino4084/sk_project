@@ -916,7 +916,7 @@ router.post('/update_item', function(req, res, next){
 		item_memo : item_memo
 	};
 	var update_date = {
-		schedule_date : update_schedule_date;
+		schedule_date : update_schedule_date
 	};
 
 	var check = {
