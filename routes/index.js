@@ -892,6 +892,7 @@ router.post('/update_item', function(req, res, next){
 	console.log('req body =', req.body);
 	var id = req.session.user_id;
 	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
+
 	var _id =  req.body._id;
 	//5995003689e021714ada80a9
 	var trip_no = req.body.trip_no;
@@ -909,18 +910,6 @@ router.post('/update_item', function(req, res, next){
 	var message = "OK";
 	var result = {};
 
-	var data = {
-		cate_no : cate_no,
-		item_lat : item_lat,
-		item_long : item_long,
-		item_placeid : item_placeid,
-		item_title : item_title,
-		item_memo : item_memo
-	};
-	var update_date = {
-		schedule_date : update_schedule_date
-	};
-
 	var check = {
 		code : code,
 		message : message,
@@ -936,7 +925,6 @@ router.post('/update_item', function(req, res, next){
 				check.message = err;
 				return next(err);
 			};
-			// console.log('doc =', doc);
 			for(var i = 0; i < doc.trip_list.length; i++) {
 				if(doc.trip_list[i].schedule_date == schedule_date) {
 					for (var j = 0; j < doc.trip_list[i].schedule_list.length; j++) {
@@ -953,21 +941,21 @@ router.post('/update_item', function(req, res, next){
 			};// for
 			for(var i = 0; i < doc.trip_list.length; i++) {
 				if(doc.trip_list[i].schedule_date == update_schedule_date) {
-					doc.trip_list[i].schedule_list.push(arr[0]);
 					console.log('doc.trip_list[i].schedule_list =', doc.trip_list[i].schedule_list);
-					check.result = doc.trip_list[i].schedule_list;
 					arr[0].cate_no = cate_no;
 					arr[0].item_lat = item_lat;
 					arr[0].item_long = item_long;
 					arr[0].item_placeid = item_placeid;
 					arr[0].item_title = item_title;
 					arr[0].item_memo = item_memo;
+					doc.trip_list[i].schedule_list.push(arr[0]);
+					check.result = doc.trip_list[i].schedule_list;
 				};
 			};// for
 			doc.save(function(err, result){
 				if(err) console.log('err=', err);
 				res.json(check);
-			})
+			});
 		});
 	}
 	else{
@@ -997,30 +985,9 @@ router.post('/update_item', function(req, res, next){
 			doc.save(function(err, result){
 				if(err) console.log('err=', err);
 				res.json(check);
-			})
+			});
 		});
 	}
-
-
-
-
-	/*TripModel.updateOne({trip_no : trip_no}, {$set : {trip_title : trip_title, start_date : start_date, end_date : end_date, hashtag : hashtag}}, function(err, doc){
-			if(err) {
-				console.log('err =', err);
-				check.code = 0;
-				check.message = err;
-			}
-			if(doc){
-				check.result = "수정 성공";
-
-			}
-			else{
-				check.code = 0;
-				check.message = '여행 수정 실패';
-			}
-			console.log('doc =', doc);
-			res.json(check);
-	});*/
 });
 //후보지 수정
 
@@ -1029,6 +996,61 @@ router.get('/update_item', function(req, res, next){
 	res.render('update_item', {title : "update_item"});
 });
 
+router.post('/update_item', function(req, res, next){
+	console.log('req body =', req.body);
+	var id = req.session.user_id;
+	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
+
+	var _id =  req.body._id;
+	//5995003689e021714ada80a9
+	var trip_no = req.body.trip_no;
+	var schedule_date = req.body.schedule_date;
+
+	var code = 1;
+	var message = "OK";
+	var result = {};
+
+	var check = {
+		code : code,
+		message : message,
+		result : result
+	};
+
+	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
+		var index = 0;
+		if(err){
+			check.code = 0;
+			check.message = err;
+			return next(err);
+		};
+
+		for(var i = 0; i < doc.trip_list.length; i++) {
+			if(doc.trip_list[i].schedule_date == schedule_date) {
+				for (var j = 0; j < doc.trip_list[i].schedule_list.length; j++) {
+					if(doc.trip_list[i].schedule_list[j]._id == _id){
+						index = j;
+					}
+				}
+			};
+		};// for
+
+		for(var i = 0; i < doc.trip_list.length; i++) {
+			if(doc.trip_list[i].schedule_date == schedule_date) {
+				doc.trip_list[i].schedule_list.splice(index, 1);
+			};
+		};// for
+		for(var i = 0; i < doc.trip_list.length; i++) {
+			if(doc.trip_list[i].schedule_date == update_schedule_date) {
+				console.log('doc.trip_list[i].schedule_list =', doc.trip_list[i].schedule_list);
+				check.result = doc.trip_list[i].schedule_list;
+			};
+		};// for
+		doc.save(function(err, result){
+			if(err) console.log('err=', err);
+			res.json(check);
+		});
+	});
+});
 // 후보지 삭제
 
 module.exports = router;
