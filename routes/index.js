@@ -932,13 +932,14 @@ router.post('/update_item', function(req, res, next){
 		console.log('update_schedule_date = ', update_schedule_date);
 		console.log('_id =', _id);
 	}
-	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
+	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date, "trip_list.schedule_list._id" : _id}, function(err, doc){
 		if(err){
 			check.code = 0;
 			check.message = err;
 			return next(err);
 		};
-		for(var i = 0; i < doc.trip_list.length; i++) {
+		console.log('doc =', doc);
+		/*for(var i = 0; i < doc.trip_list.length; i++) {
 			if(doc.trip_list[i].schedule_date == schedule_date) {
 				for (var j = 0; j < doc.trip_list[i].schedule_list.length; j++) {
 
@@ -950,7 +951,7 @@ router.post('/update_item', function(req, res, next){
 					};
 				}
 			};
-		};
+		};*/
 	});
 	res.json(check);
 	/*TripModel.updateOne({trip_no : trip_no}, {$set : {trip_title : trip_title, start_date : start_date, end_date : end_date, hashtag : hashtag}}, function(err, doc){
