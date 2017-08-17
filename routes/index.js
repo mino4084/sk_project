@@ -955,13 +955,21 @@ router.post('/update_item', function(req, res, next){
 				if(doc.trip_list[i].schedule_date == schedule_date) {
 					console.log('index = ', index);
 					arr = doc.trip_list[i].schedule_list.splice(index, 1);
-
-					/*for (var j = 0; j < doc.trip_list[i].schedule_list.length; j++) {
-						console.log('doc.trip_list[i].schedule_list[j].length = ', doc.trip_list[i].schedule_list[j].length);
-					}*/
 				};
 			};// for
-			console.log('arr = ', arr);
+			for(var i = 0; i < doc.trip_list.length; i++) {
+				if(doc.trip_list[i].schedule_date == update_schedule_date) {
+					doc.trip_list[i].schedule_list.push(arr);
+				};
+			};// for
+			for(var i = 0; i < doc.trip_list.length; i++) {
+				if(doc.trip_list[i].schedule_date == update_schedule_date) {
+					for (var j = 0; j < doc.trip_list[i].schedule_list.length; j++) {
+						console.log('doc.trip_list[i].schedule_list[j] =', doc.trip_list[i].schedule_list[j]);
+					}
+				};
+			};// for
+			//console.log('arr = ', arr);
 			check.result = arr;
 			arr[0].cate_no = cate_no;
 			arr[0].item_lat = item_lat;
