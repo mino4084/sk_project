@@ -1049,6 +1049,7 @@ router.post('/delete_item', function(req, res, next){
 			if(err) console.log('err=', err);
 			res.json(check);
 		});*/
+		res.json(check);
 	});
 });
 // 후보지 삭제
