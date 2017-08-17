@@ -801,7 +801,7 @@ router.post('/list_item', function(req, res, next){
 	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
 		if(err) return next(err);
 		console.log('list doc =', doc);
-		check.result = doc;
+		//check.result = doc;
 		for(var i = 0; i < doc.trip_list.length; i++) {
 			// console.log('trip_list['+i+'] =', doc.trip_list[i]);
 			if(doc.trip_list[i].schedule_date == schedule_date) {
@@ -906,7 +906,7 @@ router.post('/update_item', function(req, res, next){
 
 	var code = 1;
 	var message = "OK";
-	var result = new Array();
+	var result = {};
 
 	var data = {
 		cate_no : cate_no,
