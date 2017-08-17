@@ -943,7 +943,7 @@ router.post('/update_item', function(req, res, next){
 				for (var j = 0; j < doc.trip_list[i].schedule_list.length; j++) {
 					console.log('doc.trip_list[i].schedule_list[j]._id = ', doc.trip_list[i].schedule_list[j]._id);
 					if(doc.trip_list[i].schedule_list[j]._id == _id){
-						check.result.push(doc.trip_list[i].schedule_list[j]._id);
+						check.result.push(doc.trip_list[i].schedule_list[j]);
 					};
 				}
 			};
