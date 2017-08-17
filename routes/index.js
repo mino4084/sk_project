@@ -839,22 +839,16 @@ router.post('/map_item', function(req, res, next){
 	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
 		if(err) return next(err);
 		// console.log('list doc =', doc);
-		// check.result = doc;
-
 		for(var i = 0; i < doc.trip_list.length; i++) {
-			// console.log('trip_list['+i+'] =', doc.trip_list[i]);
 			if(doc.trip_list[i].schedule_date == schedule_date) {
 				// console.log('trip_list['+ i +'] =', doc.trip_list[i]);
 				// check.result = doc.trip_list[i];
-				console.log('doc.trip_list[i].schedule_list.length = ', doc.trip_list[i].schedule_list.length);
-
-				/*for (var j = 0; j < doc.trip_list[i].schedule_list[j].length; j++) {
-					console.log('doc.trip_list[i].schedule_list[j] = ', doc.trip_list[i].schedule_list[j]);
-					if(arr.schedule_list[j].item_placeid == null){
-						console.log('arr.schedule_list[' + j + '] =', arr.schedule_list[j]);
-						check.result = arr.schedule_list[j];
+				for (var j = 0; j < doc.trip_list[i].schedule_list.length; j++) {
+					if(doc.trip_list[i].schedule_list[j].item_placeid == null){
+						console.log('doc.trip_list[i].schedule_list[j] =', doc.trip_list[i].schedule_list[j]);
+						// check.result = arr.schedule_list[j];
 					}
-				}*/
+				}
 			};
 		};// for
 		res.json(check);  //json으로 하면 모바일이 된다.
