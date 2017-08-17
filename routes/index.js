@@ -988,29 +988,12 @@ router.post('/update_item', function(req, res, next){
 							doc.trip_list[i].schedule_list[j].item_placeid = item_placeid;
 							doc.trip_list[i].schedule_list[j].item_title = item_title;
 							doc.trip_list[i].schedule_list[j].item_memo = item_memo;
+							console.log('doc.trip_list[i].schedule_list =', doc.trip_list[i].schedule_list);
 							check.result = doc.trip_list[i].schedule_list[j];
 						}
 					}
 				};
 			};// for
-			/*for(var i = 0; i < doc.trip_list.length; i++) {
-				if(doc.trip_list[i].schedule_date == schedule_date) {
-					arr = doc.trip_list[i].schedule_list.splice(index, 1);
-				};
-			};// for
-			for(var i = 0; i < doc.trip_list.length; i++) {
-				if(doc.trip_list[i].schedule_date == update_schedule_date) {
-					doc.trip_list[i].schedule_list.push(arr[0]);
-					console.log('doc.trip_list[i].schedule_list =', doc.trip_list[i].schedule_list);
-					check.result = arr;
-					arr[0].cate_no = cate_no;
-					arr[0].item_lat = item_lat;
-					arr[0].item_long = item_long;
-					arr[0].item_placeid = item_placeid;
-					arr[0].item_title = item_title;
-					arr[0].item_memo = item_memo;
-				};
-			};// for*/
 			doc.save(function(err, result){
 				if(err) console.log('err=', err);
 				res.json(check);
@@ -1040,5 +1023,12 @@ router.post('/update_item', function(req, res, next){
 	});*/
 });
 //후보지 수정
+
+// 후보지 삭제
+router.get('/update_item', function(req, res, next){
+	res.render('update_item', {title : "update_item"});
+});
+
+// 후보지 삭제
 
 module.exports = router;
