@@ -955,7 +955,7 @@ router.post('/update_item', function(req, res, next){
 				if(doc.trip_list[i].schedule_date == update_schedule_date) {
 					doc.trip_list[i].schedule_list.push(arr[0]);
 					console.log('doc.trip_list[i].schedule_list =', doc.trip_list[i].schedule_list);
-					check.result = arr;
+					check.result = doc.trip_list[i].schedule_list;
 					arr[0].cate_no = cate_no;
 					arr[0].item_lat = item_lat;
 					arr[0].item_long = item_long;
@@ -989,7 +989,7 @@ router.post('/update_item', function(req, res, next){
 							doc.trip_list[i].schedule_list[j].item_title = item_title;
 							doc.trip_list[i].schedule_list[j].item_memo = item_memo;
 							console.log('doc.trip_list[i].schedule_list =', doc.trip_list[i].schedule_list);
-							check.result = doc.trip_list[i].schedule_list[j];
+							check.result = doc.trip_list[i].schedule_list;
 						}
 					}
 				};
