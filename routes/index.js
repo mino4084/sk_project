@@ -930,7 +930,7 @@ router.post('/update_item', function(req, res, next){
 	if(schedule_date !== update_schedule_date){
 		TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
 			var index = 0;
-			var arr = [];
+			var arr = null;
 			if(err){
 				check.code = 0;
 				check.message = err;
@@ -962,7 +962,7 @@ router.post('/update_item', function(req, res, next){
 				};
 			};// for
 			console.log('arr = ', arr);
-			console.log('item_memo =', arr[0].item_memo);
+			console.log('item_memo =', arr.item_memo);
 
 
 
