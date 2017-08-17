@@ -846,13 +846,14 @@ router.post('/map_item', function(req, res, next){
 			if(doc.trip_list[i].schedule_date == schedule_date) {
 				// console.log('trip_list['+ i +'] =', doc.trip_list[i]);
 				// check.result = doc.trip_list[i];
-				for (var j = 0; j < doc.trip_list[i].schedule_list[j].length; j++) {
+				console.log('doc.trip_list[i].schedule_list = ', doc.trip_list[i].schedule_list);
+				/*for (var j = 0; j < doc.trip_list[i].schedule_list[j].length; j++) {
 					console.log('doc.trip_list[i].schedule_list[j] = ', doc.trip_list[i].schedule_list[j]);
-					/*if(arr.schedule_list[j].item_placeid == null){
+					if(arr.schedule_list[j].item_placeid == null){
 						console.log('arr.schedule_list[' + j + '] =', arr.schedule_list[j]);
 						check.result = arr.schedule_list[j];
-					}*/
-				}
+					}
+				}*/
 			};
 		};// for
 		res.json(check);  //json으로 하면 모바일이 된다.
