@@ -1053,4 +1053,63 @@ router.post('/delete_item', function(req, res, next){
 });
 // 후보지 삭제
 
+// 후보지 체크
+router.get('/check_item', function(req, res, next){
+	res.render('check_item', {title : "check_item"});
+});
+
+router.post('/check_item', function(req, res, next){
+	console.log('req body =', req.body);
+	var id = req.session.user_id;
+	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
+
+	var _id =  req.body._id;
+	//5995003689e021714ada80a9
+	var trip_no = req.body.trip_no;
+	var schedule_date = req.body.schedule_date;
+
+	var code = 1;
+	var message = "OK";
+	var result = {};
+
+	var check = {
+		code : code,
+		message : message,
+		result : result
+	};
+
+	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
+		if(err){
+			check.code = 0;
+			check.message = err;
+			return next(err);
+		};
+
+		for(var i = 0; i < doc.trip_list.length; i++) {
+			if(doc.trip_list[i].schedule_date == schedule_date) {
+				for (var j = 0; j < doc.trip_list[i].schedule_list.length; j++) {
+					if(doc.trip_list[i].schedule_list[j]._id == _id){
+						console.log('doc.trip_list[i].schedule_list[j].item_check =', doc.trip_list[i].schedule_list[j].item_check);
+					}
+				}
+			};
+		};// for
+
+		for(var i = 0; i < doc.trip_list.length; i++) {
+			if(doc.trip_list[i].schedule_date == schedule_date) {
+				console.log('doc.trip_list[i].schedule_list =', doc.trip_list[i].schedule_list);
+				check.result = doc.trip_list[i].schedule_list;
+			};
+		};// for
+		doc.save(function(err, result){
+			if(err) console.log('err=', err);
+			res.json(check);
+		});
+	});
+});
+
+
+// 후보지 체크
+
+
 module.exports = router;
