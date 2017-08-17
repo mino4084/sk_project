@@ -957,10 +957,9 @@ router.post('/update_item', function(req, res, next){
 					arr = doc.trip_list[i].schedule_list.splice(index, 1);
 				};
 			};// for
-			console.log('arr = ', arr);
 			for(var i = 0; i < doc.trip_list.length; i++) {
 				if(doc.trip_list[i].schedule_date == update_schedule_date) {
-					// doc.trip_list[i].schedule_list.push(arr);
+					doc.trip_list[i].schedule_list.push(arr[0]);
 					console.log('doc.trip_list[i].schedule_list =', doc.trip_list[i].schedule_list);
 				};
 			};// for
