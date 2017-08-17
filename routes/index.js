@@ -945,12 +945,13 @@ router.post('/update_item', function(req, res, next){
 					if(doc.trip_list[i].schedule_list[j]._id == _id){
 							console.log('doc.trip_list[i].schedule_list[j] =', doc.trip_list[i].schedule_list[j]);
 							check.result = doc.trip_list[i].schedule_list[j];
+							res.json(check);
 						}
 					}
 				};
 		};// for
 	});
-	res.json(check);
+
 	/*TripModel.updateOne({trip_no : trip_no}, {$set : {trip_title : trip_title, start_date : start_date, end_date : end_date, hashtag : hashtag}}, function(err, doc){
 			if(err) {
 				console.log('err =', err);
