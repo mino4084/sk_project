@@ -928,9 +928,9 @@ router.post('/update_item', function(req, res, next){
 	};
 
 	if(schedule_date !== update_schedule_date){
-		console.log('schedule_date = ', schedule_date);
-		console.log('update_schedule_date = ', update_schedule_date);
-		console.log('_id =', _id);
+		// console.log('schedule_date = ', schedule_date);
+		// console.log('update_schedule_date = ', update_schedule_date);
+		//console.log('_id =', _id);
 	}
 	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
 		if(err){
@@ -938,18 +938,21 @@ router.post('/update_item', function(req, res, next){
 			check.message = err;
 			return next(err);
 		};
-		console.log('doc =', doc);
+		// console.log('doc =', doc);
 		for(var i = 0; i < doc.trip_list.length; i++) {
 			if(doc.trip_list[i].schedule_date == schedule_date) {
 				for (var j = 0; j < doc.trip_list[i].schedule_list.length; j++) {
 					if(doc.trip_list[i].schedule_list[j]._id == _id){
-							console.log('doc.trip_list[i].schedule_list[j] =', doc.trip_list[i].schedule_list[j]);
-							check.result = doc.trip_list[i].schedule_list[j];
-							res.json(check);
-						}
+						return j;
+						// console.log('doc.trip_list[i].schedule_list[j] =', doc.trip_list[i].schedule_list[j]);
+						// check.result = doc.trip_list[i].schedule_list[j];
 					}
-				};
+					var index = j;
+					console.log('index =', index);
+				}
+			};
 		};// for
+		res.json(check);
 	});
 
 	/*TripModel.updateOne({trip_no : trip_no}, {$set : {trip_title : trip_title, start_date : start_date, end_date : end_date, hashtag : hashtag}}, function(err, doc){
