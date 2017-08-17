@@ -964,7 +964,10 @@ router.post('/update_item', function(req, res, next){
 					arr[0].item_memo = item_memo;
 				};
 			};// for
-			res.json(check);
+			doc.save(function(err, result){
+				if(err) console.log('err=', err);
+				res.json(check);
+			})
 		});
 	}
 	else{
@@ -1008,7 +1011,10 @@ router.post('/update_item', function(req, res, next){
 					arr[0].item_memo = item_memo;
 				};
 			};// for*/
-			res.json(check);
+			doc.save(function(err, result){
+				if(err) console.log('err=', err);
+				res.json(check);
+			})
 		});
 	}
 
