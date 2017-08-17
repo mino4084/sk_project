@@ -906,7 +906,7 @@ router.post('/update_item', function(req, res, next){
 
 	var code = 1;
 	var message = "OK";
-	var result = {};
+	var result = new Array();
 
 	var data = {
 		cate_no : cate_no,
