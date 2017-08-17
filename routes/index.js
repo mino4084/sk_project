@@ -992,11 +992,11 @@ router.post('/update_item', function(req, res, next){
 //후보지 수정
 
 // 후보지 삭제
-router.get('/update_item', function(req, res, next){
-	res.render('update_item', {title : "update_item"});
+router.get('/delete_item', function(req, res, next){
+	res.render('delete_item', {title : "delete_item"});
 });
 
-router.post('/update_item', function(req, res, next){
+router.post('/delete_item', function(req, res, next){
 	console.log('req body =', req.body);
 	var id = req.session.user_id;
 	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
