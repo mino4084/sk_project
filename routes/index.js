@@ -160,6 +160,10 @@ router.post('/join', function(req, res, next){
 			check.message = err;
 		}
 		if(doc){
+			check.code = 0;
+			check.message = '동일 이메일 아이디가 존재합니다.';
+		}
+		else{
 			var user = new UserModel(data);
 			user.save(function(err, doc){
 				if(err){
@@ -171,10 +175,6 @@ router.post('/join', function(req, res, next){
 				console.log('doc =', doc);
 				res.json(check);
 			});
-		}
-		else{
-			check.code = 0;
-			check.message = '동일 이메일 아이디가 존재합니다.';
 		}
 		res.json(check);
 	});
