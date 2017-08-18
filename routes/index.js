@@ -1152,7 +1152,7 @@ router.post('/list_final', function(req, res, next){
 				check.result = arr;
 			};
 		};*/
-
+		console.log('arr.length =', arr.length);
 		console.log('arr[0] =', arr[0]);
 		res.json(check);
 	});
