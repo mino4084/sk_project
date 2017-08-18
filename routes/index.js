@@ -1184,7 +1184,7 @@ router.post('/list_final', function(req, res, next){
 			//console.log('arr.schedule_list[i] =', arr.schedule_list[i]);
 
 			// console.log('arr.schedule_list[i] =', arr.schedule_list[i]);
-			if(arr.schedule_list[i].item_check == 1){
+			if(arr.schedule_list[i].item_check == 0){
 				console.log('arr.schedule_list[i].item_memo =', arr.schedule_list[i].item_memo);
 				arr.schedule_list.splice(i, 1);
 				// console.log('arr.schedule_list[i] = ', arr.schedule_list[i]);
