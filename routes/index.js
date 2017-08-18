@@ -353,7 +353,7 @@ router.post('/create_trip', function(req, res, next){
 	var trip_title = req.body.trip_title;
 	var start_date = req.body.start_date;
 	var end_date = req.body.end_date;
-	var user_id = id;
+	var user_id = req.body.user_id;
 	var partner_id = req.body.partner_id;
 	var hashtag = req.body.hashtag;
 	var code = 1;
@@ -1181,7 +1181,7 @@ router.post('/list_final', function(req, res, next){
 			// console.log('arr.schedule_list[i] =', arr.schedule_list[i]);
 			if(arr.schedule_list[i].item_check == 1){
 				arr.schedule_list.splice(i, 1);
-				console.log('arr.schedule_list[i] = ', arr.schedule_list[i]);
+				// console.log('arr.schedule_list[i] = ', arr.schedule_list[i]);
 				// arr.schedule_list.splice(i, 1);
 			}
 		};
