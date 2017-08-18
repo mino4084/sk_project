@@ -174,8 +174,9 @@ router.post('/join', function(req, res, next){
 				console.log('doc =', doc);
 			});
 		}
+		res.json(check);
 	});
-	res.json(check);
+
 
 });
 //회원가입
