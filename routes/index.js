@@ -87,7 +87,7 @@ router.post('/login', function(req, res, next){
 		}
 		else{
 			check.code = 0;
-			check.message = '로그인 실패';
+			check.message = '아이디가 존재하지 않거나 비밀번호가 틀렸습니다.';
 		}
 		res.json(check);
 	});
@@ -152,17 +152,34 @@ router.post('/join', function(req, res, next){
 		message : message,
 		result : result
 	};
-	var user = new UserModel(data);
-	user.save(function(err, doc){
-		if(err){
+
+	UserModel.findOne({user_id : user_id}, function(err, doc){
+		if(err) {
+			console.log('err =', err);
 			check.code = 0;
 			check.message = err;
-			return next(err);
 		}
-		check.result = doc;
-		console.log('doc =', doc);
+		if(doc){
+			var user = new UserModel(data);
+			user.save(function(err, doc){
+				if(err){
+					check.code = 0;
+					check.message = err;
+					return next(err);
+				}
+				check.result = doc;
+				console.log('doc =', doc);
+				res.json(check);
+			});
+		}
+		else{
+			check.code = 0;
+			check.message = '동일 이메일 아이디가 존재합니다.';
+		}
 		res.json(check);
 	});
+
+
 });
 //회원가입
 
@@ -1151,7 +1168,7 @@ router.post('/list_final', function(req, res, next){
 		for(var i = 0; i < arr.schedule_list.length; i++) {
 			//console.log('arr.schedule_list[i].item_check =', arr.schedule_list[i].item_check);
 			// console.log('arr.schedule_list[i] =', arr.schedule_list[i]);
-			if(arr.schedule_list[i].item_check == 0){
+			if(arr.schedule_list[i].item_check == 1){
 				arr.schedule_list.splice(i, 1);
 				console.log('arr.schedule_list[i] = ', arr.schedule_list[i]);
 				// arr.schedule_list.splice(i, 1);
