@@ -153,14 +153,27 @@ router.post('/join', function(req, res, next){
 		result : result
 	};
 	var user = new UserModel(data);
-	user.save(function(err, doc){
-		if(err){
+	UserModel.findOne({user_id : user_id}, function(err, doc){
+		if(err) {
+			console.log('err =', err);
 			check.code = 0;
 			check.message = err;
-			return next(err);
 		}
-		check.result = doc;
-		console.log('doc =', doc);
+		if(doc){
+			check.code = 0;
+			check.message = '동일 이메일 아이디가 존재합니다.';
+		}
+		else{
+			user.save(function(err, doc){
+				if(err){
+					check.code = 0;
+					check.message = err;
+					return next(err);
+				}
+				check.result = doc;
+				console.log('doc =', doc);
+			});
+		}
 	});
 	res.json(check);
 
