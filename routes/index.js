@@ -152,7 +152,7 @@ router.post('/join', function(req, res, next){
 		message : message,
 		result : result
 	};
-
+	var user = new UserModel(data);
 	UserModel.findOne({user_id : user_id}, function(err, doc){
 		if(err) {
 			console.log('err =', err);
@@ -164,7 +164,6 @@ router.post('/join', function(req, res, next){
 			check.message = '동일 이메일 아이디가 존재합니다.';
 		}
 		else{
-			var user = new UserModel(data);
 			user.save(function(err, doc){
 				if(err){
 					check.code = 0;
@@ -173,12 +172,10 @@ router.post('/join', function(req, res, next){
 				}
 				check.result = doc;
 				console.log('doc =', doc);
-				res.json(check);
 			});
 		}
-		res.json(check);
 	});
-
+	res.json(check);
 
 });
 //회원가입
