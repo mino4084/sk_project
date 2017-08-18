@@ -1141,23 +1141,16 @@ router.post('/list_final', function(req, res, next){
 	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
 		var arr = {};
 		if(err) return next(err);
+		arr = doc.trip_list;
+		check.result = arr;
 		//console.log('list doc =', doc);
 		//check.result = doc;
-		for(var i = 0; i < doc.trip_list.length; i++) {
+		/*for(var i = 0; i < doc.trip_list.length; i++) {
 			// console.log('trip_list['+i+'] =', doc.trip_list[i]);
 			if(doc.trip_list[i].schedule_date == schedule_date) {
 				arr = doc.trip_list[i];
-
-				/*for (var j = 0; j < doc.trip_list[i].schedule_list.length; j++) {
-					if(doc.trip_list[i].schedule_list[j].item_check[j] == 1){
-						arr.push(doc.trip_list[i].schedule_list[j]);
-						console.log('doc.trip_list[i].schedule_list =', doc.trip_list[i].schedule_list);
-						// check.result = doc.trip_list[i];
-						check.result.push(arr);
-					}
-				}*/
 			};
-		};// for
+		};*/
 
 		console.log('arr =', arr);
 		res.json(check);
