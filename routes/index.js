@@ -1116,9 +1116,47 @@ router.post('/check_item', function(req, res, next){
 		});
 	});
 });
-
-
 // 후보지 체크
+
+// 최종일정 리스트 조회
+router.get('/list_final', function(req, res, next){
+	res.render('list_final', {title : "list_final"});
+});
+
+router.post('/list_final', function(req, res, next){
+	console.log('req body =', req.body);
+	var id = req.session.user_id;
+	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
+	var trip_no = req.body.trip_no;
+	var schedule_date = req.body.schedule_date;
+	var code = 1;
+	var message = "OK";
+	var result = {};
+	var check = {
+		code : code,
+		message : message,
+		result : result
+	};
+
+	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
+		if(err) return next(err);
+		console.log('list doc =', doc);
+		//check.result = doc;
+		for(var i = 0; i < doc.trip_list.length; i++) {
+			// console.log('trip_list['+i+'] =', doc.trip_list[i]);
+			if(doc.trip_list[i].schedule_date == schedule_date) {
+				for (var j = 0; j < doc.trip_list[i].schedule_list.length; j++) {
+					if(doc.trip_list[i].schedule_list[j].item_check == 1){
+						console.log('doc.trip_list[i].schedule_list =', doc.trip_list[i].schedule_list);
+						check.result = doc.trip_list[i];
+					}
+				}
+			};
+		};// for
+		res.json(check);
+	});
+});
+// 최종일정 리스트 조회
 
 
 module.exports = router;
