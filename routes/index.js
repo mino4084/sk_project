@@ -170,8 +170,9 @@ router.post('/join', function(req, res, next){
 					check.message = err;
 					return next(err);
 				}
+
+				console.log('join data =', doc);
 				check.result = doc;
-				console.log('doc =', doc);
 			});
 		}
 		res.json(check);
