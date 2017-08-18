@@ -1142,15 +1142,16 @@ router.post('/list_final', function(req, res, next){
 		var arr = {};
 		if(err) return next(err);
 		arr = doc.trip_list;
-		check.result = arr;
+
 		//console.log('list doc =', doc);
 		//check.result = doc;
-		/*for(var i = 0; i < doc.trip_list.length; i++) {
+		for(var i = 0; i < arr.length; i++) {
 			// console.log('trip_list['+i+'] =', doc.trip_list[i]);
-			if(doc.trip_list[i].schedule_date == schedule_date) {
-				arr = doc.trip_list[i];
+			if(arr.schedule_date == schedule_date) {
+				arr = arr[i];
+				check.result = arr;
 			};
-		};*/
+		};
 
 		console.log('arr =', arr);
 		res.json(check);
