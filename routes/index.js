@@ -1167,6 +1167,7 @@ router.post('/list_final', function(req, res, next){
 				// check.result = arr;
 			};
 		};
+		console.log('arr =', arr);
 		/*for(var i = 0; i < arr.schedule_list.length; i++) {
 			//console.log('arr.schedule_list[i].item_check =', arr.schedule_list[i].item_check);
 			// console.log('arr.schedule_list[i] =', arr.schedule_list[i]);
