@@ -1150,7 +1150,7 @@ router.post('/list_final', function(req, res, next){
 		};
 		for(var i = 0; i < arr.schedule_list.length; i++) {
 			if(arr.schedule_list[i].item_check == 0){
-				arr.splice(i, 1);
+				arr.schedule_list[i].splice(i, 1);
 			}
 		};
 		console.log('arr =', arr);
