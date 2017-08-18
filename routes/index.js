@@ -1145,17 +1145,19 @@ router.post('/list_final', function(req, res, next){
 		for(var i = 0; i < arr.length; i++) {
 			if(arr[i].schedule_date == schedule_date) {
 				arr = arr[i];
-				check.result = arr;
+				// check.result = arr;
 			};
 		};
 		for(var i = 0; i < arr.schedule_list.length; i++) {
 			//console.log('arr.schedule_list[i].item_check =', arr.schedule_list[i].item_check);
 			// console.log('arr.schedule_list[i] =', arr.schedule_list[i]);
 			if(arr.schedule_list[i].item_check == 0){
+				arr.schedule_list.splice(i, 1);
 				console.log('arr.schedule_list[i] = ', arr.schedule_list[i]);
 				// arr.schedule_list.splice(i, 1);
 			}
 		};
+		check.result = arr;
 		//console.log('arr =', arr);
 		res.json(check);
 	});
