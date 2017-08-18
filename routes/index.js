@@ -1104,7 +1104,7 @@ router.post('/check_item', function(req, res, next){
 			};
 		};// for
 
-		for(var i = 0; i < doc.trip_list.length; i++) {
+		/*for(var i = 0; i < doc.trip_list.length; i++) {
 			if(doc.trip_list[i].schedule_date == schedule_date) {
 				console.log('doc.trip_list[i].schedule_list =', doc.trip_list[i].schedule_list);
 				check.result = doc.trip_list[i].schedule_list;
@@ -1113,7 +1113,7 @@ router.post('/check_item', function(req, res, next){
 		doc.save(function(err, result){
 			if(err) console.log('err=', err);
 			res.json(check);
-		});
+		});*/
 	});
 });
 // 후보지 체크
@@ -1146,7 +1146,7 @@ router.post('/list_final', function(req, res, next){
 			// console.log('trip_list['+i+'] =', doc.trip_list[i]);
 			if(doc.trip_list[i].schedule_date == schedule_date) {
 				for (var j = 0; j < doc.trip_list[i].schedule_list.length; j++) {
-					if(doc.trip_list[i].schedule_list[j].item_check == 1){
+					if(doc.trip_list[i].schedule_list[j].item_check[j] == 1){
 						console.log('doc.trip_list[i].schedule_list =', doc.trip_list[i].schedule_list);
 						check.result = doc.trip_list[i];
 					}
