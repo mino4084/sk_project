@@ -162,7 +162,7 @@ router.post('/join', function(req, res, next){
 		}
 		if(doc){
 			check.code = 0;
-			check.message = '동일 이메일 아이디가 존재합니다.';
+			check.message = '동일한 이메일 아이디가 존재합니다.';
 		}
 		else{
 			user.save(function(err, doc){
@@ -171,7 +171,6 @@ router.post('/join', function(req, res, next){
 					check.message = err;
 					return next(err);
 				}
-
 				console.log('join data =', doc);
 				check.result = doc;
 			});
@@ -1221,6 +1220,9 @@ router.post('/map_final', function(req, res, next){
 	});
 });
 // 최종일정 지도 조회
+
+// 최종일정 시간 입력
+// 최종일정 시간 입력
 
 
 module.exports = router;
