@@ -1147,7 +1147,6 @@ router.post('/list_final', function(req, res, next){
 	var id = req.session.user_id;
 	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
 	var trip_no = req.body.trip_no;
-
 	var schedule_date = req.body.schedule_date;
 	var code = 1;
 	var message = "OK";
@@ -1165,16 +1164,32 @@ router.post('/list_final', function(req, res, next){
 		for(var i = 0; i < arr.length; i++) {
 			if(arr[i].schedule_date == schedule_date) {
 				arr = arr[i];
+				// check.result = arr;
 			};
 		};
-
-		for(var i = arr.schedule_list.length-1; i >= 0; i--) {
+		/*for(var i = 0; i < arr.schedule_list.length; i++) {
+			//console.log('arr.schedule_list[i].item_check =', arr.schedule_list[i].item_check);
+			// console.log('arr.schedule_list[i] =', arr.schedule_list[i]);
 			if(arr.schedule_list[i].item_check == 1){
 				arr.schedule_list.splice(i, 1);
+				console.log('arr.schedule_list[i] = ', arr.schedule_list[i]);
+				// arr.schedule_list.splice(i, 1);
+			}
+		};*/
+
+		for(var i = arr.schedule_list.length-1; i >= 0; i--) {
+			//console.log('arr.schedule_list[i].item_check =', arr.schedule_list[i].item_check);
+			//console.log('arr.schedule_list[i] =', arr.schedule_list[i]);
+
+			// console.log('arr.schedule_list[i] =', arr.schedule_list[i]);
+			if(arr.schedule_list[i].item_check == 1){
+				arr.schedule_list.splice(i, 1);
+				// console.log('arr.schedule_list[i] = ', arr.schedule_list[i]);
+				// arr.schedule_list.splice(i, 1);
 			}
 		};
-		console.log('arr = ', arr);
 		check.result = arr;
+		//console.log('arr =', arr);
 		res.json(check);
 	});
 });
@@ -1182,49 +1197,7 @@ router.post('/list_final', function(req, res, next){
 
 // 최종일정 지도 조회
 router.get('/map_final', function(req, res, next){
-	res.render('map_final', {title : "map_final"});
-});
-
-router.post('/list_final', function(req, res, next){
-	console.log('req body =', req.body);
-	var id = req.session.user_id;
-	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
-
-	var trip_no = req.body.trip_no;
-	var schedule_date = req.body.schedule_date;
-	var code = 1;
-	var message = "OK";
-	var result = {};
-	var check = {
-		code : code,
-		message : message,
-		result : result
-	};
-
-	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
-		var arr = {};
-		if(err) return next(err);
-		arr = doc.trip_list;
-		for(var i = 0; i < arr.length; i++) {
-			if(arr[i].schedule_date == schedule_date) {
-				arr = arr[i];
-			};
-		};
-
-		for(var i = arr.schedule_list.length-1; i >= 0; i--) {
-			if(arr.schedule_list[i].item_check == 1){
-				arr.schedule_list.splice(i, 1);
-			}
-		};
-		for(var i = arr.schedule_list.length-1; i >= 0; i--) {
-			if(arr.schedule_list[i].item_placeid == null){
-				arr.schedule_list.splice(i, 1);
-			}
-		};
-		check.result = arr;
-		console.log('arr =', arr);
-		res.json(check);
-	});
+	res.render('map_final', {title : "list_final"});
 });
 // 최종일정 지도 조회
 
