@@ -1175,12 +1175,13 @@ router.post('/list_final', function(req, res, next){
 		};*/
 		for(var i = arr.schedule_list.length; 0 < arr.schedule_list.length; i--) {
 			//console.log('arr.schedule_list[i].item_check =', arr.schedule_list[i].item_check);
+			console.log('arr.schedule_list[i] =', arr.schedule_list[i]);
 			// console.log('arr.schedule_list[i] =', arr.schedule_list[i]);
-			if(arr.schedule_list[i].item_check == 1){
+			/*if(arr.schedule_list[i].item_check == 1){
 				arr.schedule_list.splice(i, 1);
 				console.log('arr.schedule_list[i] = ', arr.schedule_list[i]);
 				// arr.schedule_list.splice(i, 1);
-			}
+			}*/
 		};
 		check.result = arr;
 		//console.log('arr =', arr);
