@@ -70,17 +70,12 @@ router.post('/login', function(req, res, next){
 		result : result
 	};
 
-
-
-
 	UserModel.findOne({user_id : id}, function(err, doc){
 		if(err) {
 			console.log('err =', err);
 			check.code = 0;
 			check.message = err;
-			res.json(check);
 		}
-
 		console.log('doc =', doc); // 실패할 경우 null
 		if(doc){
 			var hash = doc.user_pw;
@@ -88,25 +83,21 @@ router.post('/login', function(req, res, next){
 			if(login_data){
 				doc.user_yn = 0;
 				check.result = doc;
-				res.json(check);
 			}
 			else{
 				check.code = 0;
 				check.message = '비밀번호가 틀렸습니다.';
-				res.json(check);
 			}
 		}
 		else{
 			check.code = 0;
 			check.message = '아이디가 존재하지 않습니다.';
-			res.json(check);
-		}
 
+		}
+		res.json(check);
 	});
 
-
-
-	UserModel.findOne({user_id : id, user_pw : pw}, function(err, doc){
+/*	UserModel.findOne({user_id : id, user_pw : pw}, function(err, doc){
 		if(err) {
 			console.log('err =', err);
 			check.code = 0;
@@ -123,7 +114,7 @@ router.post('/login', function(req, res, next){
 			check.message = '아이디가 존재하지 않거나 비밀번호가 틀렸습니다.';
 		}
 		res.json(check);
-	});
+	});*/
 });
 // 로그인
 
