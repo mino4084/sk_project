@@ -515,6 +515,7 @@ router.get('/cut_partner', function(req, res, next){
 router.post('/cut_partner', function(req, res, next){
 	console.log('req.body =', req.body);
 	var trip_no = req.body.trip_no;
+	var	user_id = req.body.user_id;
 	var stop = 1;
 	var code = 1;
 	var message = "OK";
@@ -524,6 +525,26 @@ router.post('/cut_partner', function(req, res, next){
 		message : message,
 		result : result
 	};
+	TripModel.findOne({trip_no : trip_no}, function(err, doc){
+		if(err) {
+			console.log('err =', err);
+			check.code = 0;
+			check.message = err;
+		}
+		if(doc){
+			console.log('doc =', doc);
+			if(doc.partner_id == user_id){
+
+			}
+		}
+		else{
+			check.code = 0;
+			check.message = '실패';
+		}
+	});
+
+
+
 
 	TripModel.findOneAndUpdate({trip_no : trip_no}, {partner_id: null}, function(err, doc){
 		if(err) {
@@ -640,8 +661,7 @@ router.post('/delete_trip', function(req, res, next){
 			check.message = err;
 		}
 		if(doc){
-			check.result = "삭제 성공";
-
+			console.log('doc =', doc);
 		}
 		else{
 			check.code = 0;
@@ -723,7 +743,7 @@ router.post('/create_item', function(req, res, next){
 	var schedule_date = req.body.schedule_date;
 	var item_url = req.body.item_url;
 
-	if(req.body.cate_no == ""){ // 입력하는 칸에 아무것도 입력하지 않았을 때
+/*	if(req.body.cate_no == ""){ // 입력하는 칸에 아무것도 입력하지 않았을 때
 		var cate_no = 0;
 	}
 	else{ // 입력한 경우
@@ -763,7 +783,7 @@ router.post('/create_item', function(req, res, next){
 	}
 	else{
 		var item_memo = req.body.item_memo;
-	}
+	}*/
 
 	var code = 1;
 	var message = "OK";
