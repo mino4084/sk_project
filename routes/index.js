@@ -96,25 +96,6 @@ router.post('/login', function(req, res, next){
 		}
 		res.json(check);
 	});
-
-/*	UserModel.findOne({user_id : id, user_pw : pw}, function(err, doc){
-		if(err) {
-			console.log('err =', err);
-			check.code = 0;
-			check.message = err;
-		}
-
-		console.log('doc =', doc); // 실패할 경우 null
-		if(doc){
-			doc.user_yn = 0;
-			check.result = doc;
-		}
-		else{
-			check.code = 0;
-			check.message = '아이디가 존재하지 않거나 비밀번호가 틀렸습니다.';
-		}
-		res.json(check);
-	});*/
 });
 // 로그인
 
@@ -252,6 +233,7 @@ router.post('/nick', function(req, res, next){
 	console.log('req.body =', req.body);
 	// var id = req.session.user_id;
 	var id = req.body.user_id; // 비회원일 경우 uuid나 토큰으로 저장
+	var user_pw = req.body.user_pw;
 	var nick = req.body.user_nick;
 	var nickname = '';
 	var code = 1;
@@ -283,6 +265,46 @@ router.post('/nick', function(req, res, next){
 });
 // 닉네임 설정
 
+// 비밀번호 변경(1차 확인)
+router.get('/check_pw', function(req, res, next){
+	res.render('check_pw', {title : "check pw"});
+});
+
+router.post('/check_pw', function(req, res, next){
+	console.log('req.body =', req.body);
+	var id = req.body.user_id;
+	var pw = req.body.user_pw;
+
+	var code = 1;
+	var message = "OK";
+	var result = {};
+	var check = {
+		code : code,
+		message : message,
+		result : result
+	};
+
+	UserModel.findOne({user_id : id}, function(err, doc){
+		if(err) {
+			console.log('err =', err);
+			check.code = 0;
+			check.message = err;
+		}
+		console.log('doc =', doc); // 실패할 경우 null
+		var hash = doc.user_pw;
+		var login_data = bcrypt.compareSync(pw, hash);
+		if(login_data){
+			doc.user_yn = 0;
+		}
+		else{
+			check.code = 0;
+			check.message = '비밀번호가 틀렸습니다.';
+		}
+		res.json(check);
+	});
+});
+// 비밀번호 변경(1차 확인)
+
 // 비밀번호 변경
 router.get('/change_pw', function(req, res, next){
 	res.render('change_pw', {title : "change pw"});
@@ -301,6 +323,8 @@ router.post('/change_pw', function(req, res, next){
 		message : message,
 		result : result
 	};
+	var hash = doc.user_pw;
+	var login_data = bcrypt.compareSync(pw, hash);
 
 	UserModel.updateOne({user_id : id}, {$set : {user_pw : pw}}, function(err, doc){
 		if(err) {
