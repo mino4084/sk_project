@@ -508,7 +508,7 @@ router.post('/find_partner', function(req, res, next){
 // 파트너 찾기
 
 // 여행 파트너 끊기
-router.get('/cut_partner', function(req, res, next){
+/*router.get('/cut_partner', function(req, res, next){
 	res.render('cut_partner', {title : "cut_partner"});
 });
 
@@ -533,6 +533,23 @@ router.post('/cut_partner', function(req, res, next){
 		}
 		if(doc){
 			console.log('doc =', doc);
+			if(doc.user_id == user_id){
+				TripModel.findOneAndUpdate({trip_no : trip_no}, {partner_id: null}, function(err, doc){
+					if(err) {
+						console.log('err =', err);
+						check.code = 0;
+						check.message = err;
+					}
+					if(doc){
+						console.log('doc =', doc);
+					}
+					else{
+						check.code = 0;
+						check.message = '실패';
+					}
+					res.json(check);
+				});
+			}
 			if(doc.partner_id == user_id){
 
 			}
@@ -542,26 +559,7 @@ router.post('/cut_partner', function(req, res, next){
 			check.message = '실패';
 		}
 	});
-
-
-
-
-	TripModel.findOneAndUpdate({trip_no : trip_no}, {partner_id: null}, function(err, doc){
-		if(err) {
-			console.log('err =', err);
-			check.code = 0;
-			check.message = err;
-		}
-		if(doc){
-			console.log('doc =', doc);
-		}
-		else{
-			check.code = 0;
-			check.message = '실패';
-		}
-		res.json(check);
-	});
-});
+});*/
 // 여행 파트너 끊기
 
 // 여행 리스트 조회
