@@ -166,10 +166,9 @@ router.post('/join', function(req, res, next){
 					check.message = err;
 					return next(err);
 				}
-				console.log('join data =', doc);
+				console.log('result data =', doc);
 				check.result = 333333;
 			});
-			check.result = 333333;
 		}
 		res.json(check);
 	});
