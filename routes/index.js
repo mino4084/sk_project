@@ -254,7 +254,7 @@ router.post('/nick', function(req, res, next){
 		}
 		console.log('doc =', doc);
 		if(doc){
-			check.result.push(nick);
+			check.result.push(doc.user_nick);
 		}
 		else{
 			check.code = 0;
