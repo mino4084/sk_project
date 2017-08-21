@@ -589,7 +589,7 @@ router.post('/update_trip', function(req, res, next){
 
 	var code = 1;
 	var message = "OK";
-	var result = {};
+	var result = [];
 
 	var check = {
 		code : code,
@@ -605,14 +605,12 @@ router.post('/update_trip', function(req, res, next){
 			check.message = err;
 		}
 		if(doc){
-			check.result = "수정 성공";
-
+			console.log('doc =', doc);
 		}
 		else{
 			check.code = 0;
 			check.message = '여행 수정 실패';
 		}
-		console.log('doc =', doc);
 		res.json(check);
 	});
 });
