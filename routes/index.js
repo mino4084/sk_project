@@ -518,15 +518,14 @@ router.post('/cut_partner', function(req, res, next){
 		result : result
 	};
 
-	TripModel.findOneAndUpdate({trip_no : trip_no}, {partner_id: ""}, function(err, doc){
+	TripModel.findOneAndUpdate({trip_no : trip_no}, {partner_id: null}, function(err, doc){
 		if(err) {
 			console.log('err =', err);
 			check.code = 0;
 			check.message = err;
 		}
-		console.log('doc =', doc);
 		if(doc){
-			check.result = doc.trip_no;
+			console.log('doc =', doc);
 		}
 		else{
 			check.code = 0;
@@ -691,7 +690,7 @@ router.post('/create_item_url', function(req, res, next){
 		};// for
 		doc.save(function(err, result){
 			if(err) console.log('err=', err);
-			// res.json(check);
+			res.json(check);
 		})
 	});
 
