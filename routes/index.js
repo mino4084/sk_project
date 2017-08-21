@@ -518,7 +518,7 @@ router.post('/cut_partner', function(req, res, next){
 	var stop = 1;
 	var code = 1;
 	var message = "OK";
-	var result = {};
+	var result = [];
 	var check = {
 		code : code,
 		message : message,
@@ -538,7 +538,6 @@ router.post('/cut_partner', function(req, res, next){
 			check.code = 0;
 			check.message = '실패';
 		}
-
 		res.json(check);
 	});
 });
@@ -585,6 +584,7 @@ router.post('/update_trip', function(req, res, next){
 	var trip_title = req.body.trip_title;
 	var start_date = req.body.start_date;
 	var end_date = req.body.end_date;
+	var partner_id = req.body.partner_id;
 	var hashtag = req.body.hashtag;
 
 	var code = 1;
@@ -598,7 +598,7 @@ router.post('/update_trip', function(req, res, next){
 	};
 
 
-	TripModel.updateOne({trip_no : trip_no}, {$set : {trip_title : trip_title, start_date : start_date, end_date : end_date, hashtag : hashtag}}, function(err, doc){
+	TripModel.updateOne({trip_no : trip_no}, {$set : {trip_title : trip_title, start_date : start_date, end_date : end_date, partner_id : partner_id, hashtag : hashtag}}, function(err, doc){
 		if(err) {
 			console.log('err =', err);
 			check.code = 0;
