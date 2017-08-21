@@ -1,16 +1,19 @@
-// notice.js
-/*var mongoose = require('mongoose');
+// memo.js
+var mongoose = require('mongoose');
 var db = require('./db');
+var autoIncrement = require('mongoose-auto-increment');
+autoIncrement.initialize(db);
 
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
 var NoticeSchema = new Schema({
-	notice_no : Number,
-	user_no : Number,
-	trip_no : Number
+	user_no : { type : Number, ref : 'User' },
+	trip_no : { type : Number, ref : 'Trip' }
 });
 
-var Notice = db.model('Notice', NoticeSchema);
 
-module.exports = Notice;*/
+NoticeSchema.plugin(autoIncrement.plugin, { model : 'Notice', field : 'notice_no', startAt : 1, incrementBy : 1});
+
+var Notice = db.model('Notice', NoticeSchema);
+module.exports = Notice;

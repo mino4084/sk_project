@@ -4,7 +4,8 @@ var moment = require('moment');
 var bcrypt = require('bcrypt-node');
 var UserModel = require('../models/user');
 var TripModel = require('../models/trip');
-var ScheduleModel = require('../models/schedule');
+var NoticeModel = require('../models/notice');
+
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -232,9 +233,10 @@ router.post('/nick', function(req, res, next){
 	console.log('req.body =', req.body);
 	// var id = req.session.user_id;
 	var id = req.body.user_id; // 비회원일 경우 uuid나 토큰으로 저장
-	var user_pw = req.body.user_pw;
 	var nick = req.body.user_nick;
-	var nickname = '';
+	var user_pw = req.body.user_pw;
+	// var nickname = '';
+
 	var code = 1;
 	var message = "OK";
 	var result = {};
@@ -252,7 +254,6 @@ router.post('/nick', function(req, res, next){
 		}
 		console.log('doc =', doc);
 		if(doc){
-
 			check.result = nick;
 		}
 		else{
@@ -336,7 +337,7 @@ router.post('/change_pw', function(req, res, next){
 		}
 		else{
 			check.code = 0;
-			check.message = '존재하지 아이디이거나 오류';
+			check.message = '로그인 접속 오류';
 		}
 		res.json(check);
 	});
@@ -691,9 +692,19 @@ router.post('/create_item_url', function(req, res, next){
 		};// for
 		doc.save(function(err, result){
 			if(err) console.log('err=', err);
-			res.json(check);
+			// res.json(check);
 		})
 	});
+
+/*	var notice = new NoticeModel(data);
+	notice.save(function(err, doc){
+		if(err){
+			console.log('err =', err);
+			return next(err);
+		}
+		console.log('notice data =', doc);
+		res.json(check);
+	});*/
 });
 // 후보지 URL 단순 생성
 
@@ -1308,6 +1319,10 @@ router.post('/time_final', function(req, res, next){
 	});
 });
 // 최종일정 시간 입력
+
+// 알림
+
+// 알림
 
 
 module.exports = router;
