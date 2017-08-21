@@ -485,7 +485,7 @@ router.post('/find_partner', function(req, res, next){
 		check.message = "파트너는 자신을 제외한 사용자이어야 합니다.";
 		res.json(check);
 	};
-	else{
+	if(user_id !== partner_id){
 		UserModel.findOne({user_id : partner_id}, function(err, doc){
 			if(err) {
 				console.log('err =', err);
@@ -503,8 +503,6 @@ router.post('/find_partner', function(req, res, next){
 			res.json(check);
 		});
 	}
-
-
 
 });
 // 파트너 찾기
