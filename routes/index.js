@@ -644,7 +644,7 @@ router.post('/delete_trip', function(req, res, next){
 	var trip_no = req.body.trip_no;
 	var code = 1;
 	var message = "OK";
-	var result = {};
+	var result = [];
 	var check = {
 		code : code,
 		message : message,
