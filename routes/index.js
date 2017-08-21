@@ -488,7 +488,7 @@ router.post('/find_partner', function(req, res, next){
 		}
 		console.log('doc =', doc); // 실패할 경우 null
 		if(doc){
-			check.result = doc.user_id;
+			check.result = doc;
 		}
 		else{
 			check.code = 0;
