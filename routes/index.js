@@ -470,6 +470,7 @@ router.get('/find_partner', function(req, res, next){
 router.post('/find_partner', function(req, res, next){
 	console.log('req body =', req.body);
 
+	var user_id = req.body.user_id;
 	var partner_id = req.body.partner_id;
 	var code = 1;
 	var message = "OK";
@@ -479,23 +480,31 @@ router.post('/find_partner', function(req, res, next){
 		message : message,
 		result : result
 	};
-
-	UserModel.findOne({user_id : partner_id}, function(err, doc){
-		if(err) {
-			console.log('err =', err);
-			check.code = 0;
-			check.message = err;
-		}
-		console.log('doc =', doc); // 실패할 경우 null
-		if(doc){
-			check.result = doc;
-		}
-		else{
-			check.code = 0;
-			check.message = "아이디가 존재하지 않습니다.";
-		}
+	if(user_id == partner_id){
+		check.code = 0;
+		check.message = "파트너는 자신을 제외한 사용자이어야 합니다.";
 		res.json(check);
-	});
+	};
+	else{
+		UserModel.findOne({user_id : partner_id}, function(err, doc){
+			if(err) {
+				console.log('err =', err);
+				check.code = 0;
+				check.message = err;
+			}
+			console.log('doc =', doc); // 실패할 경우 null
+			if(doc){
+				check.result = doc;
+			}
+			else{
+				check.code = 0;
+				check.message = "아이디가 존재하지 않습니다.";
+			}
+			res.json(check);
+		});
+	}
+
+
 
 });
 // 파트너 찾기
