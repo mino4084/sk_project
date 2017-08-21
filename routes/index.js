@@ -84,6 +84,12 @@ router.post('/login', function(req, res, next){
 			if(login_data){
 				doc.user_yn = 0;
 				check.result = doc;
+				UserModel.updateOne({user_id : id}, {$set : {user_yn : 0}}, function(err, doc){
+					if(err) {
+						console.log('err =', err);
+					}
+					console.log('doc =', doc);
+				});
 			}
 			else{
 				check.code = 0;
