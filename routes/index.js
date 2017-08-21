@@ -26,7 +26,7 @@ router.post('/simple', function(req, res, next) {
 
   	var code = 1;
   	var message = "OK";
-  	var result = {};
+  	var result = [];
   	var check = {
   		code : code,
   		message : message,
@@ -252,9 +252,9 @@ router.post('/nick', function(req, res, next){
 			check.code = 0;
 			check.message = err;
 		}
-		console.log('doc =', doc);
+
 		if(doc){
-			check.result.push(doc.user_nick);
+			console.log('doc =', doc);
 		}
 		else{
 			check.code = 0;
