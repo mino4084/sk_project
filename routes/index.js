@@ -167,7 +167,7 @@ router.post('/join', function(req, res, next){
 					return next(err);
 				}
 				console.log('result data =', doc);
-				check.result = 333333;
+				check.result = doc;
 			});
 		}
 		res.json(check);
