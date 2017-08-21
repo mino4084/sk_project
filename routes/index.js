@@ -108,7 +108,7 @@ router.post('/logout', function(req, res, next){
 	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
 	var code = 1;
 	var message = "OK";
-	var result = {};
+	var result = [];
 	var check = {
 		code : code,
 		message : message,
@@ -140,7 +140,7 @@ router.post('/join', function(req, res, next){
 	var user_nick = req.body.user_nick;
 	var code = 1;
 	var message = "OK";
-	var result = {};
+	var result = [];
 
 	//bcrypt 사용
 	var hash = bcrypt.hashSync(user_pw);
