@@ -167,7 +167,7 @@ router.post('/join', function(req, res, next){
 					return next(err);
 				}
 				console.log('join data =', doc);
-				check.result = doc;
+				check.result = 333333;
 			});
 		}
 		res.json(check);
@@ -603,8 +603,6 @@ router.get('/create_item_url', function(req, res, next){
 
 router.post('/create_item_url', function(req, res, next){
 	console.log('req body =', req.body);
-	var id = req.session.user_id;
-	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
 
 	var trip_no = req.body.trip_no;
 	var schedule_date = req.body.schedule_date;
@@ -653,8 +651,7 @@ router.get('/create_item', function(req, res, next){
 
 router.post('/create_item', function(req, res, next){
 	console.log('req body =', req.body);
-	var id = req.session.user_id;
-	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
+
 	var trip_no = req.body.trip_no;
 	var schedule_date = req.body.schedule_date;
 	var item_url = req.body.item_url;
@@ -745,8 +742,7 @@ router.get('/create_item_map', function(req, res, next){
 
 router.post('/create_item_map', function(req, res, next){
 	console.log('req body =', req.body);
-	var id = req.session.user_id;
-	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
+
 	var trip_no = req.body.trip_no;
 	var schedule_date = req.body.schedule_date;
  	var item_lat = req.body.item_lat;
@@ -796,8 +792,7 @@ router.get('/list_item', function(req, res, next){
 
 router.post('/list_item', function(req, res, next){
 	console.log('req body =', req.body);
-	var id = req.session.user_id;
-	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
+
 	var trip_no = req.body.trip_no;
 	var schedule_date = req.body.schedule_date;
 	var code = 1;
@@ -833,8 +828,7 @@ router.get('/map_item', function(req, res, next){
 
 router.post('/map_item', function(req, res, next){
 	console.log('req body =', req.body);
-	var id = req.session.user_id;
-	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
+
 	var trip_no = req.body.trip_no;
 	var schedule_date = req.body.schedule_date;
 	var code = 1;
@@ -1056,7 +1050,7 @@ router.post('/delete_item', function(req, res, next){
 		for(var i = 0; i < doc.trip_list.length; i++) {
 			if(doc.trip_list[i].schedule_date == schedule_date) {
 				console.log('doc.trip_list[i].schedule_list =', doc.trip_list[i].schedule_list);
-				check.result = doc.trip_list[i].schedule_list;
+				// check.result = doc.trip_list[i].schedule_list;
 			};
 		};// for
 		doc.save(function(err, result){
@@ -1118,7 +1112,7 @@ router.post('/check_item', function(req, res, next){
 		for(var i = 0; i < doc.trip_list.length; i++) {
 			if(doc.trip_list[i].schedule_date == schedule_date) {
 				console.log('doc.trip_list[i].schedule_list =', doc.trip_list[i].schedule_list);
-				check.result = doc.trip_list[i].schedule_list;
+				// check.result = doc.trip_list[i].schedule_list;
 			};
 		};// for
 		doc.save(function(err, result){
@@ -1136,8 +1130,7 @@ router.get('/list_final', function(req, res, next){
 
 router.post('/list_final', function(req, res, next){
 	console.log('req body =', req.body);
-	var id = req.session.user_id;
-	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
+
 	var trip_no = req.body.trip_no;
 	var schedule_date = req.body.schedule_date;
 	var code = 1;
@@ -1178,8 +1171,7 @@ router.get('/map_final', function(req, res, next){
 
 router.post('/map_final', function(req, res, next){
 	console.log('req body =', req.body);
-	var id = req.session.user_id;
-	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
+
 	var trip_no = req.body.trip_no;
 	var schedule_date = req.body.schedule_date;
 	var code = 1;
