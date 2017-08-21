@@ -138,7 +138,7 @@ router.post('/join', function(req, res, next){
 
 	var data = {
 		user_id : user_id,
-		user_pw : user_pw,
+		user_pw : hash,
 		user_token : user_token,
 		user_uuid : user_uuid,
 		user_nick : user_nick
@@ -146,8 +146,7 @@ router.post('/join', function(req, res, next){
 	var check = {
 		code : code,
 		message : message,
-		result : result,
-		password : hash
+		result : result
 	};
 
 	var user = new UserModel(data);
