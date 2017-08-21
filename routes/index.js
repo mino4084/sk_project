@@ -65,6 +65,7 @@ router.post('/login', function(req, res, next){
 	var code = 1;
 	var message = "OK";
 	var result = new Array();
+	var no = {};
 	var check = {
 		code : code,
 		message : message,
@@ -76,6 +77,7 @@ router.post('/login', function(req, res, next){
 			console.log('err =', err);
 			check.code = 0;
 			check.message = err;
+			check.result.push(no);
 		}
 		console.log('doc =', doc); // 실패할 경우 null
 		if(doc){
@@ -94,11 +96,13 @@ router.post('/login', function(req, res, next){
 			else{
 				check.code = 0;
 				check.message = '비밀번호가 틀렸습니다.';
+				check.result.push(no);
 			}
 		}
 		else{
 			check.code = 0;
 			check.message = '아이디가 존재하지 않습니다.';
+			check.result.push(no);
 
 		}
 		res.json(check);
