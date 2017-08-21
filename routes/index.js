@@ -64,7 +64,7 @@ router.post('/login', function(req, res, next){
 
 	var code = 1;
 	var message = "OK";
-	var result = [];
+	var result = new Array();
 	var check = {
 		code : code,
 		message : message,
@@ -83,7 +83,7 @@ router.post('/login', function(req, res, next){
 			var login_data = bcrypt.compareSync(pw, hash);
 			if(login_data){
 				doc.user_yn = 0;
-				check.result = doc;
+				check.result.push(doc);
 				UserModel.updateOne({user_id : id}, {$set : {user_yn : 0}}, function(err, doc){
 					if(err) {
 						console.log('err =', err);
