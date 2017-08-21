@@ -928,7 +928,7 @@ router.post('/map_item', function(req, res, next){
 	var schedule_date = req.body.schedule_date;
 	var code = 1;
 	var message = "OK";
-	var result = {};
+	var result = [];
 	var arr = new Array();
 	var check = {
 		code : code,
