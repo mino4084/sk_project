@@ -835,7 +835,7 @@ router.post('/create_item_map', function(req, res, next){
 
 	var code = 1;
 	var message = "OK";
-	var result = {};
+	var result = [];
 
 	var data = {
 		item_url : null,
@@ -881,7 +881,7 @@ router.post('/list_item', function(req, res, next){
 	var schedule_date = req.body.schedule_date;
 	var code = 1;
 	var message = "OK";
-	var result = {};
+	var result = [];
 	var check = {
 		code : code,
 		message : message,
