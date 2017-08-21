@@ -198,7 +198,7 @@ router.post('/find_pw', function(req, res, next){
 	var id = req.body.user_id; // 비회원일 경우 uuid나 토큰으로 저장
 	var code = 1;
 	var message = "OK";
-	var result = {};
+	var result = [];
 	var check = {
 		code : code,
 		message : message,
@@ -277,7 +277,7 @@ router.post('/check_pw', function(req, res, next){
 
 	var code = 1;
 	var message = "OK";
-	var result = {};
+	var result = [];
 	var check = {
 		code : code,
 		message : message,
@@ -356,7 +356,7 @@ router.post('/stop', function(req, res, next){
 	var stop = 1;
 	var code = 1;
 	var message = "OK";
-	var result = {};
+	var result = [];
 	var check = {
 		code : code,
 		message : message,
@@ -371,7 +371,7 @@ router.post('/stop', function(req, res, next){
 		}
 		console.log('doc =', doc);
 		if(doc){
-			check.result = doc.user_yn;
+			// check.result = doc.user_yn;
 			req.session.destroy(function(err){
 				if(err){
 					return console.log('err =', err);
