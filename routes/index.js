@@ -147,9 +147,8 @@ router.post('/join', function(req, res, next){
 		code : code,
 		message : message,
 		result : result,
-		password : password
+		password : hash
 	};
-	check.password = hash;
 
 	var user = new UserModel(data);
 	UserModel.findOne({user_id : user_id}, function(err, doc){
