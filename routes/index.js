@@ -60,6 +60,7 @@ router.post('/login', function(req, res, next){
 	console.log('req.body =', req.body);
 	var id = req.body.user_id;
 	var pw = req.body.user_pw;
+
 	var code = 1;
 	var message = "OK";
 	var result = {};
@@ -68,6 +69,42 @@ router.post('/login', function(req, res, next){
 		message : message,
 		result : result
 	};
+
+
+
+
+	UserModel.findOne({user_id : id}, function(err, doc){
+		if(err) {
+			console.log('err =', err);
+			check.code = 0;
+			check.message = err;
+			res.json(check);
+		}
+
+		console.log('doc =', doc); // 실패할 경우 null
+		if(doc){
+			var hash = doc.user_pw;
+			var login_data = bcrypt.compareSync(pw, hash);
+			if(login_data){
+				doc.user_yn = 0;
+				check.result = doc;
+				res.json(check);
+			}
+			else{
+				check.code = 0;
+				check.message = '비밀번호가 틀렸습니다.';
+				res.json(check);
+			}
+		}
+		else{
+			check.code = 0;
+			check.message = '아이디가 존재하지 않습니다.';
+			res.json(check);
+		}
+
+	});
+
+
 
 	UserModel.findOne({user_id : id, user_pw : pw}, function(err, doc){
 		if(err) {
