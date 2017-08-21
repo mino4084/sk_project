@@ -62,6 +62,7 @@ router.post('/login', function(req, res, next){
 	var id = req.body.user_id;
 	var pw = req.body.user_pw;
 
+
 	var code = 1;
 	var message = "OK";
 	var result = {};
@@ -249,7 +250,7 @@ router.post('/nick', function(req, res, next){
 
 	var code = 1;
 	var message = "OK";
-	var result = [];
+	var result = {};
 	var check = {
 		code : code,
 		message : message,
