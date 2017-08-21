@@ -15,13 +15,13 @@ router.get('/', function(req, res, next) {
 });
 
 //프로필 조회
-router.get('/profile', function(req, res, next){
-	res.render('profileform', {title : "profile"});
+router.get('/simple', function(req, res, next){
+	res.render('simple', {title : "simple"});
 });
 
-router.post('/profile', function(req, res, next) {
+router.post('/simple', function(req, res, next) {
   	//var id = req.session.user_id;
-  	var id = req.body.id; //비회원일 경우 uuid나 토큰으로 저장
+  	var id = req.body.user_id; //비회원일 경우 uuid나 토큰으로 저장
 
   	var code = 1;
   	var message = "OK";
@@ -38,16 +38,13 @@ router.post('/profile', function(req, res, next) {
   			check.code = 0;
   			check.message = err;
   		}
-
   		console.log('doc =', doc); // 실패할 경우 null
   		if(doc){
-  			req.session.user_id = id;
   			check.result = doc;
-  			console.log('req.session.user_id =', req.session.user_id);
   		}
   		else{
   			check.code = 0;
-  			check.message = '로그인 실패';
+  			check.message = '로그인 접속이 끊겼거나 아이디가 존재하지 않습니다.';
   		}
   		res.json(check);
   	});
@@ -81,9 +78,7 @@ router.post('/login', function(req, res, next){
 
 		console.log('doc =', doc); // 실패할 경우 null
 		if(doc){
-			req.session.user_id = id;
 			doc.user_yn = 0;
-			console.log('req.session.user_id =', req.session.user_id);
 			check.result = doc;
 		}
 		else{
@@ -177,8 +172,6 @@ router.post('/join', function(req, res, next){
 		}
 		res.json(check);
 	});
-
-
 });
 //회원가입
 
@@ -1221,6 +1214,8 @@ router.post('/map_final', function(req, res, next){
 });
 // 최종일정 지도 조회
 
+
+// 회원가입에서 json으로 보낼때 check에 result가 안들어감
 // 최종일정 시간 입력
 // 최종일정 시간 입력
 
