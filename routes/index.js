@@ -684,7 +684,7 @@ router.post('/create_item_url', function(req, res, next){
 
 	var code = 1;
 	var message = "OK";
-	var result = {};
+	var result = [];
 
 	var data = {
 		item_url : item_url,
@@ -784,7 +784,7 @@ router.post('/create_item', function(req, res, next){
 
 	var code = 1;
 	var message = "OK";
-	var result = {};
+	var result = [];
 
 	var data = {
 		item_url : item_url,
