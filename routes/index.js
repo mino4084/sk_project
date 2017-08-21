@@ -133,8 +133,8 @@ router.post('/join', function(req, res, next){
 	var result = {};
 
 	//bcrypt 사용
-	// var hash = bcrypt.hashSync(user_pw);
-	//console.log('user_pw = ', user_pw);
+	var hash = bcrypt.hashSync(user_pw);
+	console.log('user_pw = ', user_pw);
 
 	var data = {
 		user_id : user_id,
