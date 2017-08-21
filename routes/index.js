@@ -375,19 +375,12 @@ router.post('/stop', function(req, res, next){
 			check.code = 0;
 			check.message = err;
 		}
-		console.log('doc =', doc);
 		if(doc){
-			// check.result = doc.user_yn;
-			req.session.destroy(function(err){
-				if(err){
-					return console.log('err =', err);
-				}
-				console.log('logout req.session =', req.session);
-			});
+			console.log('doc =', doc);
 		}
 		else{
 			check.code = 0;
-			check.message = '존재하지 아이디이거나 오류';
+			check.message = '로그인 접속 오류';
 		}
 		res.json(check);
 	});
@@ -412,7 +405,7 @@ router.post('/create_trip', function(req, res, next){
 	var hashtag = req.body.hashtag;
 	var code = 1;
 	var message = "OK";
-	var result = {};
+	var result = [];
 
 	var data = {
 		trip_title : trip_title,
