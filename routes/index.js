@@ -928,7 +928,8 @@ router.post('/map_item', function(req, res, next){
 	var schedule_date = req.body.schedule_date;
 	var code = 1;
 	var message = "OK";
-	var result = new Array();
+	var result = {};
+	var arr = new Array();
 	var check = {
 		code : code,
 		message : message,
@@ -950,11 +951,12 @@ router.post('/map_item', function(req, res, next){
 				for (var j = 0; j < doc.trip_list[i].schedule_list.length; j++) {
 					if(doc.trip_list[i].schedule_list[j].item_placeid !== null){
 						console.log('doc.trip_list[i].schedule_list[j] =', doc.trip_list[i].schedule_list[j]);
-						check.result.push(doc.trip_list[i].schedule_list[j]);
+						arr.push(doc.trip_list[i].schedule_list[j]);
 					}
 				}
 			};
 		};// for
+		check.result = arr;
 		res.json(check);  //json으로 하면 모바일이 된다.
 		//res.render('list_trip', {title : "list_trip", docs : docs}); //웹서버
 	});
