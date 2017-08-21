@@ -956,7 +956,7 @@ router.post('/map_item', function(req, res, next){
 				}
 			};
 		};// for
-		check.result = arr;
+		check.result.put(arr);
 		res.json(check);  //json으로 하면 모바일이 된다.
 		//res.render('list_trip', {title : "list_trip", docs : docs}); //웹서버
 	});
