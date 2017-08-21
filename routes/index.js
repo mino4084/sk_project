@@ -143,7 +143,6 @@ router.post('/join', function(req, res, next){
 
 	//bcrypt 사용
 	var hash = bcrypt.hashSync(user_pw);
-	console.log('user_pw = ', user_pw);
 
 	var data = {
 		user_id : user_id,
@@ -313,8 +312,8 @@ router.get('/change_pw', function(req, res, next){
 router.post('/change_pw', function(req, res, next){
 	console.log('req.body =', req.body);
 	// var id = req.session.user_id;
-	var id = req.body.user_id; // 비회원일 경우 uuid나 토큰으로 저장
-	var pw = req.body.user_pw;
+	var user_id = req.body.user_id; // 비회원일 경우 uuid나 토큰으로 저장
+	var user_pw = req.body.user_pw;
 	var code = 1;
 	var message = "OK";
 	var result = {};
@@ -323,18 +322,17 @@ router.post('/change_pw', function(req, res, next){
 		message : message,
 		result : result
 	};
-	var hash = doc.user_pw;
-	var login_data = bcrypt.compareSync(pw, hash);
+	//bcrypt 사용
+	var hash = bcrypt.hashSync(user_pw);
 
-	UserModel.updateOne({user_id : id}, {$set : {user_pw : pw}}, function(err, doc){
+	UserModel.updateOne({user_id : user_id}, {$set : {user_pw : hash}}, function(err, doc){
 		if(err) {
 			console.log('err =', err);
 			check.code = 0;
 			check.message = err;
 		}
-		console.log('doc =', doc);
 		if(doc){
-			check.result = pw;
+			console.log('doc =', doc);
 		}
 		else{
 			check.code = 0;
