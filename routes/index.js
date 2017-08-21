@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var moment = require('moment');
-// var bcrypt = require('bcrypt-node');
+var bcrypt = require('bcrypt-node');
 var UserModel = require('../models/user');
 var TripModel = require('../models/trip');
 var ScheduleModel = require('../models/schedule');
