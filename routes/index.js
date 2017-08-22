@@ -686,7 +686,7 @@ router.post('/update_trip', function(req, res, next){
 
 				TripModel.findOne({trip_no : doc.trip_no}, function(err, doc){
 					if(err) return next(err);
-					for (var i = num; i >= aDays; i--) {
+					for (var i = num; i >= aDays + 1; i--) {
 						console.log('i = ', i);
 						doc.trip_list.splice(i, 1);
 						doc.save(function(err, result){
