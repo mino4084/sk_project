@@ -1449,6 +1449,7 @@ router.post('/time_final', function(req, res, next){
 ////////////////////////////////////////////////////
 
 router.get('/sendForm', function(req, res, next){
+
 	res.render('sendForm', {title : "sendForm"});
 });
 
@@ -1458,31 +1459,35 @@ var serverKey = 'AAAAkn8Pa7w:APA91bFRQVUYGjvvugJokF6-yUAKUZM2sFFiprSqo-PFsPLvbDK
 
 var fcm = new FCM(serverKey);
 
-exports.sendPush = function(req, res){
-  console.log(req.body.token, req.body.msg);
-
-// FCM =========================================================
-  // 메시지 구성
-  var message =
-  {   // 유저의 등록된 ID -> 푸시를 받고자 하는 유저 ID -> 유저의 token
-      registration_id: req.body.token, // required
-      collapse_key: '' + Math.floor(Math.random()*1000),
-      data:JSON.stringify({body:req.body.msg, title:req.body.title})
-  };
-  // 전송
-  fcm.send(message, function(err, messageId){
-	  res.writeHead(200, {'Content-Type': 'text/html;charset=utf-8'});
-      if (err) {
-    	  res.end("<script>alert('전송실패:"+err+"');history.back();</script>");
-          //console.log("Something has gone wrong!");
-      } else {
-    	  res.end("<script>alert('전송성공:"+messageId+"');history.back();</script>");
-          //console.log("Sent with message ID: ", messageId);
-      }
-  });
-//FCM =========================================================
+var message = {
+    to: 'registration_token_or_topics', // required fill with device token or topics
+    collapse_key: 'your_collapse_key',
+    data: {
+        your_custom_data_key: 'your_custom_data_value'
+    },
+    notification: {
+        title: 'Title of your push notification',
+        body: 'Body of your push notification'
+    }
 };
 
-// aaa
+//callback style
+fcm.send(message, function(err, response){
+    if (err) {
+        console.log("Something has gone wrong!");
+    } else {
+        console.log("Successfully sent with response: ", response);
+    }
+});
+
+//promise style
+fcm.send(message)
+    .then(function(response){
+        console.log("Successfully sent with response: ", response);
+    })
+    .catch(function(err){
+        console.log("Something has gone wrong!");
+        console.error(err);
+    });
 
 module.exports = router;
