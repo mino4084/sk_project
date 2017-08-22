@@ -5,6 +5,7 @@ var bcrypt = require('bcrypt-node');
 var UserModel = require('../models/user');
 var TripModel = require('../models/trip');
 var NoticeModel = require('../models/notice');
+var FCM = require('fcm').FCM;
 
 
 /* GET home page. */
@@ -443,7 +444,7 @@ router.post('/create_trip', function(req, res, next){
 		console.log('day1 =', day1);
 		console.log('day2 =', day2);
 		var num = day2.diff(day1, 'days');
-		console.log('num =', num);
+		// console.log('num =', num);
 		for (var i = 1; i <= num + 1; i++) {
 			console.log('i =', i);
 			var scheduleDate = {
@@ -609,6 +610,8 @@ router.post('/update_trip', function(req, res, next){
 	var start_date = req.body.start_date;
 	var end_date = req.body.end_date;
 	var hashtag = req.body.hashtag;
+	var pre_start = '';
+	var pre_end = '';
 
 	var code = 1;
 	var message = "OK";
@@ -620,21 +623,66 @@ router.post('/update_trip', function(req, res, next){
 		result : result
 	};
 
+	TripModel.findOne({trip_no : trip_no}, function(err, doc){
+		if(err) return next(err);
+		console.log('doc =', doc);
 
-	TripModel.updateOne({trip_no : trip_no}, {$set : {trip_title : trip_title, start_date : start_date, end_date : end_date, hashtag : hashtag}}, function(err, doc){
-		if(err) {
-			console.log('err =', err);
-			check.code = 0;
-			check.message = err;
-		}
-		if(doc){
-			console.log('doc =', doc);
+		var bStart = moment(doc.start_date);
+		var bEnd = moment(doc.end_date);
+		var bDays = bEnd.diff(bStart, 'days');
+
+		var aStart = moment(start_date);
+		var aEnd = moment(end_date);
+		var aDays = aEnd.diff(aStart, 'days');
+		if(bDays == aDays){
+			TripModel.updateOne({trip_no : trip_no}, {$set : {trip_title : trip_title, start_date : start_date, end_date : end_date, hashtag : hashtag}}, function(err, doc){
+				if(err) {
+					console.log('err =', err);
+					check.code = 0;
+					check.message = err;
+				}
+				if(doc){
+					console.log('doc =', doc);
+				}
+				else{
+					check.code = 0;
+					check.message = '여행 수정 실패';
+				}
+
+			});
 		}
 		else{
-			check.code = 0;
-			check.message = '여행 수정 실패';
+			TripModel.updateOne({trip_no : trip_no}, {$set : {trip_title : trip_title, start_date : start_date, end_date : end_date, hashtag : hashtag}}, function(err, doc){
+				if(err) {
+					console.log('err =', err);
+					check.code = 0;
+					check.message = err;
+				}
+				if(doc){
+					console.log('doc =', doc);
+				}
+				else{
+					check.code = 0;
+					check.message = '여행 수정 실패';
+				}
+			});
+			/*TripModel.findOne({trip_no : trip_no}, function(err, doc){
+				if(err) return next(err);
+				for(var i = 0; i < doc.trip_list.length; i++) {
+					if(doc.trip_list[i].schedule_date == schedule_date) {
+						console.log('trip_list[' + i + '] =', doc.trip_list[i]);
+						check.result = doc.trip_list[i];
+						doc.trip_list[i].schedule_list.push(data);
+					};
+				};// for
+				doc.save(function(err, result){
+					if(err) console.log('err=', err);
+					res.json(check);
+				})
+			});*/
 		}
-		res.json(check);
+
+		res.json(check);  //json으로 하면 모바일이 된다.
 	});
 });
 // 여행 수정
@@ -1373,13 +1421,50 @@ router.post('/time_final', function(req, res, next){
 });
 // 최종일정 시간 입력
 
-
-
-
-//{"code":1,"message":"OK","result":[{data : -- }, {data : -- }, {data : -- }]} -> 제이슨 형태인가
 // 알림
 
 // 알림
 // express-validator 사용
+
+////////////////////////////////////////////////////
+
+/*
+ * GET home page.
+ */
+
+var apiKey = 'AAAAApY-fKs:APA91bFiNW_RPPDNJg4W3J4kVaTZUDezHsQYCPoR21ebrcQs38auq7Xh1Dp3DLdeqRBSUQJ3PziltPCy1ggfVXuY7w17J9e11KvTWHnNwCe2IM-u3AM4yhmbKXLaSbI6bgW8YnUkcD_N';
+
+var fcm = new FCM(apiKey);
+
+exports.sendPush = function(req, res){
+  console.log(req.body.token, req.body.msg);
+
+// FCM =========================================================
+  // 메시지 구성
+  var message =
+  {   // 유저의 등록된 ID -> 푸시를 받고자 하는 유저 ID -> 유저의 token
+      registration_id: req.body.token, // required
+      collapse_key: '' + Math.floor(Math.random()*1000),
+      data:JSON.stringify({body:req.body.msg, title:req.body.title})
+  };
+  // 전송
+  fcm.send(message, function(err, messageId){
+	  res.writeHead(200, {'Content-Type': 'text/html;charset=utf-8'});
+      if (err) {
+    	  res.end("<script>alert('전송실패:"+err+"');history.back();</script>");
+          //console.log("Something has gone wrong!");
+      } else {
+    	  res.end("<script>alert('전송성공:"+messageId+"');history.back();</script>");
+          //console.log("Sent with message ID: ", messageId);
+      }
+  });
+//FCM =========================================================
+};
+
+
+
+
+
+
 
 module.exports = router;
