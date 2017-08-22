@@ -1114,7 +1114,7 @@ router.post('/update_item', function(req, res, next){
 			};// for
 			for(var i = 0; i < doc.trip_list.length; i++) {
 				if(doc.trip_list[i].schedule_date == update_schedule_date) {
-					console.log('doc.trip_list[i].schedule_list =', doc.trip_list[i].schedule_list);
+					// console.log('doc.trip_list[i].schedule_list =', doc.trip_list[i].schedule_list);
 					arr[0].cate_no = cate_no;
 					arr[0].item_lat = item_lat;
 					arr[0].item_long = item_long;
