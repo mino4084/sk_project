@@ -675,7 +675,7 @@ router.post('/update_trip', function(req, res, next){
 					TripModel.findOneAndUpdate({trip_no : doc.trip_no}, {$push : {"trip_list" : scheduleDate}},
 						{safe : true, upsert : true, new : true}, function(err, doc){
 						if(err) return next(err);
-						console.log('schedule update doc =', doc);
+						// console.log('schedule update doc =', doc);
 					});
 				}
 			}
@@ -683,19 +683,18 @@ router.post('/update_trip', function(req, res, next){
 				var difference = bDays - aDays;
 				console.log('difference =', difference);
 				console.log('num = ', num);
-				for (var i = num; i >= aDays; i--) {
-					/*var scheduleDate = {
-						schedule_date : i
-					};*/
-					TripModel.findOne({trip_no : doc.trip_no}, function(err, doc){
-						if(err) return next(err);
+
+				TripModel.findOne({trip_no : doc.trip_no}, function(err, doc){
+					if(err) return next(err);
+					for (var i = num; i >= aDays; i--) {
 						console.log('i = ', i);
 						doc.trip_list.splice(i, 1);
 						doc.save(function(err, result){
 							if(err) console.log('err=', err);
 						});
-					});
-				}
+					}
+				});
+
 			}
 			/*TripModel.findOne({trip_no : trip_no}, function(err, doc){
 				if(err) return next(err);
