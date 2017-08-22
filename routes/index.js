@@ -588,9 +588,11 @@ router.post('/list_trip', function(req, res, next){
 	};
 
 	TripModel.find({$or: [{ user_id: id }, { partner_id : id } ]}, null, {sort : {trip_no : -1}}, function(err, docs){
+		var arr = {};
 		if(err) return next(err);
 		console.log('list docs =', docs);
-		check.result = docs;
+		arr = docs;
+		check.result = arr;
 		res.json(check);  //json으로 하면 모바일이 된다.
 		//res.render('list_trip', {title : "list_trip", docs : docs}); //웹서버
 	});
