@@ -689,10 +689,11 @@ router.post('/update_trip', function(req, res, next){
 					for (var i = num; i >= aDays + 1; i--) {
 						console.log('i = ', i);
 						doc.trip_list.splice(i, 1);
-						doc.save(function(err, result){
-							if(err) console.log('err=', err);
-						});
+
 					}
+					doc.save(function(err, result){
+						if(err) console.log('err=', err);
+					});
 				});
 
 			}
