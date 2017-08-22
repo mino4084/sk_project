@@ -1434,7 +1434,7 @@ router.post('/time_final', function(req, res, next){
  * GET home page.
  */
 
-var apiKey = 'AAAAApY-fKs:APA91bFiNW_RPPDNJg4W3J4kVaTZUDezHsQYCPoR21ebrcQs38auq7Xh1Dp3DLdeqRBSUQJ3PziltPCy1ggfVXuY7w17J9e11KvTWHnNwCe2IM-u3AM4yhmbKXLaSbI6bgW8YnUkcD_N';
+/*var apiKey = 'AAAAApY-fKs:APA91bFiNW_RPPDNJg4W3J4kVaTZUDezHsQYCPoR21ebrcQs38auq7Xh1Dp3DLdeqRBSUQJ3PziltPCy1ggfVXuY7w17J9e11KvTWHnNwCe2IM-u3AM4yhmbKXLaSbI6bgW8YnUkcD_N';
 
 var fcm = new FCM(apiKey);
 
@@ -1461,7 +1461,7 @@ exports.sendPush = function(req, res){
       }
   });
 //FCM =========================================================
-};
+};*/
 
 // aaa
 
