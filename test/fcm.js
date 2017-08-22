@@ -15,7 +15,12 @@ exports.sendPush = function(req, res){
 
 // FCM =========================================================
   // 메시지 구성
-
+  var message =
+  {   // 유저의 등록된 ID -> 푸시를 받고자 하는 유저 ID -> 유저의 token
+      registration_id: req.body.token, // required
+      collapse_key: '' + Math.floor(Math.random()*1000),
+      data:JSON.stringify({body:req.body.msg, title:req.body.title})
+  };
   // 전송
   fcm.send(message, function(err, messageId){
 	  res.writeHead(200, {'Content-Type': 'text/html;charset=utf-8'});
