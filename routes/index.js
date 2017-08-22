@@ -480,7 +480,7 @@ router.post('/find_partner', function(req, res, next){
 	var partner_id = req.body.partner_id;
 	var code = 1;
 	var message = "OK";
-	var result = [];
+	var result = {};
 	var check = {
 		code : code,
 		message : message,
