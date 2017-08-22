@@ -329,7 +329,7 @@ router.post('/change_pw', function(req, res, next){
 	var user_pw = req.body.user_pw;
 	var code = 1;
 	var message = "OK";
-	var result = {};
+	var result = [];
 	var check = {
 		code : code,
 		message : message,
