@@ -1175,7 +1175,7 @@ router.post('/check_item', function(req, res, next){
 
 	var code = 1;
 	var message = "OK";
-	var result = {};
+	var result = [];
 
 	var check = {
 		code : code,
@@ -1353,9 +1353,13 @@ router.post('/time_final', function(req, res, next){
 });
 // 최종일정 시간 입력
 
+
+
+
+//{"code":1,"message":"OK","result":[{data : -- }, {data : -- }, {data : -- }]} -> 제이슨 형태인가
 // 알림
 
 // 알림
-
+// express-validator 사용
 
 module.exports = router;
