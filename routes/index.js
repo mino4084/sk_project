@@ -5,7 +5,7 @@ var bcrypt = require('bcrypt-node');
 var UserModel = require('../models/user');
 var TripModel = require('../models/trip');
 var NoticeModel = require('../models/notice');
-// var FCM = require('fcm').FCM;
+var FCM = require('fcm-push');
 
 
 /* GET home page. */
@@ -669,51 +669,40 @@ router.post('/update_trip', function(req, res, next){
 			if(bDays < aDays){
 				var difference = aDays - bDays;
 				for (var i = num + 1; i <= num + difference; i++) {
-					var scheduleDate = {
-						schedule_date : i
-					};
+					var scheduleDate = { schedule_date : i };
 					TripModel.findOneAndUpdate({trip_no : doc.trip_no}, {$push : {"trip_list" : scheduleDate}},
 						{safe : true, upsert : true, new : true}, function(err, doc){
-						if(err) return next(err);
-						// console.log('schedule update doc =', doc);
+						if(err){
+							check.code = 0;
+							check.message = err;
+							return next(err);
+						}
 					});
 				}
 			}
 			if(bDays > aDays){
-				var difference = bDays - aDays;
-				console.log('difference =', difference);
-				console.log('num = ', num);
-
 				TripModel.findOne({trip_no : doc.trip_no}, function(err, doc){
-					if(err) return next(err);
+					if(err){
+						check.code = 0;
+						check.message = err;
+						return next(err);
+					}
 					for (var i = num; i >= aDays + 1; i--) {
 						console.log('i = ', i);
 						doc.trip_list.splice(i, 1);
-
 					}
 					doc.save(function(err, result){
-						if(err) console.log('err=', err);
+						if(err){
+							check.code = 0;
+							check.message = err;
+							return next(err);
+						}
 					});
 				});
 
 			}
-			/*TripModel.findOne({trip_no : trip_no}, function(err, doc){
-				if(err) return next(err);
-				for(var i = 0; i < doc.trip_list.length; i++) {
-					if(doc.trip_list[i].schedule_date == schedule_date) {
-						console.log('trip_list[' + i + '] =', doc.trip_list[i]);
-						check.result = doc.trip_list[i];
-						doc.trip_list[i].schedule_list.push(data);
-					};
-				};// for
-				doc.save(function(err, result){
-					if(err) console.log('err=', err);
-					res.json(check);
-				})
-			});*/
 		}
-
-		res.json(check);  //json으로 하면 모바일이 된다.
+		res.json(check);
 	});
 });
 // 여행 수정
@@ -1459,13 +1448,15 @@ router.post('/time_final', function(req, res, next){
 
 ////////////////////////////////////////////////////
 
-/*
- * GET home page.
- */
+router.get('/sendForm', function(req, res, next){
+	res.render('sendForm', {title : "sendForm"});
+});
 
-/*var apiKey = 'AAAAApY-fKs:APA91bFiNW_RPPDNJg4W3J4kVaTZUDezHsQYCPoR21ebrcQs38auq7Xh1Dp3DLdeqRBSUQJ3PziltPCy1ggfVXuY7w17J9e11KvTWHnNwCe2IM-u3AM4yhmbKXLaSbI6bgW8YnUkcD_N';
+var serverKey = 'AAAAkn8Pa7w:APA91bFRQVUYGjvvugJokF6-yUAKUZM2sFFiprSqo-PFsPLvbDKZwShLnrls7X8GbzNkWufDz_MZuScFtzI1KfW5DoXvzRUBKZ5tAItKbfe-kM7oaztVmJdQ0Jgy151I9jLhSuu2PByO';
 
-var fcm = new FCM(apiKey);
+/*var apiKey = 'AAAAApY-fKs:APA91bFiNW_RPPDNJg4W3J4kVaTZUDezHsQYCPoR21ebrcQs38auq7Xh1Dp3DLdeqRBSUQJ3PziltPCy1ggfVXuY7w17J9e11KvTWHnNwCe2IM-u3AM4yhmbKXLaSbI6bgW8YnUkcD_N';*/
+
+var fcm = new FCM(serverKey);
 
 exports.sendPush = function(req, res){
   console.log(req.body.token, req.body.msg);
@@ -1490,7 +1481,7 @@ exports.sendPush = function(req, res){
       }
   });
 //FCM =========================================================
-};*/
+};
 
 // aaa
 

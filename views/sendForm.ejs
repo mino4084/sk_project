@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <form action="/join	" method="post">
+		<table width="300" border="1">
+			<tr>
+				<th>아이디</th>
+				<td><input type="text" name="user_id"></td>
+			</tr>
+			<tr>
+				<th>비밀번호</th>
+				<td><input type="password" name="user_pw"></td>
+			</tr>
+			<tr>
+				<th>토큰</th>
+				<td><input type="password" name="user_token"></td>
+			</tr>
+			<tr>
+				<th>UUID</th>
+				<td><input type="password" name="user_uuid"></td>
+			</tr>
+			<tr>
+				<th>nick</th>
+				<td><input type="password" name="user_nick"></td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<input type="submit" value="회원가입">
+					<input type="reset" value="취소">
+				</td>
+			</tr>
+
+		</table>
+    </form>
+  </body>
+</html>
