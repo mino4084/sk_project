@@ -5,7 +5,7 @@ var bcrypt = require('bcrypt-node');
 var UserModel = require('../models/user');
 var TripModel = require('../models/trip');
 var NoticeModel = require('../models/notice');
-var FCM = require('fcm').FCM;
+// var FCM = require('fcm').FCM;
 
 
 /* GET home page. */
