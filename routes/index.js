@@ -929,14 +929,34 @@ router.post('/map_item', function(req, res, next){
 	var code = 1;
 	var message = "OK";
 	var result = {};
-	var arr = new Array();
+	// var arr = new Array();
 	var check = {
 		code : code,
 		message : message,
 		result : result
 	};
 
-	//trip을 포함해서 item까지 다나온다.
+	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
+		var arr = {};
+		if(err) return next(err);
+		arr = doc.trip_list;
+		for(var i = 0; i < arr.length; i++) {
+			if(arr[i].schedule_date == schedule_date) {
+				arr = arr[i];
+			};
+		};
+
+		for(var i = arr.schedule_list.length - 1; i >= 0; i--) {
+			if(arr.schedule_list[i].item_placeid !== null){
+				arr.schedule_list.splice(i, 1);
+			}
+		};
+		console.log('arr =', arr);
+		check.result = arr;
+		res.json(check);
+	});
+
+	/*//trip을 포함해서 item까지 다나온다.
 	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
 		if(err){
 			check.code = 0;
@@ -959,7 +979,7 @@ router.post('/map_item', function(req, res, next){
 		check.result = arr;
 		res.json(check);  //json으로 하면 모바일이 된다.
 		//res.render('list_trip', {title : "list_trip", docs : docs}); //웹서버
-	});
+	});*/
 
 	//result에 딱 item_placeid가 0이 아닌 item만 나온다.
 	//trip은 안나온다.
