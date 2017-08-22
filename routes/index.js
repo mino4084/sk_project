@@ -668,10 +668,7 @@ router.post('/update_trip', function(req, res, next){
 			});
 			if(bDays < aDays){
 				var difference = aDays - bDays;
-				console.log('difference =', difference);
-				console.log('num =', num);
 				for (var i = num + 1; i <= num + difference; i++) {
-					console.log('i =', i);
 					var scheduleDate = {
 						schedule_date : i
 					};
@@ -685,6 +682,18 @@ router.post('/update_trip', function(req, res, next){
 			if(bDays > aDays){
 				var difference = bDays - aDays;
 				console.log('difference =', difference);
+				for (var i = num; i >= aDays; i--) {
+					/*var scheduleDate = {
+						schedule_date : i
+					};*/
+					TripModel.findOne({trip_no : doc.trip_no}, function(err, doc){
+						if(err) return next(err);
+						doc.trip_list.splice(i, 1);
+						doc.save(function(err, result){
+							if(err) console.log('err=', err);
+						});
+					});
+				}
 			}
 			/*TripModel.findOne({trip_no : trip_no}, function(err, doc){
 				if(err) return next(err);
