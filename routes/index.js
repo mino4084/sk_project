@@ -660,6 +660,7 @@ router.post('/update_trip', function(req, res, next){
 				}
 				if(doc){
 					console.log('doc =', doc);
+					console.log('doc =', doc);
 				}
 				else{
 					check.code = 0;
