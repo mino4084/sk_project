@@ -688,6 +688,7 @@ router.post('/update_trip', function(req, res, next){
 					};*/
 					TripModel.findOne({trip_no : doc.trip_no}, function(err, doc){
 						if(err) return next(err);
+						console.log('i = ', 1);
 						doc.trip_list.splice(i, 1);
 						doc.save(function(err, result){
 							if(err) console.log('err=', err);
