@@ -1460,7 +1460,9 @@ var message = {
 };
 
 router.get('/sendForm', function(req, res, next){
-	fcm.send(message);
+	fcm.send(message, function(res){
+		console.log(res);
+	});
 	res.render('sendForm', {title : "sendForm"});
 });
 
