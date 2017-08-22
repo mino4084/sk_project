@@ -626,7 +626,7 @@ router.post('/update_trip', function(req, res, next){
 	TripModel.findOne({trip_no : trip_no}, function(err, doc){
 		if(err) return next(err);
 		console.log('doc =', doc);
-
+		var num = doc.trip_list.length;
 		var bStart = moment(doc.start_date);
 		var bEnd = moment(doc.end_date);
 		var bDays = bEnd.diff(bStart, 'days');
@@ -669,6 +669,18 @@ router.post('/update_trip', function(req, res, next){
 			if(bDays < aDays){
 				var difference = aDays - bDays;
 				console.log('difference =', difference);
+				console.log('num =', num);
+				/*for (var i = end_date + 1; i <= db_end_date; i++) {
+					console.log('i =', i);
+					var scheduleDate = {
+						schedule_date : i
+					};
+					TripModel.findOneAndUpdate({trip_no : doc.trip_no}, {$push : {"trip_list" : scheduleDate}},
+						{safe : true, upsert : true, new : true}, function(err, doc){
+						if(err) return next(err);
+						console.log('schedule update doc =', doc);
+					});
+				}*/
 			}
 			if(bDays > aDays){
 				var difference = bDays - aDays;
