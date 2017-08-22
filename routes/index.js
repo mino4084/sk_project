@@ -846,7 +846,7 @@ router.post('/create_item_map', function(req, res, next){
 
 	var code = 1;
 	var message = "OK";
-	var result = [];
+	var result = {};
 
 	var data = {
 		item_url : null,
