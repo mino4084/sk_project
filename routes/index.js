@@ -660,14 +660,13 @@ router.post('/update_trip', function(req, res, next){
 				}
 				if(doc){
 					console.log('doc =', doc);
-					console.log('doc =', doc);
-					console.log('doc =', doc);
 				}
 				else{
 					check.code = 0;
 					check.message = '여행 수정 실패';
 				}
 			});
+			console.log('여행날짜가 다르다.!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
 			/*TripModel.findOne({trip_no : trip_no}, function(err, doc){
 				if(err) return next(err);
 				for(var i = 0; i < doc.trip_list.length; i++) {
