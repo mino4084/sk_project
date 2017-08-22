@@ -947,7 +947,7 @@ router.post('/map_item', function(req, res, next){
 		};
 
 		for(var i = arr.schedule_list.length - 1; i >= 0; i--) {
-			if(arr.schedule_list[i].item_placeid !== null){
+			if(arr.schedule_list[i].item_placeid == null){
 				arr.schedule_list.splice(i, 1);
 			}
 		};
