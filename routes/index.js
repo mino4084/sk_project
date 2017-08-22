@@ -1447,18 +1447,6 @@ router.post('/time_final', function(req, res, next){
 // express-validator 사용
 
 ////////////////////////////////////////////////////
-
-router.get('/sendForm', function(req, res, next){
-
-	res.render('sendForm', {title : "sendForm"});
-});
-
-var serverKey = 'AAAAkn8Pa7w:APA91bFRQVUYGjvvugJokF6-yUAKUZM2sFFiprSqo-PFsPLvbDKZwShLnrls7X8GbzNkWufDz_MZuScFtzI1KfW5DoXvzRUBKZ5tAItKbfe-kM7oaztVmJdQ0Jgy151I9jLhSuu2PByO';
-
-/*var apiKey = 'AAAAApY-fKs:APA91bFiNW_RPPDNJg4W3J4kVaTZUDezHsQYCPoR21ebrcQs38auq7Xh1Dp3DLdeqRBSUQJ3PziltPCy1ggfVXuY7w17J9e11KvTWHnNwCe2IM-u3AM4yhmbKXLaSbI6bgW8YnUkcD_N';*/
-
-var fcm = new FCM(serverKey);
-
 var message = {
     to: 'registration_token_or_topics', // required fill with device token or topics
     collapse_key: 'your_collapse_key',
@@ -1470,6 +1458,19 @@ var message = {
         body: 'Body of your push notification'
     }
 };
+
+router.get('/sendForm', function(req, res, next){
+	fcm.send(message);
+	res.render('sendForm', {title : "sendForm"});
+});
+
+var serverKey = 'AAAAkn8Pa7w:APA91bFRQVUYGjvvugJokF6-yUAKUZM2sFFiprSqo-PFsPLvbDKZwShLnrls7X8GbzNkWufDz_MZuScFtzI1KfW5DoXvzRUBKZ5tAItKbfe-kM7oaztVmJdQ0Jgy151I9jLhSuu2PByO';
+
+/*var apiKey = 'AAAAApY-fKs:APA91bFiNW_RPPDNJg4W3J4kVaTZUDezHsQYCPoR21ebrcQs38auq7Xh1Dp3DLdeqRBSUQJ3PziltPCy1ggfVXuY7w17J9e11KvTWHnNwCe2IM-u3AM4yhmbKXLaSbI6bgW8YnUkcD_N';*/
+
+var fcm = new FCM(serverKey);
+
+
 
 //callback style
 fcm.send(message, function(err, response){
