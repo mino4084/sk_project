@@ -682,6 +682,7 @@ router.post('/update_trip', function(req, res, next){
 			if(bDays > aDays){
 				var difference = bDays - aDays;
 				console.log('difference =', difference);
+				console.log('num = ', num);
 				for (var i = num; i >= aDays; i--) {
 					/*var scheduleDate = {
 						schedule_date : i
