@@ -751,7 +751,7 @@ router.post('/create_item', function(req, res, next){
 	var item_title = req.body.item_title;
 	var item_memo = req.body.item_memo;
 
-/*	if(req.body.cate_no == ""){ // 입력하는 칸에 아무것도 입력하지 않았을 때
+	if(req.body.cate_no == ""){ // 입력하는 칸에 아무것도 입력하지 않았을 때
 		var cate_no = 0;
 	}
 	else{ // 입력한 경우
@@ -791,7 +791,7 @@ router.post('/create_item', function(req, res, next){
 	}
 	else{
 		var item_memo = req.body.item_memo;
-	}*/
+	}
 
 	var code = 1;
 	var message = "OK";
