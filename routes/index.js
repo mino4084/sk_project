@@ -591,8 +591,7 @@ router.post('/list_trip', function(req, res, next){
 		var arr = {};
 		if(err) return next(err);
 		console.log('list docs =', docs);
-		arr = docs;
-		check.result = arr;
+		check.result = docs;
 		res.json(check);  //json으로 하면 모바일이 된다.
 		//res.render('list_trip', {title : "list_trip", docs : docs}); //웹서버
 	});
