@@ -486,6 +486,7 @@ router.post('/create_trip', function(req, res, next){
 					        console.log("Push Success : ", response);
 					    }
 					});
+					res.json(check);
 				}
 				else{
 					check.code = 0;
