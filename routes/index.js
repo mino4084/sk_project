@@ -437,7 +437,7 @@ router.post('/create_trip', function(req, res, next){
 		}
 
 		if(doc){
-			/*var message = {
+			var message = {
 			    to: doc.user_token,
 			    collapse_key: 'test_collapse_key',
 			    data: {
@@ -447,7 +447,7 @@ router.post('/create_trip', function(req, res, next){
 			        title: 'Title of your push notification',
 			        body: 'Body of your push notification'
 			    }
-			};*/
+			};
 			// DB에 trip 생성
 			var trip = new TripModel(data);
 			trip.save(function(err, doc){
@@ -473,14 +473,14 @@ router.post('/create_trip', function(req, res, next){
 						});
 					}
 
-					/*//callback style
+					//callback style
 					fcm.send(message, function(err, response){
 					    if (err) {
 					        console.log("Push Fail!");
 					    } else {
 					        console.log("Push Success : ", response);
 					    }
-					});*/
+					});
 					check.result = doc;
 
 				}
