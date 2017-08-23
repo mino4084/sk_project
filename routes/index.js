@@ -24,7 +24,6 @@ router.get('/simple', function(req, res, next){
 });
 
 router.post('/simple', function(req, res, next) {
-  	//var id = req.session.user_id;
   	var id = req.body.user_id; //비회원일 경우 uuid나 토큰으로 저장
 
   	var code = 1;
@@ -453,10 +452,7 @@ router.post('/create_trip', function(req, res, next){
 					console.log('schedule update doc =', doc);
 				});
 			}
-
-
 			check.result = doc;
-
 		}
 		else{
 			check.code = 0;
@@ -1456,6 +1452,8 @@ router.post('/time_final', function(req, res, next){
 // express-validator 사용
 
 ////////////////////////////////////////////////////
+//알림 디비 수정
+
 //callback style
 /*
 var message = {
