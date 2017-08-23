@@ -477,7 +477,7 @@ router.post('/create_trip', function(req, res, next){
 							console.log('schedule update doc =', doc);
 						});
 					}
-					check.result = doc;
+
 					//callback style
 					fcm.send(message, function(err, response){
 					    if (err) {
@@ -486,6 +486,7 @@ router.post('/create_trip', function(req, res, next){
 					        console.log("Push Success : ", response);
 					    }
 					});
+					check.result = doc;
 					res.json(check);
 				}
 				else{
