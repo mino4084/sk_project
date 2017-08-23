@@ -8,8 +8,10 @@ var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
 var NoticeSchema = new Schema({
-	user_no : { type : Number, ref : 'User' },
-	trip_no : { type : Number, ref : 'Trip' }
+	notice_trip : String,
+	notice_partner : String,
+	notice_item : String,
+	notice_cate : Number //후보지 업로드 : 0, 후보지 체크 : 1, 후보지 체크 해제 : 2, 후보지 삭제 : 3
 });
 
 

@@ -429,7 +429,9 @@ router.post('/create_trip', function(req, res, next){
 		message : message,
 		result : result
 	};
-	UserModel.findOne({user_id : partner_id}, function(err, doc){
+	// DB에 trip 생성
+	var trip = new TripModel(data);
+	trip.save(function(err, doc){
 		if(err){
 			check.code = 0;
 			check.message = err;
@@ -437,58 +439,24 @@ router.post('/create_trip', function(req, res, next){
 		}
 
 		if(doc){
-			var message = {
-			    to: doc.user_token,
-			    collapse_key: 'test_collapse_key',
-			    data: {
-			        your_custom_data_key: 'test_custom_data_value'
-			    },
-			    notification: {
-			        title: 'Title of your push notification',
-			        body: 'Body of your push notification'
-			    }
-			};
-			// DB에 trip 생성
-			var trip = new TripModel(data);
-			trip.save(function(err, doc){
-				if(err){
-					check.code = 0;
-					check.message = err;
-					return next(err);
-				}
+			console.log('doc =', doc);
+			//DB에 schedule 생성
+			var day1 = moment(start_date);
+			var day2 = moment(end_date);
+			var num = day2.diff(day1, 'days');
+			for (var i = 1; i <= num + 1; i++) {
+				console.log('i =', i);
+				var scheduleDate = { schedule_date : i };
+				TripModel.findOneAndUpdate({trip_no : doc.trip_no}, {$push : {"trip_list" : scheduleDate}},
+					{safe : true, upsert : true, new : true}, function(err, doc){
+					if(err) return next(err);
+					console.log('schedule update doc =', doc);
+				});
+			}
 
-				if(doc){
-					console.log('doc =', doc);
-					//DB에 schedule 생성
-					var day1 = moment(start_date);
-					var day2 = moment(end_date);
-					var num = day2.diff(day1, 'days');
-					for (var i = 1; i <= num + 1; i++) {
-						console.log('i =', i);
-						var scheduleDate = { schedule_date : i };
-						TripModel.findOneAndUpdate({trip_no : doc.trip_no}, {$push : {"trip_list" : scheduleDate}},
-							{safe : true, upsert : true, new : true}, function(err, doc){
-							if(err) return next(err);
-							console.log('schedule update doc =', doc);
-						});
-					}
 
-					//callback style
-					fcm.send(message, function(err, response){
-					    if (err) {
-					        console.log("Push Fail!");
-					    } else {
-					        console.log("Push Success : ", response);
-					    }
-					});
-					check.result = doc;
+			check.result = doc;
 
-				}
-				else{
-					check.code = 0;
-					check.message = '여행생성 실패';
-				}
-			});
 		}
 		else{
 			check.code = 0;
@@ -1488,4 +1456,38 @@ router.post('/time_final', function(req, res, next){
 // express-validator 사용
 
 ////////////////////////////////////////////////////
+//callback style
+/*
+var message = {
+    to: doc.user_token,
+    collapse_key: 'test_collapse_key',
+    data: {
+        your_custom_data_key: 'test_custom_data_value'
+    },
+    notification: {
+        title: 'Title of your push notification',
+        body: 'Body of your push notification'
+    }
+};
+
+
+
+
+fcm.send(message, function(err, response){
+    if (err) {
+        console.log("Push Fail!");
+    } else {
+        console.log("Push Success : ", response);
+        var notice_data = {
+        	notice_trip : trip_title,
+        	notice_partner : partner_id,
+        	notice_item : item_title
+        };
+        var notice = new NoticeModel(notice_data);
+        notice.save(function(err, doc){
+        	if(err) next(err);
+
+        });
+    }
+});*/
 module.exports = router;
