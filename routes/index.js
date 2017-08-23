@@ -1022,14 +1022,10 @@ router.get('/update_item', function(req, res, next){
 
 router.post('/update_item', function(req, res, next){
 	console.log('req body =', req.body);
-	var id = req.session.user_id;
-	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
-
 	var _id =  req.body._id;
 	//5995003689e021714ada80a9
 	var trip_no = req.body.trip_no;
 	var schedule_date = req.body.schedule_date;
-
 	var cate_no = req.body.cate_no;
 	var item_lat = req.body.item_lat;
 	var item_long = req.body.item_long;
@@ -1053,11 +1049,12 @@ router.post('/update_item', function(req, res, next){
 		TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
 			var index = 0;
 			var arr = {};
-			if(err){
+			if(err) {
+				console.log('err =', err);
 				check.code = 0;
 				check.message = err;
-				return next(err);
-			};
+			}
+			console.log('doc =', doc);
 			for(var i = 0; i < doc.trip_list.length; i++) {
 				if(doc.trip_list[i].schedule_date == schedule_date) {
 					for (var j = 0; j < doc.trip_list[i].schedule_list.length; j++) {
@@ -1074,7 +1071,6 @@ router.post('/update_item', function(req, res, next){
 			};// for
 			for(var i = 0; i < doc.trip_list.length; i++) {
 				if(doc.trip_list[i].schedule_date == update_schedule_date) {
-					// console.log('doc.trip_list[i].schedule_list =', doc.trip_list[i].schedule_list);
 					arr[0].cate_no = cate_no;
 					arr[0].item_lat = item_lat;
 					arr[0].item_long = item_long;
@@ -1083,23 +1079,26 @@ router.post('/update_item', function(req, res, next){
 					arr[0].item_memo = item_memo;
 					arr[0].item_check = item_check;
 					doc.trip_list[i].schedule_list.push(arr[0]);
-					// check.result = doc.trip_list[i].schedule_list;
 				};
 			};// for
 			doc.save(function(err, result){
-				if(err) console.log('err=', err);
+				if(err) {
+					console.log('err =', err);
+					check.code = 0;
+					check.message = err;
+				}
 				res.json(check);
 			});
 		});
 	}
 	else{
 		TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
-			if(err){
+			if(err) {
+				console.log('err =', err);
 				check.code = 0;
 				check.message = err;
-				return next(err);
-			};
-			// console.log('doc =', doc);
+			}
+			console.log('doc =', doc);
 			for(var i = 0; i < doc.trip_list.length; i++) {
 				if(doc.trip_list[i].schedule_date == schedule_date) {
 					for (var j = 0; j < doc.trip_list[i].schedule_list.length; j++) {
@@ -1111,14 +1110,16 @@ router.post('/update_item', function(req, res, next){
 							doc.trip_list[i].schedule_list[j].item_title = item_title;
 							doc.trip_list[i].schedule_list[j].item_memo = item_memo;
 							doc.trip_list[i].schedule_list[j].item_check = item_check;
-							console.log('doc.trip_list[i].schedule_list =', doc.trip_list[i].schedule_list);
-							// check.result = doc.trip_list[i].schedule_list;
 						}
 					}
 				};
 			};// for
 			doc.save(function(err, result){
-				if(err) console.log('err=', err);
+				if(err) {
+					console.log('err =', err);
+					check.code = 0;
+					check.message = err;
+				}
 				res.json(check);
 			});
 		});
@@ -1133,11 +1134,8 @@ router.get('/delete_item', function(req, res, next){
 
 router.post('/delete_item', function(req, res, next){
 	console.log('req body =', req.body);
-	var id = req.session.user_id;
 	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
-
 	var _id =  req.body._id;
-	//5995003689e021714ada80a9
 	var trip_no = req.body.trip_no;
 	var schedule_date = req.body.schedule_date;
 
@@ -1153,12 +1151,12 @@ router.post('/delete_item', function(req, res, next){
 
 	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
 		var index = 0;
-		if(err){
+		if(err) {
+			console.log('err =', err);
 			check.code = 0;
 			check.message = err;
-			return next(err);
-		};
-
+		}
+		console.log('doc =', doc);
 		for(var i = 0; i < doc.trip_list.length; i++) {
 			if(doc.trip_list[i].schedule_date == schedule_date) {
 				for (var j = 0; j < doc.trip_list[i].schedule_list.length; j++) {
@@ -1174,14 +1172,12 @@ router.post('/delete_item', function(req, res, next){
 				doc.trip_list[i].schedule_list.splice(index, 1);
 			};
 		};// for
-		for(var i = 0; i < doc.trip_list.length; i++) {
-			if(doc.trip_list[i].schedule_date == schedule_date) {
-				console.log('doc.trip_list[i].schedule_list =', doc.trip_list[i].schedule_list);
-				// check.result = doc.trip_list[i].schedule_list;
-			};
-		};// for
 		doc.save(function(err, result){
-			if(err) console.log('err=', err);
+			if(err) {
+				console.log('err =', err);
+				check.code = 0;
+				check.message = err;
+			}
 			res.json(check);
 		});
 	});
@@ -1195,11 +1191,7 @@ router.get('/check_item', function(req, res, next){
 
 router.post('/check_item', function(req, res, next){
 	console.log('req body =', req.body);
-	var id = req.session.user_id;
-	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
-
 	var _id =  req.body._id;
-	//5995003689e021714ada80a9
 	var trip_no = req.body.trip_no;
 	var schedule_date = req.body.schedule_date;
 
@@ -1214,12 +1206,12 @@ router.post('/check_item', function(req, res, next){
 	};
 
 	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
-		if(err){
+		if(err) {
+			console.log('err =', err);
 			check.code = 0;
 			check.message = err;
-			return next(err);
-		};
-
+		}
+		console.log('doc =', doc);
 		for(var i = 0; i < doc.trip_list.length; i++) {
 			if(doc.trip_list[i].schedule_date == schedule_date) {
 				for (var j = 0; j < doc.trip_list[i].schedule_list.length; j++) {
@@ -1230,16 +1222,8 @@ router.post('/check_item', function(req, res, next){
 						else{
 							doc.trip_list[i].schedule_list[j].item_check = 1;
 						}
-						console.log('doc.trip_list[i].schedule_list[j].item_check =', doc.trip_list[i].schedule_list[j].item_check);
 					}
 				}
-			};
-		};// for
-
-		for(var i = 0; i < doc.trip_list.length; i++) {
-			if(doc.trip_list[i].schedule_date == schedule_date) {
-				console.log('doc.trip_list[i].schedule_list =', doc.trip_list[i].schedule_list);
-				// check.result = doc.trip_list[i].schedule_list;
 			};
 		};// for
 		doc.save(function(err, result){
