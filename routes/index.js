@@ -311,7 +311,6 @@ router.get('/change_pw', function(req, res, next){
 
 router.post('/change_pw', function(req, res, next){
 	console.log('req.body =', req.body);
-	// var id = req.session.user_id;
 	var user_id = req.body.user_id; // 비회원일 경우 uuid나 토큰으로 저장
 	var user_pw = req.body.user_pw;
 	//bcrypt 사용
@@ -417,9 +416,9 @@ router.post('/create_trip', function(req, res, next){
 	var trip = new TripModel(data);
 	trip.save(function(err, doc){
 		if(err){
+			console.log('err =', err);
 			check.code = 0;
 			check.message = err;
-			return next(err);
 		}
 
 		if(doc){
@@ -442,19 +441,10 @@ router.post('/create_trip', function(req, res, next){
 		}
 		res.json(check);
 	});
-
-
-
 });
 // 여행 생성
 
 // 파트너 찾기
-///////////////
-//
-//자기 자신 파트너 방지하기 기능 추가해야함
-//
-//
-///////////////
 router.get('/find_partner', function(req, res, next){
 	res.render('find_partner', {title : "find_partner"});
 });
@@ -472,11 +462,15 @@ router.post('/find_partner', function(req, res, next){
 		message : message,
 		result : result
 	};
+
+	// 검색한 파트너가 자신과 동일할때
 	if(user_id == partner_id){
 		check.code = 0;
 		check.message = "파트너는 자신을 제외한 사용자이어야 합니다.";
 		res.json(check);
 	};
+
+	// 검색한 파트너가 자신과 동일하지 않을때
 	if(user_id !== partner_id){
 		UserModel.findOne({user_id : partner_id}, function(err, doc){
 			if(err) {
@@ -484,8 +478,8 @@ router.post('/find_partner', function(req, res, next){
 				check.code = 0;
 				check.message = err;
 			}
-			console.log('doc =', doc); // 실패할 경우 null
 			if(doc){
+				console.log('doc =', doc);
 				check.result = doc;
 			}
 			else{
@@ -495,7 +489,6 @@ router.post('/find_partner', function(req, res, next){
 			res.json(check);
 		});
 	}
-
 });
 // 파트너 찾기
 
@@ -561,7 +554,6 @@ router.get('/list_trip', function(req, res, next){
 
 router.post('/list_trip', function(req, res, next){
 	console.log('req body =', req.body);
-	// var id = req.session.user_id;
 	var id = req.body.user_id; // 비회원일 경우 uuid나 토큰으로 저장
 
 	var code = 1;
@@ -575,11 +567,14 @@ router.post('/list_trip', function(req, res, next){
 
 	TripModel.find({$or: [{ user_id: id }, { partner_id : id } ]}, null, {sort : {trip_no : -1}}, function(err, docs){
 		var arr = {};
-		if(err) return next(err);
+		if(err){
+			console.log('err =', err);
+			check.code = 0;
+			check.message = err;
+		}
 		console.log('list docs =', docs);
 		check.result = docs;
-		res.json(check);  //json으로 하면 모바일이 된다.
-		//res.render('list_trip', {title : "list_trip", docs : docs}); //웹서버
+		res.json(check);
 	});
 });
 // 여행 리스트 조회
@@ -591,7 +586,6 @@ router.get('/update_trip', function(req, res, next){
 
 router.post('/update_trip', function(req, res, next){
 	console.log('req.body = ', req.body);
-
 	var trip_no = req.body.trip_no;
 	var trip_title = req.body.trip_title;
 	var start_date = req.body.start_date;
@@ -602,8 +596,7 @@ router.post('/update_trip', function(req, res, next){
 
 	var code = 1;
 	var message = "OK";
-	var result = [];
-
+	var result = {};
 	var check = {
 		code : code,
 		message : message,
@@ -611,7 +604,11 @@ router.post('/update_trip', function(req, res, next){
 	};
 
 	TripModel.findOne({trip_no : trip_no}, function(err, doc){
-		if(err) return next(err);
+		if(err){
+			console.log('err =', err);
+			check.code = 0;
+			check.message = err;
+		}
 		console.log('doc =', doc);
 		var num = doc.trip_list.length;
 		var bStart = moment(doc.start_date);
@@ -621,6 +618,7 @@ router.post('/update_trip', function(req, res, next){
 		var aStart = moment(start_date);
 		var aEnd = moment(end_date);
 		var aDays = aEnd.diff(aStart, 'days');
+		// 수정한 여행일자와 현재 여행일자가 같을때
 		if(bDays == aDays){
 			TripModel.updateOne({trip_no : trip_no}, {$set : {trip_title : trip_title, start_date : start_date, end_date : end_date, hashtag : hashtag}}, function(err, doc){
 				if(err) {
@@ -638,6 +636,8 @@ router.post('/update_trip', function(req, res, next){
 
 			});
 		}
+
+		// 수정한 여행일자와 현재 여행일자가 다를때
 		else{
 			TripModel.updateOne({trip_no : trip_no}, {$set : {trip_title : trip_title, start_date : start_date, end_date : end_date, hashtag : hashtag}}, function(err, doc){
 				if(err) {
@@ -653,6 +653,7 @@ router.post('/update_trip', function(req, res, next){
 					check.message = '여행 수정 실패';
 				}
 			});
+			// 수정한 여행일자가 현재 여행일자보다 클 때
 			if(bDays < aDays){
 				var difference = aDays - bDays;
 				for (var i = num + 1; i <= num + difference; i++) {
@@ -667,6 +668,7 @@ router.post('/update_trip', function(req, res, next){
 					});
 				}
 			}
+			// 수정한 여행일자가 현재 여행일자보다 작을 때
 			if(bDays > aDays){
 				TripModel.findOne({trip_no : doc.trip_no}, function(err, doc){
 					if(err){
@@ -686,7 +688,6 @@ router.post('/update_trip', function(req, res, next){
 						}
 					});
 				});
-
 			}
 		}
 		res.json(check);
@@ -702,6 +703,7 @@ router.get('/delete_trip', function(req, res, next){
 router.post('/delete_trip', function(req, res, next){
 	console.log('req.body = ', req.body);
 	var trip_no = req.body.trip_no;
+
 	var code = 1;
 	var message = "OK";
 	var result = [];
@@ -737,7 +739,6 @@ router.get('/create_item_url', function(req, res, next){
 
 router.post('/create_item_url', function(req, res, next){
 	console.log('req body =', req.body);
-
 	var trip_no = req.body.trip_no;
 	var schedule_date = req.body.schedule_date;
 	var item_url = req.body.item_url;
@@ -745,7 +746,6 @@ router.post('/create_item_url', function(req, res, next){
 	var code = 1;
 	var message = "OK";
 	var result = {};
-
 	var data = {
 		item_url : item_url,
 		item_lat : null,
@@ -762,10 +762,14 @@ router.post('/create_item_url', function(req, res, next){
 	};
 
 	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
-		if(err) return next(err);
+		if(err) {
+			console.log('err =', err);
+			check.code = 0;
+			check.message = err;
+		}
+		console.log('doc =', doc);
 		for(var i = 0; i < doc.trip_list.length; i++) {
 			if(doc.trip_list[i].schedule_date == schedule_date) {
-				console.log('trip_list[' + i + '] =', doc.trip_list[i]);
 				check.result = doc.trip_list[i];
 				doc.trip_list[i].schedule_list.push(data);
 			};
@@ -775,16 +779,6 @@ router.post('/create_item_url', function(req, res, next){
 			res.json(check);
 		})
 	});
-
-/*	var notice = new NoticeModel(data);
-	notice.save(function(err, doc){
-		if(err){
-			console.log('err =', err);
-			return next(err);
-		}
-		console.log('notice data =', doc);
-		res.json(check);
-	});*/
 });
 // 후보지 URL 단순 생성
 
@@ -795,7 +789,6 @@ router.get('/create_item', function(req, res, next){
 
 router.post('/create_item', function(req, res, next){
 	console.log('req body =', req.body);
-
 	var trip_no = req.body.trip_no;
 	var schedule_date = req.body.schedule_date;
 	var item_url = req.body.item_url;
@@ -869,10 +862,14 @@ router.post('/create_item', function(req, res, next){
 	};
 
 	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
-		if(err) return next(err);
+		if(err) {
+			console.log('err =', err);
+			check.code = 0;
+			check.message = err;
+		}
+		console.log('doc =', doc);
 		for(var i = 0; i < doc.trip_list.length; i++) {
 			if(doc.trip_list[i].schedule_date == schedule_date) {
-				console.log('trip_list[' + i + '] =', doc.trip_list[i]);
 				check.result = doc.trip_list[i];
 				doc.trip_list[i].schedule_list.push(data);
 			};
@@ -892,7 +889,6 @@ router.get('/create_item_map', function(req, res, next){
 
 router.post('/create_item_map', function(req, res, next){
 	console.log('req body =', req.body);
-
 	var trip_no = req.body.trip_no;
 	var schedule_date = req.body.schedule_date;
  	var item_lat = req.body.item_lat;
@@ -919,10 +915,14 @@ router.post('/create_item_map', function(req, res, next){
 	};
 
 	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
-		if(err) return next(err);
+		if(err) {
+			console.log('err =', err);
+			check.code = 0;
+			check.message = err;
+		}
+		console.log('doc =', doc);
 		for(var i = 0; i < doc.trip_list.length; i++) {
 			if(doc.trip_list[i].schedule_date == schedule_date) {
-				console.log('trip_list[' + i + '] =', doc.trip_list[i]);
 				check.result = doc.trip_list[i];
 				doc.trip_list[i].schedule_list.push(data);
 			};
@@ -942,9 +942,9 @@ router.get('/list_item', function(req, res, next){
 
 router.post('/list_item', function(req, res, next){
 	console.log('req body =', req.body);
-
 	var trip_no = req.body.trip_no;
 	var schedule_date = req.body.schedule_date;
+
 	var code = 1;
 	var message = "OK";
 	var result = {};
@@ -955,18 +955,18 @@ router.post('/list_item', function(req, res, next){
 	};
 
 	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
-		if(err) return next(err);
-		console.log('list doc =', doc);
-		//check.result = doc;
+		if(err) {
+			console.log('err =', err);
+			check.code = 0;
+			check.message = err;
+		}
+		console.log('doc =', doc);
 		for(var i = 0; i < doc.trip_list.length; i++) {
-			// console.log('trip_list['+i+'] =', doc.trip_list[i]);
 			if(doc.trip_list[i].schedule_date == schedule_date) {
-				console.log('trip_list['+ i +'] =', doc.trip_list[i]);
 				check.result = doc.trip_list[i];
 			};
 		};// for
-		res.json(check);  //json으로 하면 모바일이 된다.
-		//res.render('list_trip', {title : "list_trip", docs : docs}); //웹서버
+		res.json(check);
 	});
 });
 // 후보지 리스트 조회
@@ -978,13 +978,12 @@ router.get('/map_item', function(req, res, next){
 
 router.post('/map_item', function(req, res, next){
 	console.log('req body =', req.body);
-
 	var trip_no = req.body.trip_no;
 	var schedule_date = req.body.schedule_date;
+
 	var code = 1;
 	var message = "OK";
 	var result = {};
-	// var arr = new Array();
 	var check = {
 		code : code,
 		message : message,
@@ -993,70 +992,26 @@ router.post('/map_item', function(req, res, next){
 
 	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
 		var arr = {};
-		if(err) return next(err);
+		if(err) {
+			console.log('err =', err);
+			check.code = 0;
+			check.message = err;
+		}
 		arr = doc.trip_list;
 		for(var i = 0; i < arr.length; i++) {
 			if(arr[i].schedule_date == schedule_date) {
 				arr = arr[i];
 			};
 		};
-
+		console.log('doc =', doc);
 		for(var i = arr.schedule_list.length - 1; i >= 0; i--) {
 			if(arr.schedule_list[i].item_placeid == null){
 				arr.schedule_list.splice(i, 1);
 			}
 		};
-		console.log('arr =', arr);
 		check.result = arr;
 		res.json(check);
 	});
-
-	/*//trip을 포함해서 item까지 다나온다.
-	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
-		if(err){
-			check.code = 0;
-			check.message = err;
-			return next(err);
-		};
-		// console.log('list doc =', doc);
-		for(var i = 0; i < doc.trip_list.length; i++) {
-			if(doc.trip_list[i].schedule_date == schedule_date) {
-				// console.log('trip_list['+ i +'] =', doc.trip_list[i]);
-				// check.result = doc.trip_list[i];
-				for (var j = 0; j < doc.trip_list[i].schedule_list.length; j++) {
-					if(doc.trip_list[i].schedule_list[j].item_placeid !== null){
-						console.log('doc.trip_list[i].schedule_list[j] =', doc.trip_list[i].schedule_list[j]);
-						arr.push(doc.trip_list[i].schedule_list[j]);
-					}
-				}
-			};
-		};// for
-		check.result = arr;
-		res.json(check);  //json으로 하면 모바일이 된다.
-		//res.render('list_trip', {title : "list_trip", docs : docs}); //웹서버
-	});*/
-
-	//result에 딱 item_placeid가 0이 아닌 item만 나온다.
-	//trip은 안나온다.
-	/*TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
-		if(err) return next(err);
-		console.log('list doc =', doc);
-		//check.result = doc;
-		for(var i = 0; i < doc.trip_list.length; i++) {
-			// console.log('trip_list['+i+'] =', doc.trip_list[i]);
-			if(doc.trip_list[i].schedule_date == schedule_date) {
-				for (var j = 0; j < doc.trip_list[i].schedule_list.length; j++) {
-					if(doc.trip_list[i].schedule_list[j].item_placeid !== 0){
-						check.result.push(doc.trip_list[i].schedule_list[j]);
-					}
-				}
-				console.log('trip_list['+ i +'] =', doc.trip_list[i]);
-				// check.result = doc.trip_list[i];
-			};
-		};// for
-		res.json(check);  //json으로 하면 모바일이 된다.
-		//res.render('list_trip', {title : "list_trip", docs : docs}); //웹서버
-	});*/
 });
 // 후보지 지도 조회
 
@@ -1435,6 +1390,16 @@ router.post('/time_final', function(req, res, next){
 
 ////////////////////////////////////////////////////
 //알림 디비 수정
+
+/*	var notice = new NoticeModel(data);
+	notice.save(function(err, doc){
+		if(err){
+			console.log('err =', err);
+			return next(err);
+		}
+		console.log('notice data =', doc);
+		res.json(check);
+	});*/
 
 //callback style
 /*
