@@ -164,10 +164,12 @@ router.post('/join', function(req, res, next){
 			console.log('err =', err);
 			check.code = 0;
 			check.message = err;
+			res.json(check);
 		}
 		if(doc){
 			check.code = 0;
 			check.message = '동일한 이메일 아이디가 존재합니다.';
+			res.json(check);
 		}
 		else{
 			user.save(function(err, doc){
@@ -181,7 +183,6 @@ router.post('/join', function(req, res, next){
 				res.json(check);
 			});
 		}
-		res.json(check);
 	});
 });
 //회원가입
