@@ -6,6 +6,8 @@ var UserModel = require('../models/user');
 var TripModel = require('../models/trip');
 var NoticeModel = require('../models/notice');
 var FCM = require('fcm-push');
+var serverKey = 'AAAAkn8Pa7w:APA91bFRQVUYGjvvugJokF6-yUAKUZM2sFFiprSqo-PFsPLvbDKZwShLnrls7X8GbzNkWufDz_MZuScFtzI1KfW5DoXvzRUBKZ5tAItKbfe-kM7oaztVmJdQ0Jgy151I9jLhSuu2PByO';
+var fcm = new FCM(serverKey);
 
 
 /* GET home page. */
@@ -427,38 +429,75 @@ router.post('/create_trip', function(req, res, next){
 		message : message,
 		result : result
 	};
-
-	// DB에 trip 생성
-	var trip = new TripModel(data);
-	trip.save(function(err, doc){
+	UserModel.findOne({user_id : partner_id}, function(err, doc){
+		var message = {
+		    to: doc.user_token,
+		    collapse_key: 'test_collapse_key',
+		    data: {
+		        your_custom_data_key: 'test_custom_data_value'
+		    },
+		    notification: {
+		        title: 'Title of your push notification',
+		        body: 'Body of your push notification'
+		    }
+		};
 		if(err){
 			check.code = 0;
 			check.message = err;
 			return next(err);
 		}
-		console.log('doc =', doc);
-		console.log('trip_no =', doc.trip_no);
-		//DB에 schedule 생성
-		var day1 = moment(start_date);
-		var day2 = moment(end_date);
-		console.log('day1 =', day1);
-		console.log('day2 =', day2);
-		var num = day2.diff(day1, 'days');
-		// console.log('num =', num);
-		for (var i = 1; i <= num + 1; i++) {
-			console.log('i =', i);
-			var scheduleDate = {
-				schedule_date : i
-			};
-			TripModel.findOneAndUpdate({trip_no : doc.trip_no}, {$push : {"trip_list" : scheduleDate}},
-				{safe : true, upsert : true, new : true}, function(err, doc){
-				if(err) return next(err);
-				console.log('schedule update doc =', doc);
+
+		if(doc){
+			// DB에 trip 생성
+			var trip = new TripModel(data);
+			trip.save(function(err, doc){
+				if(err){
+					check.code = 0;
+					check.message = err;
+					return next(err);
+				}
+				console.log('doc =', doc);
+				console.log('trip_no =', doc.trip_no);
+				//DB에 schedule 생성
+				var day1 = moment(start_date);
+				var day2 = moment(end_date);
+				console.log('day1 =', day1);
+				console.log('day2 =', day2);
+				var num = day2.diff(day1, 'days');
+				// console.log('num =', num);
+				for (var i = 1; i <= num + 1; i++) {
+					console.log('i =', i);
+					var scheduleDate = {
+						schedule_date : i
+					};
+					TripModel.findOneAndUpdate({trip_no : doc.trip_no}, {$push : {"trip_list" : scheduleDate}},
+						{safe : true, upsert : true, new : true}, function(err, doc){
+						if(err) return next(err);
+						console.log('schedule update doc =', doc);
+					});
+				}
+				//callback style
+				fcm.send(message, function(err, response){
+				    if (err) {
+				        console.log("Something has gone wrong!");
+				    } else {
+				        console.log("Successfully sent with response: ", response);
+				    }
+				});
+				check.result = doc;
+
 			});
 		}
-		check.result = doc;
+		else{
+			check.code = 0;
+			check.message = '여행생성 실패';
+		}
 		res.json(check);
+
 	});
+
+
+
 });
 // 여행 생성
 
@@ -1448,43 +1487,4 @@ router.post('/time_final', function(req, res, next){
 // express-validator 사용
 
 ////////////////////////////////////////////////////
-
-
-
-var serverKey = 'AAAAkn8Pa7w:APA91bFRQVUYGjvvugJokF6-yUAKUZM2sFFiprSqo-PFsPLvbDKZwShLnrls7X8GbzNkWufDz_MZuScFtzI1KfW5DoXvzRUBKZ5tAItKbfe-kM7oaztVmJdQ0Jgy151I9jLhSuu2PByO';
-
-/*var apiKey = 'AAAAApY-fKs:APA91bFiNW_RPPDNJg4W3J4kVaTZUDezHsQYCPoR21ebrcQs38auq7Xh1Dp3DLdeqRBSUQJ3PziltPCy1ggfVXuY7w17J9e11KvTWHnNwCe2IM-u3AM4yhmbKXLaSbI6bgW8YnUkcD_N';*/
-
-var fcm = new FCM(serverKey);
-
-var message = {
-    to: 'registration_token_or_topics', // required fill with device token or topics
-    collapse_key: 'your_collapse_key',
-    data: {
-        your_custom_data_key: 'your_custom_data_value'
-    },
-    notification: {
-        title: 'Title of your push notification',
-        body: 'Body of your push notification'
-    }
-};
-
-//callback style
-fcm.send(message, function(err, response){
-    if (err) {
-        console.log("Something has gone wrong!");
-    } else {
-        console.log("Successfully sent with response: ", response);
-    }
-});
-
-//promise style
-fcm.send(message)
-    .then(function(response){
-        console.log("Successfully sent with response: ", response);
-    })
-    .catch(function(err){
-        console.log("Something has gone wrong!");
-        console.error(err);
-    })
 module.exports = router;
