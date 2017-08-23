@@ -411,7 +411,7 @@ router.post('/create_trip', function(req, res, next){
 	var hashtag = req.body.hashtag;
 	var code = 1;
 	var message = "OK";
-	var result = [];
+	var result = {};
 
 	var data = {
 		trip_title : trip_title,
@@ -1100,7 +1100,7 @@ router.post('/update_item', function(req, res, next){
 
 	var code = 1;
 	var message = "OK";
-	var result = [];
+	var result = {};
 
 	var check = {
 		code : code,
