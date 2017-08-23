@@ -437,7 +437,7 @@ router.post('/create_trip', function(req, res, next){
 		}
 
 		if(doc){
-			var message = {
+			/*var message = {
 			    to: doc.user_token,
 			    collapse_key: 'test_collapse_key',
 			    data: {
@@ -447,7 +447,7 @@ router.post('/create_trip', function(req, res, next){
 			        title: 'Title of your push notification',
 			        body: 'Body of your push notification'
 			    }
-			};
+			};*/
 			// DB에 trip 생성
 			var trip = new TripModel(data);
 			trip.save(function(err, doc){
@@ -488,7 +488,6 @@ router.post('/create_trip', function(req, res, next){
 					check.code = 0;
 					check.message = '여행생성 실패';
 				}
-				res.json(check);
 			});
 		}
 		else{
@@ -496,7 +495,6 @@ router.post('/create_trip', function(req, res, next){
 			check.message = '여행생성 실패';
 		}
 		res.json(check);
-
 	});
 
 
