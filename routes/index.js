@@ -12,9 +12,6 @@ var fcm = new FCM(serverKey);
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-	var user_id = req.session.user_id;
-	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
-	console.log('user_id =', user_id);
   	res.render('index', { title: user_id });
 });
 
@@ -24,6 +21,7 @@ router.get('/simple', function(req, res, next){
 });
 
 router.post('/simple', function(req, res, next) {
+	console.log('req.body =', req.body);
   	var id = req.body.user_id; //비회원일 경우 uuid나 토큰으로 저장
 
   	var code = 1;
@@ -41,8 +39,8 @@ router.post('/simple', function(req, res, next) {
   			check.code = 0;
   			check.message = err;
   		}
-  		console.log('doc =', doc); // 실패할 경우 null
   		if(doc){
+  			console.log('doc =', doc);
   			check.result = doc;
   		}
   		else{
@@ -64,11 +62,9 @@ router.post('/login', function(req, res, next){
 	var id = req.body.user_id;
 	var pw = req.body.user_pw;
 
-
 	var code = 1;
 	var message = "OK";
 	var result = {};
-	// var no = {};
 	var check = {
 		code : code,
 		message : message,
@@ -80,43 +76,34 @@ router.post('/login', function(req, res, next){
 			console.log('err =', err);
 			check.code = 0;
 			check.message = err;
-			// check.result.push(no);
 		}
-		console.log('doc =', doc); // 실패할 경우 null
+
 		if(doc){
+			console.log('doc =', doc);
 			var hash = doc.user_pw;
 			var login_data = bcrypt.compareSync(pw, hash);
+
+			// 비밀번호 체크
 			if(login_data){
 				doc.user_yn = 0;
 				check.result = doc;
-				/*UserModel.updateOne({user_id : id}, {$set : {user_yn : 0}}, function(err, doc){
-					if(err) {
-						console.log('err =', err);
-					}
-					console.log('doc =', doc);
-				});*/
 			}
 			else{
 				check.code = 0;
 				check.message = '비밀번호가 틀렸습니다.';
-				// check.result.push(no);
-			}
+			} // 비밀번호 체크
 		}
 		else{
 			check.code = 0;
 			check.message = '아이디가 존재하지 않습니다.';
-			// check.result.push(no);
-
 		}
 		res.json(check);
 	});
 });
 // 로그인
 
-
-
 //로그아웃
-router.post('/logout', function(req, res, next){
+/*router.post('/logout', function(req, res, next){
 	var id = req.session.user_id;
 	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
 	var code = 1;
@@ -136,7 +123,7 @@ router.post('/logout', function(req, res, next){
 		console.log('logout req.session =', req.session);
 		res.json(check);
 	});
-});
+});*/
 //로그아웃
 
 // 회원가입
@@ -151,12 +138,12 @@ router.post('/join', function(req, res, next){
 	var user_token = req.body.user_token;
 	var user_uuid = req.body.user_uuid;
 	var user_nick = req.body.user_nick;
-	var code = 1;
-	var message = "OK";
-	var result = [];
-
 	//bcrypt 사용
 	var hash = bcrypt.hashSync(user_pw);
+
+	var code = 1;
+	var message = "OK";
+	var result = {};
 
 	var data = {
 		user_id : user_id,
@@ -177,12 +164,10 @@ router.post('/join', function(req, res, next){
 			console.log('err =', err);
 			check.code = 0;
 			check.message = err;
-			res.json(check);
 		}
 		if(doc){
 			check.code = 0;
 			check.message = '동일한 이메일 아이디가 존재합니다.';
-			res.json(check);
 		}
 		else{
 			user.save(function(err, doc){
@@ -191,11 +176,11 @@ router.post('/join', function(req, res, next){
 					check.message = err;
 					return next(err);
 				}
-				console.log('result data =', doc);
+				console.log('doc =', doc);
 				check.result = doc;
-				res.json(check);
 			});
 		}
+		res.json(check);
 	});
 });
 //회원가입
@@ -207,11 +192,11 @@ router.get('/find_pw', function(req, res, next){
 
 router.post('/find_pw', function(req, res, next){
 	console.log('req.body =', req.body);
-	// var id = req.session.user_id;
 	var id = req.body.user_id; // 비회원일 경우 uuid나 토큰으로 저장
+
 	var code = 1;
 	var message = "OK";
-	var result = [];
+	var result = {};
 	var check = {
 		code : code,
 		message : message,
@@ -224,8 +209,8 @@ router.post('/find_pw', function(req, res, next){
 			check.code = 0;
 			check.message = err;
 		}
-		console.log('doc =', doc); // 실패할 경우 null
 		if(doc){
+			console.log('doc =', doc);
 			check.result = doc.user_pw;
 		}
 		else{
@@ -244,11 +229,9 @@ router.get('/nick', function(req, res, next){
 
 router.post('/nick', function(req, res, next){
 	console.log('req.body =', req.body);
-	// var id = req.session.user_id;
 	var id = req.body.user_id; // 비회원일 경우 uuid나 토큰으로 저장
 	var nick = req.body.user_nick;
 	var user_pw = req.body.user_pw;
-	// var nickname = '';
 
 	var code = 1;
 	var message = "OK";
@@ -265,7 +248,6 @@ router.post('/nick', function(req, res, next){
 			check.code = 0;
 			check.message = err;
 		}
-
 		if(doc){
 			console.log('doc =', doc);
 		}
@@ -303,16 +285,18 @@ router.post('/check_pw', function(req, res, next){
 			check.code = 0;
 			check.message = err;
 		}
-		console.log('doc =', doc); // 실패할 경우 null
+		console.log('doc =', doc);
 		var hash = doc.user_pw;
 		var login_data = bcrypt.compareSync(pw, hash);
+		// 비밀번호 체크
 		if(login_data){
 			doc.user_yn = 0;
 		}
 		else{
 			check.code = 0;
 			check.message = '비밀번호가 틀렸습니다.';
-		}
+		}// 비밀번호 체크
+
 		res.json(check);
 	});
 });
@@ -328,6 +312,9 @@ router.post('/change_pw', function(req, res, next){
 	// var id = req.session.user_id;
 	var user_id = req.body.user_id; // 비회원일 경우 uuid나 토큰으로 저장
 	var user_pw = req.body.user_pw;
+	//bcrypt 사용
+	var hash = bcrypt.hashSync(user_pw);
+
 	var code = 1;
 	var message = "OK";
 	var result = {};
@@ -336,8 +323,6 @@ router.post('/change_pw', function(req, res, next){
 		message : message,
 		result : result
 	};
-	//bcrypt 사용
-	var hash = bcrypt.hashSync(user_pw);
 
 	UserModel.updateOne({user_id : user_id}, {$set : {user_pw : hash}}, function(err, doc){
 		if(err) {
@@ -364,8 +349,8 @@ router.get('/stop', function(req, res, next){
 
 router.post('/stop', function(req, res, next){
 	console.log('req.body =', req.body);
-	// var id = req.session.user_id;
 	var id = req.body.user_id; // 비회원일 경우 uuid나 토큰으로 저장
+
 	var stop = 1;
 	var code = 1;
 	var message = "OK";
@@ -401,19 +386,17 @@ router.get('/create_trip', function(req, res, next){
 
 router.post('/create_trip', function(req, res, next){
 	console.log('req body =', req.body);
-	//var id = req.session.user_id;
 	var id = req.body.user_id; // 비회원일 경우 uuid나 토큰으로 저장
-
 	var trip_title = req.body.trip_title;
 	var start_date = req.body.start_date;
 	var end_date = req.body.end_date;
 	var user_id = req.body.user_id;
 	var partner_id = req.body.partner_id;
 	var hashtag = req.body.hashtag;
+
 	var code = 1;
 	var message = "OK";
 	var result = {};
-
 	var data = {
 		trip_title : trip_title,
 		start_date : start_date,
@@ -422,12 +405,12 @@ router.post('/create_trip', function(req, res, next){
 		partner_id : partner_id,
 		hashtag : hashtag
 	};
-
 	var check = {
 		code : code,
 		message : message,
 		result : result
 	};
+
 	// DB에 trip 생성
 	var trip = new TripModel(data);
 	trip.save(function(err, doc){
@@ -439,17 +422,14 @@ router.post('/create_trip', function(req, res, next){
 
 		if(doc){
 			console.log('doc =', doc);
-			//DB에 schedule 생성
 			var day1 = moment(start_date);
 			var day2 = moment(end_date);
 			var num = day2.diff(day1, 'days');
 			for (var i = 1; i <= num + 1; i++) {
-				console.log('i =', i);
 				var scheduleDate = { schedule_date : i };
 				TripModel.findOneAndUpdate({trip_no : doc.trip_no}, {$push : {"trip_list" : scheduleDate}},
 					{safe : true, upsert : true, new : true}, function(err, doc){
 					if(err) return next(err);
-					console.log('schedule update doc =', doc);
 				});
 			}
 			check.result = doc;
