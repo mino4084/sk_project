@@ -1181,7 +1181,7 @@ router.post('/update_item', function(req, res, next){
 					arr[0].item_memo = item_memo;
 					arr[0].item_check = item_check;
 					doc.trip_list[i].schedule_list.push(arr[0]);
-					check.result = doc.trip_list[i].schedule_list;
+					// check.result = doc.trip_list[i].schedule_list;
 				};
 			};// for
 			doc.save(function(err, result){
@@ -1210,7 +1210,7 @@ router.post('/update_item', function(req, res, next){
 							doc.trip_list[i].schedule_list[j].item_memo = item_memo;
 							doc.trip_list[i].schedule_list[j].item_check = item_check;
 							console.log('doc.trip_list[i].schedule_list =', doc.trip_list[i].schedule_list);
-							check.result = doc.trip_list[i].schedule_list;
+							// check.result = doc.trip_list[i].schedule_list;
 						}
 					}
 				};
