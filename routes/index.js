@@ -739,6 +739,7 @@ router.get('/create_item_url', function(req, res, next){
 
 router.post('/create_item_url', function(req, res, next){
 	console.log('req body =', req.body);
+	var user_id = req.body.user_id;
 	var trip_no = req.body.trip_no;
 	var schedule_date = req.body.schedule_date;
 	var item_url = req.body.item_url;
@@ -766,6 +767,9 @@ router.post('/create_item_url', function(req, res, next){
 			console.log('err =', err);
 			check.code = 0;
 			check.message = err;
+		}
+		if(user_id == doc.partner_id){
+			console.log('파트너가 후보지 생성함');
 		}
 		console.log('doc =', doc);
 		for(var i = 0; i < doc.trip_list.length; i++) {
@@ -1255,20 +1259,23 @@ router.post('/list_final', function(req, res, next){
 
 	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
 		var arr = {};
-		if(err) return next(err);
+		if(err) {
+			console.log('err =', err);
+			check.code = 0;
+			check.message = err;
+		}
+		console.log('doc =', doc);
 		arr = doc.trip_list;
 		for(var i = 0; i < arr.length; i++) {
 			if(arr[i].schedule_date == schedule_date) {
 				arr = arr[i];
 			};
 		};
-
 		for(var i = arr.schedule_list.length - 1; i >= 0; i--) {
 			if(arr.schedule_list[i].item_check == 0){
 				arr.schedule_list.splice(i, 1);
 			}
 		};
-		console.log('arr =', arr);
 		check.result = arr;
 		res.json(check);
 	});
@@ -1296,21 +1303,23 @@ router.post('/map_final', function(req, res, next){
 
 	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
 		var arr = {};
-		if(err) return next(err);
+		if(err) {
+			console.log('err =', err);
+			check.code = 0;
+			check.message = err;
+		}
+		console.log('doc =', doc);
 		arr = doc.trip_list;
 		for(var i = 0; i < arr.length; i++) {
 			if(arr[i].schedule_date == schedule_date) {
 				arr = arr[i];
 			};
 		};
-
 		for(var i = arr.schedule_list.length - 1; i >= 0; i--) {
 			if(arr.schedule_list[i].item_check == 0){
 				arr.schedule_list.splice(i, 1);
 			}
 		};
-
-		console.log('arr =', arr);
 		check.result = arr;
 		res.json(check);
 	});
@@ -1342,25 +1351,28 @@ router.post('/time_final', function(req, res, next){
 	};
 
 	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
-		if(err){
+		if(err) {
+			console.log('err =', err);
 			check.code = 0;
 			check.message = err;
-			return next(err);
-		};
+		}
+		console.log('doc =', doc);
 
 		for(var i = 0; i < doc.trip_list.length; i++) {
 			if(doc.trip_list[i].schedule_date == schedule_date) {
 				for (var j = 0; j < doc.trip_list[i].schedule_list.length; j++) {
 					if(doc.trip_list[i].schedule_list[j]._id == _id){
 						doc.trip_list[i].schedule_list[j].item_time = item_time;
-						console.log('doc.trip_list[i].schedule_list[j].item_time =', doc.trip_list[i].schedule_list[j].item_time);
 					}
 				}
 			};
 		};// for
-
 		doc.save(function(err, result){
-			if(err) console.log('err=', err);
+			if(err) {
+				console.log('err =', err);
+				check.code = 0;
+				check.message = err;
+			}
 			res.json(check);
 		});
 	});
