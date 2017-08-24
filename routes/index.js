@@ -770,6 +770,17 @@ router.post('/create_item_url', function(req, res, next){
 		}
 		if(user_id == doc.partner_id){
 			console.log('파트너가 후보지 생성함');
+			var message = {
+			    to: doc.user_id,
+			    collapse_key: 'test_collapse_key',
+			    data: {
+			        your_custom_data_key: 'test_custom_data_value'
+			    },
+			    notification: {
+			        title: doc.partner_id + '님의 ' + '에 <후보지 제목>을 업로드하였습니다.',
+			        body: doc.partner_id + '님이 ' + doc.trip_title + '에 <후보지 제목>을 업로드하였습니다.'
+			    }
+			};
 		}
 		console.log('doc =', doc);
 		for(var i = 0; i < doc.trip_list.length; i++) {
@@ -967,7 +978,8 @@ router.post('/list_item', function(req, res, next){
 		console.log('doc =', doc);
 		for(var i = 0; i < doc.trip_list.length; i++) {
 			if(doc.trip_list[i].schedule_date == schedule_date) {
-				check.result = doc.trip_list[i];
+				// check.result = doc.trip_list[i];
+				check.result = doc.schedule_date;
 			};
 		};// for
 		res.json(check);
