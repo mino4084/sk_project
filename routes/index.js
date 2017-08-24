@@ -978,8 +978,8 @@ router.post('/list_item', function(req, res, next){
 		console.log('doc =', doc);
 		for(var i = 0; i < doc.trip_list.length; i++) {
 			if(doc.trip_list[i].schedule_date == schedule_date) {
-				// check.result = doc.trip_list[i];
-				check.result = schedule_date;
+				check.result = doc.trip_list[i];
+				// check.result = schedule_date;
 			};
 		};// for
 		res.json(check);
