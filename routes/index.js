@@ -784,6 +784,7 @@ router.post('/create_item_url', function(req, res, next){
 		});
 		if(user_id == doc.partner_id){
 			console.log('파트너가 후보지 생성함');
+			console.log('user_token =', user_token);
 			var message = {
 			    to: user_token,
 			    collapse_key: 'test_collapse_key',
