@@ -994,11 +994,6 @@ router.post('/list_item', function(req, res, next){
 		}
 		console.log('doc =', doc);
 		arr = doc.trip_list[schedule_date].schedule_list;
-		for(var i = 0; i < arr.length; i++) {
-			if(arr[i].schedule_date == schedule_date) {
-				arr = arr[i];
-			};
-		};
 		check.result = arr;
 		/*for(var i = 0; i < doc.trip_list.length; i++) {
 			if(doc.trip_list[i].schedule_date == schedule_date) {
@@ -1024,6 +1019,7 @@ router.post('/map_item', function(req, res, next){
 	var code = 1;
 	var message = "OK";
 	var result = {};
+	var arr = {};
 	var check = {
 		code : code,
 		message : message,
@@ -1031,7 +1027,7 @@ router.post('/map_item', function(req, res, next){
 	};
 
 	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
-		var arr = {};
+
 		if(err) {
 			console.log('err =', err);
 			check.code = 0;
