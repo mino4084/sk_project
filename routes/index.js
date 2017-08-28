@@ -762,26 +762,23 @@ router.post('/create_item_url', function(req, res, next){
 		message : message,
 		result : result
 	};
+	if(err) {
+		console.log('err =', err);
+		check.code = 0;
+		check.message = err;
+	}
+	res.json(check);
+	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}).populate('user_id').exec(function(err, doc){
+		if(err) console.log('err =', err);
+		console.log('doc =', doc);
+	});
 
-	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
+	/*TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
 		if(err) {
 			console.log('err =', err);
 			check.code = 0;
 			check.message = err;
 		}
-		UserModel.findOne({user_id : doc.user_id}, function(err, doc){
-			if(err) {
-				console.log('err =', err);
-			}
-			if(doc){
-				console.log('doc user_token =', doc.user_token);
-				user_token = doc.user_token;
-			}
-			else{
-				check.code = 0;
-				check.message = '로그인 접속이 끊겼거나 아이디가 존재하지 않습니다.';
-			}
-		});
 		if(user_id == doc.partner_id){
 			console.log('파트너가 후보지 생성함');
 			console.log('user_token =', user_token);
@@ -840,7 +837,7 @@ router.post('/create_item_url', function(req, res, next){
 			});
 		}
 
-	});
+	});*/
 });
 // 후보지 URL 단순 생성
 
