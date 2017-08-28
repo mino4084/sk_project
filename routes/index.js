@@ -955,7 +955,7 @@ router.post('/create_item', function(req, res, next){
 				    },
 				    notification: {
 				        title: doc.partner_id + '님이 ' + doc.trip_title + '에 일정을 업로드하였습니다.',
-				        body: doc.partner_id + '님이 ' + doc.trip_title + '에 '+ data.item_title + '을 업로드하였습니다.'
+				        body: doc.partner_id + '님이 ' + doc.trip_title + '에 '+ item_title + '을 업로드하였습니다.'
 				    }
 				};
 				fcm.send(message, function(err, response){
@@ -967,7 +967,7 @@ router.post('/create_item', function(req, res, next){
 				        var notice_data = {
 				        	notice_trip : doc.trip_title,
 				        	notice_partner : doc.partner_id,
-				        	notice_item : doc.item_title
+				        	notice_item : item_title
 				        };
 				        var notice = new NoticeModel(notice_data);
 				        notice.save(function(err, doc){
@@ -1005,7 +1005,7 @@ router.post('/create_item', function(req, res, next){
 				    },
 				    notification: {
 				        title: doc.partner_id + '님이 ' + doc.trip_title + '에 일정을 업로드하였습니다.',
-				        body: doc.partner_id + '님이 ' + doc.trip_title + '에 '+ data.item_title + '을 업로드하였습니다.'
+				        body: doc.partner_id + '님이 ' + doc.trip_title + '에 '+ item_title + '을 업로드하였습니다.'
 				    }
 				};
 				fcm.send(message, function(err, response){
@@ -1017,7 +1017,7 @@ router.post('/create_item', function(req, res, next){
 				        var notice_data = {
 				        	notice_trip : doc.trip_title,
 				        	notice_partner : doc.partner_id,
-				        	notice_item : doc.item_title
+				        	notice_item : item_title
 				        };
 				        var notice = new NoticeModel(notice_data);
 				        notice.save(function(err, doc){
