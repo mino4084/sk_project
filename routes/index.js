@@ -796,7 +796,7 @@ router.post('/create_item_url', function(req, res, next){
 				        your_custom_data_key: 'test_custom_data_value'
 				    },
 				    notification: {
-				        title: doc.partner_id + '님의 ' + '에 <후보지 제목>을 업로드하였습니다.',
+				        title: doc.partner_id + '님이 후보지를 업로드하였습니다.',
 				        body: doc.partner_id + '님이 ' + doc.trip_title + '에 <후보지 제목>을 업로드하였습니다.'
 				    }
 				};
