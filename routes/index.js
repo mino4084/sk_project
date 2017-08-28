@@ -766,6 +766,7 @@ router.post('/create_item_url', function(req, res, next){
 	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}).populate('user_id').exec(function(err, doc){
 		if(err) console.log('err =', err);
 		console.log('doc =', doc);
+		res.json(check);
 	});
 
 	/*TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
