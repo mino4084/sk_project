@@ -774,7 +774,8 @@ router.post('/create_item_url', function(req, res, next){
 				console.log('err =', err);
 			}
 			if(doc){
-				console.log('doc =', doc);
+				console.log('token find doc =', doc);
+				console.log('doc user_token =', doc.user_token);
 				user_token = doc.user_token;
 			}
 			else{
