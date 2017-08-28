@@ -1023,9 +1023,9 @@ router.post('/map_item', function(req, res, next){
 	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
 
 		if(err) {
-			next(err);
 			check.code = 0;
 			check.message = err;
+			return next(err);
 		}
 		arr = doc.trip_list[schedule_date].schedule_list;
 		console.log('doc =', doc);
