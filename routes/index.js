@@ -1030,7 +1030,7 @@ router.post('/map_item', function(req, res, next){
 		arr = doc.trip_list[schedule_date].schedule_list;
 		console.log('doc =', doc);
 		for(var i = arr.length - 1; i >= 0; i--) {
-			if(arr.item_placeid == null){
+			if(arr[i].item_placeid == null){
 				arr.splice(i, 1);
 			}
 		};
