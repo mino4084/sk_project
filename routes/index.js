@@ -779,9 +779,13 @@ router.post('/create_item_url', function(req, res, next){
 			        your_custom_data_key: 'test_custom_data_value'
 			    },
 			    notification: {
-			        title: doc.partner_id + '님의 ' + '에 <후보지 제목>을 업로드하였습니다.',
-			        body: doc.partner_id + '님이 ' + doc.trip_title + '에 <후보지 제목>을 업로드하였습니다.'
+			        title: doc.partner_id,
+			        body: doc.partner_id
 			    }
+			    /*
+			    title: doc.partner_id + '님의 ' + '에 <후보지 제목>을 업로드하였습니다.',
+			    body: doc.partner_id + '님이 ' + doc.trip_title + '에 <후보지 제목>을 업로드하였습니다.'
+			    */
 			};
 			console.log('doc =', doc);
 			for(var i = 0; i < doc.trip_list.length; i++) {
@@ -799,7 +803,7 @@ router.post('/create_item_url', function(req, res, next){
 			        console.log("Push Fail!");
 			    } else {
 			        console.log("Push Success : ", response);
-			        var notice_data = {
+			        /*var notice_data = {
 			        	notice_trip : trip_title,
 			        	notice_partner : partner_id,
 			        	notice_item : item_title,
@@ -809,7 +813,7 @@ router.post('/create_item_url', function(req, res, next){
 			        notice.save(function(err, doc){
 			        	if(err) next(err);
 			        	console.log('notice data =', doc);
-			        });
+			        });*/
 			    }
 			})
 
