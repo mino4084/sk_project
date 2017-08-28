@@ -762,84 +762,83 @@ router.post('/create_item_url', function(req, res, next){
 		message : message,
 		result : result
 	};
-	UserModel.findOne({user_id : user_id}, function(err, doc){
+
+	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
 		if(err) {
 			console.log('err =', err);
+			check.code = 0;
+			check.message = err;
 		}
-		if(doc){
+		UserModel.findOne({user_id : doc.user_id}, function(err, doc){
+			if(err) {
+				console.log('err =', err);
+			}
+			if(doc){
+				console.log('doc =', doc);
+				user_token = doc.user_token;
+			}
+			else{
+				check.code = 0;
+				check.message = '로그인 접속이 끊겼거나 아이디가 존재하지 않습니다.';
+			}
+		});
+		if(user_id == doc.partner_id){
+			console.log('파트너가 후보지 생성함');
+			var message = {
+			    to: user_token,
+			    collapse_key: 'test_collapse_key',
+			    data: {
+			        your_custom_data_key: 'test_custom_data_value'
+			    },
+			    notification: {
+			        title: doc.partner_id + '님의 ' + '에 <후보지 제목>을 업로드하였습니다.',
+			        body: doc.partner_id + '님이 ' + doc.trip_title + '에 <후보지 제목>을 업로드하였습니다.'
+			    }
+			};
 			console.log('doc =', doc);
-			user_token = doc.user_token;
-			TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
-				if(err) {
-					console.log('err =', err);
-					check.code = 0;
-					check.message = err;
-				}
+			for(var i = 0; i < doc.trip_list.length; i++) {
+				if(doc.trip_list[i].schedule_date == schedule_date) {
+					check.result = doc.trip_list[i];
+					doc.trip_list[i].schedule_list.push(data);
+				};
+			};// for
+			doc.save(function(err, result){
+				if(err) console.log('err=', err);
+				res.json(check);
+			});
+			fcm.send(message, function(err, response){
+			    if (err) {
+			        console.log("Push Fail!");
+			    } else {
+			        console.log("Push Success : ", response);
+			        var notice_data = {
+			        	notice_trip : trip_title,
+			        	notice_partner : partner_id,
+			        	notice_item : item_title
+			        };
+			        var notice = new NoticeModel(notice_data);
+			        notice.save(function(err, doc){
+			        	if(err) next(err);
 
-
-				if(user_id == doc.partner_id){
-					console.log('파트너가 후보지 생성함');
-					var message = {
-					    to: user_token,
-					    collapse_key: 'test_collapse_key',
-					    data: {
-					        your_custom_data_key: 'test_custom_data_value'
-					    },
-					    notification: {
-					        title: doc.partner_id + '님의 ' + '에 <후보지 제목>을 업로드하였습니다.',
-					        body: doc.partner_id + '님이 ' + doc.trip_title + '에 <후보지 제목>을 업로드하였습니다.'
-					    }
-					};
-					console.log('doc =', doc);
-					for(var i = 0; i < doc.trip_list.length; i++) {
-						if(doc.trip_list[i].schedule_date == schedule_date) {
-							check.result = doc.trip_list[i];
-							doc.trip_list[i].schedule_list.push(data);
-						};
-					};// for
-					doc.save(function(err, result){
-						if(err) console.log('err=', err);
-						res.json(check);
-					});
-					fcm.send(message, function(err, response){
-					    if (err) {
-					        console.log("Push Fail!");
-					    } else {
-					        console.log("Push Success : ", response);
-					        var notice_data = {
-					        	notice_trip : trip_title,
-					        	notice_partner : partner_id,
-					        	notice_item : item_title
-					        };
-					        var notice = new NoticeModel(notice_data);
-					        notice.save(function(err, doc){
-					        	if(err) next(err);
-
-					        });
-					    }
-					});
-				}
-
-				else{
-					console.log('doc =', doc);
-					for(var i = 0; i < doc.trip_list.length; i++) {
-						if(doc.trip_list[i].schedule_date == schedule_date) {
-							check.result = doc.trip_list[i];
-							doc.trip_list[i].schedule_list.push(data);
-						};
-					};// for
-					doc.save(function(err, result){
-						if(err) console.log('err=', err);
-						res.json(check);
-					});
-				}
-
+			        });
+			    }
 			});
 		}
+
 		else{
-			check.code = 0;
-			check.message = '로그인 접속이 끊겼거나 아이디가 존재하지 않습니다.';
+			console.log('doc =', doc);
+			for(var i = 0; i < doc.trip_list.length; i++) {
+				if(doc.trip_list[i].schedule_date == schedule_date) {
+					check.result = doc.trip_list[i];
+					doc.trip_list[i].schedule_list.push(data);
+				};
+			};// for
+			doc.save(function(err, result){
+				if(err) console.log('err=', err);
+				res.json(check);
+			});
 		}
+
 	});
 });
 // 후보지 URL 단순 생성
