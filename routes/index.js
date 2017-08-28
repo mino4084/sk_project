@@ -762,12 +762,7 @@ router.post('/create_item_url', function(req, res, next){
 		message : message,
 		result : result
 	};
-	if(err) {
-		console.log('err =', err);
-		check.code = 0;
-		check.message = err;
-	}
-	res.json(check);
+
 	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}).populate('user_id').exec(function(err, doc){
 		if(err) console.log('err =', err);
 		console.log('doc =', doc);
