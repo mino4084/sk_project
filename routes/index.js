@@ -5,9 +5,21 @@ var bcrypt = require('bcrypt-node');
 var UserModel = require('../models/user');
 var TripModel = require('../models/trip');
 var NoticeModel = require('../models/notice');
+// fcm 알림
 var FCM = require('fcm-push');
 var serverKey = 'AAAAkn8Pa7w:APA91bFRQVUYGjvvugJokF6-yUAKUZM2sFFiprSqo-PFsPLvbDKZwShLnrls7X8GbzNkWufDz_MZuScFtzI1KfW5DoXvzRUBKZ5tAItKbfe-kM7oaztVmJdQ0Jgy151I9jLhSuu2PByO';
 var fcm = new FCM(serverKey);
+// 이메일전송
+const nodemailer = require('nodemailer');
+let transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true, // secure:true for port 465, secure:false for port 587
+    auth: {
+        user: 'adm.tripco@gmail.com',
+        pass: 'sk_project'
+    }
+});
 
 
 /* GET home page. */
@@ -807,7 +819,7 @@ router.post('/create_item_url', function(req, res, next){
 			        console.log(err);
 			    } else {
 			        console.log("Push Success : ", response);
-			        /*var notice_data = {
+			        var notice_data = {
 			        	notice_trip : trip_title,
 			        	notice_partner : partner_id,
 			        	notice_item : item_title
@@ -815,7 +827,7 @@ router.post('/create_item_url', function(req, res, next){
 			        var notice = new NoticeModel(notice_data);
 			        notice.save(function(err, doc){
 			        	if(err) next(err);
-			        });*/
+			        });
 			    }
 			});
 		}
