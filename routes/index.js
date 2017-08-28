@@ -791,8 +791,8 @@ router.post('/create_item_url', function(req, res, next){
 				};
 			});
 			console.log('doc =', doc);
-			notification.title = doc.partner_id + '님의 ' + '에 <후보지 제목>을 업로드하였습니다.';
-			notification.body = doc.partner_id + '님이 ' + doc.trip_title + '에 <후보지 제목>을 업로드하였습니다.';
+			message.notification.title = doc.partner_id + '님의 ' + '에 <후보지 제목>을 업로드하였습니다.';
+			message.notification.body = doc.partner_id + '님이 ' + doc.trip_title + '에 <후보지 제목>을 업로드하였습니다.';
 			for(var i = 0; i < doc.trip_list.length; i++) {
 				if(doc.trip_list[i].schedule_date == schedule_date) {
 					check.result = doc.trip_list[i];
