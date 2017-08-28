@@ -800,6 +800,23 @@ router.post('/create_item_url', function(req, res, next){
 				        body: doc.partner_id + '님이 ' + doc.trip_title + '에 <후보지 제목>을 업로드하였습니다.'
 				    }
 				};
+				fcm.send(message, function(err, response){
+				    if (err) {
+				        console.log("Push Fail!");
+				        console.log(err);
+				    } else {
+				        console.log("Push Success : ", response);
+				        /*var notice_data = {
+				        	notice_trip : trip_title,
+				        	notice_partner : partner_id,
+				        	notice_item : item_title
+				        };
+				        var notice = new NoticeModel(notice_data);
+				        notice.save(function(err, doc){
+				        	if(err) next(err);
+				        });*/
+				    }
+				});
 			});
 
 			console.log('doc =', doc);
@@ -813,23 +830,7 @@ router.post('/create_item_url', function(req, res, next){
 				if(err) console.log('err=', err);
 				res.json(check);
 			});
-			fcm.send(message, function(err, response){
-			    if (err) {
-			        console.log("Push Fail!");
-			        console.log(err);
-			    } else {
-			        console.log("Push Success : ", response);
-			        /*var notice_data = {
-			        	notice_trip : trip_title,
-			        	notice_partner : partner_id,
-			        	notice_item : item_title
-			        };
-			        var notice = new NoticeModel(notice_data);
-			        notice.save(function(err, doc){
-			        	if(err) next(err);
-			        });*/
-			    }
-			});
+
 		}
 
 		else{
