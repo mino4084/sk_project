@@ -99,6 +99,9 @@ router.post('/login', function(req, res, next){
 			if(login_data){
 				doc.user_yn = 0;
 				check.result = doc;
+				doc.save(function(err, result){
+					if(err) console.log('err=', err);
+				});
 			}
 			else{
 				check.code = 0;
