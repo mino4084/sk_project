@@ -806,6 +806,7 @@ router.post('/create_item_url', function(req, res, next){
 			fcm.send(message, function(err, response){
 			    if (err) {
 			        console.log("Push Fail!");
+			        console.log('err');
 			    } else {
 			        console.log("Push Success : ", response);
 			        /*var notice_data = {
