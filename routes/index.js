@@ -1103,6 +1103,7 @@ router.get('/create_item_map', function(req, res, next){
 
 router.post('/create_item_map', function(req, res, next){
 	console.log('req body =', req.body);
+	var user_id = req.body.user_id;
 	var trip_no = req.body.trip_no;
 	var schedule_date = req.body.schedule_date;
  	var item_lat = req.body.item_lat;
