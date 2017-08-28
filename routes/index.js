@@ -995,12 +995,6 @@ router.post('/list_item', function(req, res, next){
 		console.log('doc =', doc);
 		arr = doc.trip_list[schedule_date].schedule_list;
 		check.result = arr;
-		/*for(var i = 0; i < doc.trip_list.length; i++) {
-			if(doc.trip_list[i].schedule_date == schedule_date) {
-				check.result = doc.trip_list[i];
-				// check.result = schedule_date;
-			};
-		};// for*/
 		res.json(check);
 	});
 });
@@ -1033,15 +1027,10 @@ router.post('/map_item', function(req, res, next){
 			check.code = 0;
 			check.message = err;
 		}
-		arr = doc.trip_list;
-		for(var i = 0; i < arr.length; i++) {
-			if(arr[i].schedule_date == schedule_date) {
-				arr = arr[i];
-			};
-		};
+		arr = doc.trip_list[schedule_date].schedule_list;
 		console.log('doc =', doc);
-		for(var i = arr.schedule_list.length - 1; i >= 0; i--) {
-			if(arr.schedule_list[i].item_placeid == null){
+		for(var i = arr.length - 1; i >= 0; i--) {
+			if(arr.item_placeid == null){
 				arr.schedule_list.splice(i, 1);
 			}
 		};
