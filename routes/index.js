@@ -743,9 +743,6 @@ router.post('/create_item_url', function(req, res, next){
 	var trip_no = req.body.trip_no;
 	var schedule_date = req.body.schedule_date;
 	var item_url = req.body.item_url;
-	var user_token = '';
-	var token = { user_token : user_token};
-
 	var code = 1;
 	var message = "OK";
 	var result = {};
@@ -781,21 +778,21 @@ router.post('/create_item_url', function(req, res, next){
 				}
 				console.log('토큰 값 찾기');
 				console.log('doc =', doc);
-				token.user_token = doc.user_token;
+				var message = {
+				    to: doc.user_token,
+				    collapse_key: 'test_collapse_key',
+				    data: {
+				        your_custom_data_key: 'test_custom_data_value'
+				    },
+				    notification: {
+				        title : '',
+				        body: '',
+				    }
+				};
 			});
-			console.log('user_token =', token.user_token);
-			var message = {
-			    to: token.user_token,
-			    collapse_key: 'test_collapse_key',
-			    data: {
-			        your_custom_data_key: 'test_custom_data_value'
-			    },
-			    notification: {
-			        title: doc.partner_id + '님의 ' + '에 <후보지 제목>을 업로드하였습니다.',
-			        body: doc.partner_id + '님이 ' + doc.trip_title + '에 <후보지 제목>을 업로드하였습니다.'
-			    }
-			};
 			console.log('doc =', doc);
+			notification.title = doc.partner_id + '님의 ' + '에 <후보지 제목>을 업로드하였습니다.';
+			notification.body = doc.partner_id + '님이 ' + doc.trip_title + '에 <후보지 제목>을 업로드하였습니다.';
 			for(var i = 0; i < doc.trip_list.length; i++) {
 				if(doc.trip_list[i].schedule_date == schedule_date) {
 					check.result = doc.trip_list[i];
