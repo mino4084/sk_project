@@ -656,7 +656,7 @@ router.post('/update_trip', function(req, res, next){
 			// 수정한 여행일자가 현재 여행일자보다 클 때
 			if(bDays < aDays){
 				var difference = aDays - bDays;
-				for (var i = num + 1; i <= num + difference; i++) {
+				for (var i = num; i <= num + difference - 1; i++) {
 					var scheduleDate = { schedule_date : i };
 					TripModel.findOneAndUpdate({trip_no : doc.trip_no}, {$push : {"trip_list" : scheduleDate}},
 						{safe : true, upsert : true, new : true}, function(err, doc){
