@@ -744,6 +744,7 @@ router.post('/create_item_url', function(req, res, next){
 	var schedule_date = req.body.schedule_date;
 	var item_url = req.body.item_url;
 	var user_token = '';
+	var token = { user_token : user_token};
 
 	var code = 1;
 	var message = "OK";
@@ -779,12 +780,12 @@ router.post('/create_item_url', function(req, res, next){
 				}
 				console.log('토큰 값 찾기');
 				console.log('doc =', doc);
-				user_token = doc.user_token;
+				token.user_token = doc.user_token;
 			});
 
 			console.log('user_token =', user_token);
 			var message = {
-			    to: user_token,
+			    to: token.user_token,
 			    collapse_key: 'test_collapse_key',
 			    data: {
 			        your_custom_data_key: 'test_custom_data_value'
