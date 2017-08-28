@@ -979,6 +979,7 @@ router.post('/list_item', function(req, res, next){
 	var code = 1;
 	var message = "OK";
 	var result = {};
+	var arr = [];
 	var check = {
 		code : code,
 		message : message,
@@ -992,12 +993,19 @@ router.post('/list_item', function(req, res, next){
 			check.message = err;
 		}
 		console.log('doc =', doc);
-		for(var i = 0; i < doc.trip_list.length; i++) {
+		arr = doc.trip_list;
+		for(var i = 0; i < arr.length; i++) {
+			if(arr[i].schedule_date == schedule_date) {
+				arr = arr[i];
+			};
+		};
+		check.result = arr;
+		/*for(var i = 0; i < doc.trip_list.length; i++) {
 			if(doc.trip_list[i].schedule_date == schedule_date) {
 				check.result = doc.trip_list[i];
 				// check.result = schedule_date;
 			};
-		};// for
+		};// for*/
 		res.json(check);
 	});
 });
