@@ -763,13 +763,7 @@ router.post('/create_item_url', function(req, res, next){
 		result : result
 	};
 
-	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}).populate('user_id').exec(function(err, doc){
-		if(err) console.log('err =', err);
-		console.log('doc =', doc);
-		res.json(check);
-	});
-
-	/*TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
+	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
 		if(err) {
 			console.log('err =', err);
 			check.code = 0;
@@ -777,6 +771,16 @@ router.post('/create_item_url', function(req, res, next){
 		}
 		if(user_id == doc.partner_id){
 			console.log('파트너가 후보지 생성함');
+			UserModel.findOne({user_id : user_id}, function(err, doc){
+				if(err) {
+					console.log('err =', err);
+					check.code = 0;
+					check.message = err;
+				}
+				console.log('doc =', doc);
+				user_token = doc.user_token;
+			});
+
 			console.log('user_token =', user_token);
 			var message = {
 			    to: user_token,
@@ -833,7 +837,7 @@ router.post('/create_item_url', function(req, res, next){
 			});
 		}
 
-	});*/
+	});
 });
 // 후보지 URL 단순 생성
 
