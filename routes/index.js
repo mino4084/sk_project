@@ -1439,6 +1439,7 @@ router.get('/delete_item', function(req, res, next){
 router.post('/delete_item', function(req, res, next){
 	console.log('req body =', req.body);
 	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
+	var user_id = req.body.user_id;
 	var _id =  req.body._id;
 	var trip_no = req.body.trip_no;
 	var schedule_date = req.body.schedule_date;
@@ -1460,6 +1461,46 @@ router.post('/delete_item', function(req, res, next){
 			check.code = 0;
 			check.message = err;
 		}
+		/*if(user_id == doc.partner_id){
+			UserModel.findOne({user_id : doc.user_id}, function(err, doc2){
+				if(err) {
+					console.log('err =', err);
+					check.code = 0;
+					check.message = err;
+				}
+
+				console.log('user_token =', doc2.user_token);
+				var message = {
+				    to: doc2.user_token,
+				    collapse_key: 'test_collapse_key',
+				    data: {
+				        your_custom_data_key: 'test_custom_data_value'
+				    },
+				    notification: {
+				        title: doc.partner_id + '님이 ' + doc.trip_title + '에 일정을 삭제하였습니다.',
+				        body: doc.partner_id + '님이 ' + doc.trip_title + '에 일정을 삭제하였습니다.'
+				    }
+				};
+				fcm.send(message, function(err, response){
+				    if (err) {
+				        console.log("Push Fail!");
+				        console.log(err);
+				    } else {
+				        console.log("Push Success : ", response);
+				        var notice_data = {
+				        	notice_trip : doc.trip_title,
+				        	notice_partner : doc.partner_id,
+				        	notice_item : item_title,
+				        	notice_type : 0
+				        };
+				        var notice = new NoticeModel(notice_data);
+				        notice.save(function(err, doc){
+				        	if(err) next(err);
+				        });
+				    }
+				});
+			});
+		}*/
 		console.log('doc =', doc);
 		for(var i = 0; i < doc.trip_list.length; i++) {
 			if(doc.trip_list[i].schedule_date == schedule_date) {
