@@ -777,6 +777,7 @@ router.post('/create_item_url', function(req, res, next){
 					check.code = 0;
 					check.message = err;
 				}
+				console.log('토큰 값 찾기');
 				console.log('doc =', doc);
 				user_token = doc.user_token;
 			});
