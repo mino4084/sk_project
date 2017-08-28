@@ -743,6 +743,7 @@ router.post('/create_item_url', function(req, res, next){
 	var trip_no = req.body.trip_no;
 	var schedule_date = req.body.schedule_date;
 	var item_url = req.body.item_url;
+
 	var code = 1;
 	var message = "OK";
 	var result = {};
@@ -770,29 +771,28 @@ router.post('/create_item_url', function(req, res, next){
 		if(user_id == doc.partner_id){
 
 			console.log('파트너가 후보지 생성함');
-			UserModel.findOne({user_id : user_id}, function(err, doc){
+			UserModel.findOne({user_id : user_id}, function(err, doc2){
 				if(err) {
 					console.log('err =', err);
 					check.code = 0;
 					check.message = err;
 				}
 				console.log('토큰 값 찾기');
-				console.log('doc =', doc);
+				console.log('user_token =', doc2.user_token);
 				var message = {
-				    to: doc.user_token,
+				    to: doc2.user_token,
 				    collapse_key: 'test_collapse_key',
 				    data: {
 				        your_custom_data_key: 'test_custom_data_value'
 				    },
 				    notification: {
-				        title : '',
-				        body: '',
+				        title: doc.partner_id + '님의 ' + '에 <후보지 제목>을 업로드하였습니다.',
+				        body: doc.partner_id + '님이 ' + doc.trip_title + '에 <후보지 제목>을 업로드하였습니다.'
 				    }
 				};
 			});
+
 			console.log('doc =', doc);
-			message.notification.title = doc.partner_id + '님의 ' + '에 <후보지 제목>을 업로드하였습니다.';
-			message.notification.body = doc.partner_id + '님이 ' + doc.trip_title + '에 <후보지 제목>을 업로드하였습니다.';
 			for(var i = 0; i < doc.trip_list.length; i++) {
 				if(doc.trip_list[i].schedule_date == schedule_date) {
 					check.result = doc.trip_list[i];
