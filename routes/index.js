@@ -770,7 +770,7 @@ router.post('/create_item_url', function(req, res, next){
 		}
 		if(user_id == doc.partner_id){
 			console.log('파트너가 후보지 생성함');
-			UserModel.findOne({user_id : user_id}, function(err, doc2){
+			UserModel.findOne({user_id : doc.user_id}, function(err, doc2){
 				if(err) {
 					console.log('err =', err);
 					check.code = 0;
