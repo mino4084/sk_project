@@ -769,7 +769,6 @@ router.post('/create_item_url', function(req, res, next){
 			check.message = err;
 		}
 		if(user_id == doc.partner_id){
-
 			console.log('파트너가 후보지 생성함');
 			UserModel.findOne({user_id : user_id}, function(err, doc2){
 				if(err) {
@@ -777,6 +776,7 @@ router.post('/create_item_url', function(req, res, next){
 					check.code = 0;
 					check.message = err;
 				}
+				console.log('토큰 doc =', doc);
 				console.log('토큰 값 찾기');
 				console.log('user_token =', doc2.user_token);
 				var message = {
