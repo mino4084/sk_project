@@ -794,6 +794,24 @@ router.post('/create_item_url', function(req, res, next){
 				if(err) console.log('err=', err);
 				res.json(check);
 			});
+			fcm.send(message, function(err, response){
+			    if (err) {
+			        console.log("Push Fail!");
+			    } else {
+			        console.log("Push Success : ", response);
+			        var notice_data = {
+			        	notice_trip : trip_title,
+			        	notice_partner : partner_id,
+			        	notice_item : item_title
+			        };
+			        var notice = new NoticeModel(notice_data);
+			        notice.save(function(err, doc){
+			        	if(err) next(err);
+			        	console.log('notice data =', doc);
+			        });
+			    }
+			})
+
 		}
 		else{
 			console.log('doc =', doc);
