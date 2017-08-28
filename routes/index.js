@@ -1031,7 +1031,7 @@ router.post('/map_item', function(req, res, next){
 		console.log('doc =', doc);
 		for(var i = arr.length - 1; i >= 0; i--) {
 			if(arr.item_placeid == null){
-				arr.schedule_list.splice(i, 1);
+				arr.splice(i, 1);
 			}
 		};
 		check.result = arr;
