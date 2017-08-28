@@ -987,10 +987,45 @@ router.post('/create_item', function(req, res, next){
 				if(err) console.log('err=', err);
 				res.json(check);
 			});
-
 		}
+		if(user_id == doc.user_id){
+			UserModel.findOne({user_id : doc.partner_id}, function(err, doc2){
+				if(err) {
+					console.log('err =', err);
+					check.code = 0;
+					check.message = err;
+				}
 
-		else{
+				console.log('user_token =', doc2.user_token);
+				var message = {
+				    to: doc2.user_token,
+				    collapse_key: 'test_collapse_key',
+				    data: {
+				        your_custom_data_key: 'test_custom_data_value'
+				    },
+				    notification: {
+				        title: doc.partner_id + '님이 ' + doc.trip_title + '에 일정을 업로드하였습니다.',
+				        body: doc.partner_id + '님이 ' + doc.trip_title + '에 '+ data.item_title + '을 업로드하였습니다.'
+				    }
+				};
+				fcm.send(message, function(err, response){
+				    if (err) {
+				        console.log("Push Fail!");
+				        console.log(err);
+				    } else {
+				        console.log("Push Success : ", response);
+				        /*var notice_data = {
+				        	notice_trip : trip_title,
+				        	notice_partner : partner_id,
+				        	notice_item : item_title
+				        };
+				        var notice = new NoticeModel(notice_data);
+				        notice.save(function(err, doc){
+				        	if(err) next(err);
+				        });*/
+				    }
+				});
+			});
 			console.log('doc =', doc);
 			for(var i = 0; i < doc.trip_list.length; i++) {
 				if(doc.trip_list[i].schedule_date == schedule_date) {
@@ -1003,6 +1038,20 @@ router.post('/create_item', function(req, res, next){
 				res.json(check);
 			});
 		}
+
+		/*else{
+			console.log('doc =', doc);
+			for(var i = 0; i < doc.trip_list.length; i++) {
+				if(doc.trip_list[i].schedule_date == schedule_date) {
+					check.result = doc.trip_list[i];
+					doc.trip_list[i].schedule_list.push(data);
+				};
+			};// for
+			doc.save(function(err, result){
+				if(err) console.log('err=', err);
+				res.json(check);
+			});
+		}*/
 	});
 });
 // 후보지 기본 생성
