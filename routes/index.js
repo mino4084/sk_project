@@ -965,9 +965,9 @@ router.post('/create_item', function(req, res, next){
 				    } else {
 				        console.log("Push Success : ", response);
 				        var notice_data = {
-				        	notice_trip : trip_title,
-				        	notice_partner : partner_id,
-				        	notice_item : item_title
+				        	notice_trip : doc.trip_title,
+				        	notice_partner : doc.partner_id,
+				        	notice_item : doc.item_title
 				        };
 				        var notice = new NoticeModel(notice_data);
 				        notice.save(function(err, doc){
@@ -1015,9 +1015,9 @@ router.post('/create_item', function(req, res, next){
 				    } else {
 				        console.log("Push Success : ", response);
 				        var notice_data = {
-				        	notice_trip : trip_title,
-				        	notice_partner : partner_id,
-				        	notice_item : item_title
+				        	notice_trip : doc.trip_title,
+				        	notice_partner : doc.partner_id,
+				        	notice_item : doc.item_title
 				        };
 				        var notice = new NoticeModel(notice_data);
 				        notice.save(function(err, doc){
