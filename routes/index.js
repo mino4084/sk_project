@@ -800,7 +800,7 @@ router.post('/create_item_url', function(req, res, next){
 				    },
 				    notification: {
 				        title: doc.partner_id + '님이 ' + doc.trip_title + '에 일정을 업로드하였습니다.',
-				       	body: doc.partner_id + '님이 ' + doc.trip_title + '에 '+ item_title + '을 업로드하였습니다.'
+				       	body: doc.partner_id + '님이 ' + doc.trip_title + '에 '+ item_url + '을 업로드하였습니다.'
 				    }
 				};
 				fcm.send(message, function(err, response){
@@ -812,7 +812,7 @@ router.post('/create_item_url', function(req, res, next){
 				        var notice_data = {
 				        	notice_trip : doc.trip_title,
 				        	notice_partner : doc.partner_id,
-				        	notice_item : item_title,
+				        	notice_item : item_url,
 				        	notice_type : 0
 				        };
 				        var notice = new NoticeModel(notice_data);
@@ -854,7 +854,7 @@ router.post('/create_item_url', function(req, res, next){
 						    },
 						    notification: {
 						        title: doc.partner_id + '님이 ' + doc.trip_title + '에 일정을 업로드하였습니다.',
-						        body: doc.partner_id + '님이 ' + doc.trip_title + '에 '+ item_title + '을 업로드하였습니다.'
+						        body: doc.partner_id + '님이 ' + doc.trip_title + '에 '+ item_url + '을 업로드하였습니다.'
 						    }
 						};
 						fcm.send(message, function(err, response){
@@ -866,7 +866,7 @@ router.post('/create_item_url', function(req, res, next){
 						        var notice_data = {
 						        	notice_trip : doc.trip_title,
 						        	notice_partner : doc.partner_id,
-						        	notice_item : item_title,
+						        	notice_item : item_url,
 						        	notice_type : 0
 						        };
 						        var notice = new NoticeModel(notice_data);
