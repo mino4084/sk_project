@@ -808,7 +808,7 @@ router.post('/create_item_url', function(req, res, next){
 			        console.log("Push Fail!");
 			    } else {
 			        console.log("Push Success : ", response);
-			        var notice_data = {
+			        /*var notice_data = {
 			        	notice_trip : trip_title,
 			        	notice_partner : partner_id,
 			        	notice_item : item_title
@@ -817,7 +817,7 @@ router.post('/create_item_url', function(req, res, next){
 			        notice.save(function(err, doc){
 			        	if(err) next(err);
 
-			        });
+			        });*/
 			    }
 			});
 		}
