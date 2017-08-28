@@ -993,7 +993,7 @@ router.post('/list_item', function(req, res, next){
 			check.message = err;
 		}
 		console.log('doc =', doc);
-		arr = doc.trip_list[schedule_date];
+		arr = doc.trip_list[schedule_date].schedule_list;
 		for(var i = 0; i < arr.length; i++) {
 			if(arr[i].schedule_date == schedule_date) {
 				arr = arr[i];
