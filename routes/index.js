@@ -426,7 +426,7 @@ router.post('/create_trip', function(req, res, next){
 			var day1 = moment(start_date);
 			var day2 = moment(end_date);
 			var num = day2.diff(day1, 'days');
-			for (var i = 1; i <= num + 1; i++) {
+			for (var i = 0; i <= num; i++) {
 				var scheduleDate = { schedule_date : i };
 				TripModel.findOneAndUpdate({trip_no : doc.trip_no}, {$push : {"trip_list" : scheduleDate}},
 					{safe : true, upsert : true, new : true}, function(err, doc){
@@ -768,6 +768,8 @@ router.post('/create_item_url', function(req, res, next){
 			check.code = 0;
 			check.message = err;
 		}
+
+
 		if(user_id == doc.partner_id){
 			console.log('파트너가 후보지 생성함');
 			var message = {
@@ -781,18 +783,32 @@ router.post('/create_item_url', function(req, res, next){
 			        body: doc.partner_id + '님이 ' + doc.trip_title + '에 <후보지 제목>을 업로드하였습니다.'
 			    }
 			};
+			console.log('doc =', doc);
+			for(var i = 0; i < doc.trip_list.length; i++) {
+				if(doc.trip_list[i].schedule_date == schedule_date) {
+					check.result = doc.trip_list[i];
+					doc.trip_list[i].schedule_list.push(data);
+				};
+			};// for
+			doc.save(function(err, result){
+				if(err) console.log('err=', err);
+				res.json(check);
+			});
 		}
-		console.log('doc =', doc);
-		for(var i = 0; i < doc.trip_list.length; i++) {
-			if(doc.trip_list[i].schedule_date == schedule_date) {
-				check.result = doc.trip_list[i];
-				doc.trip_list[i].schedule_list.push(data);
-			};
-		};// for
-		doc.save(function(err, result){
-			if(err) console.log('err=', err);
-			res.json(check);
-		})
+		else{
+			console.log('doc =', doc);
+			for(var i = 0; i < doc.trip_list.length; i++) {
+				if(doc.trip_list[i].schedule_date == schedule_date) {
+					check.result = doc.trip_list[i];
+					doc.trip_list[i].schedule_list.push(data);
+				};
+			};// for
+			doc.save(function(err, result){
+				if(err) console.log('err=', err);
+				res.json(check);
+			});
+		}
+
 	});
 });
 // 후보지 URL 단순 생성
