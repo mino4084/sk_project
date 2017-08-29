@@ -803,7 +803,7 @@ router.post('/create_item_url', function(req, res, next){
 					};
 				};// for
 				console.log('num =', num);
-				data.item_title = '위치' + num;
+
 				console.log('data.item_title =', data.item_title);
 				console.log('user_token =', doc2.user_token);
 				var message = {
@@ -840,6 +840,7 @@ router.post('/create_item_url', function(req, res, next){
 			for(var i = 0; i < doc.trip_list.length; i++) {
 				if(doc.trip_list[i].schedule_date == schedule_date) {
 					check.result = doc.trip_list[i];
+					data.item_title = '위치' + num;
 					doc.trip_list[i].schedule_list.push(data);
 				};
 			};// for
