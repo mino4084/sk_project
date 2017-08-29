@@ -1473,7 +1473,7 @@ router.post('/update_item', function(req, res, next){
 					        	notice_trip : doc.trip_title,
 					        	notice_partner : user_id,
 					        	notice_item : title,
-					        	notice_type : 0
+					        	notice_type : 1
 					        };
 					        var notice = new NoticeModel(notice_data);
 					        notice.save(function(err, doc){
@@ -1558,7 +1558,7 @@ router.post('/update_item', function(req, res, next){
 					        	notice_trip : doc.trip_title,
 					        	notice_partner : user_id,
 					        	notice_item : title,
-					        	notice_type : 0
+					        	notice_type : 1
 					        };
 					        var notice = new NoticeModel(notice_data);
 					        notice.save(function(err, doc){
@@ -1657,7 +1657,7 @@ router.post('/update_item', function(req, res, next){
 					        	notice_trip : doc.trip_title,
 					        	notice_partner : user_id,
 					        	notice_item : title,
-					        	notice_type : 0
+					        	notice_type : 1
 					        };
 					        var notice = new NoticeModel(notice_data);
 					        notice.save(function(err, doc){
@@ -1731,7 +1731,7 @@ router.post('/update_item', function(req, res, next){
 					        	notice_trip : doc.trip_title,
 					        	notice_partner : user_id,
 					        	notice_item : title,
-					        	notice_type : 0
+					        	notice_type : 1
 					        };
 					        var notice = new NoticeModel(notice_data);
 					        notice.save(function(err, doc){
@@ -1845,7 +1845,7 @@ router.post('/delete_item', function(req, res, next){
 				        	notice_trip : doc.trip_title,
 				        	notice_partner : user_id,
 				        	notice_item : item_title,
-				        	notice_type : 0
+				        	notice_type : 2
 				        };
 				        var notice = new NoticeModel(notice_data);
 				        notice.save(function(err, doc){
@@ -1918,7 +1918,7 @@ router.post('/delete_item', function(req, res, next){
 				        	notice_trip : doc.trip_title,
 				        	notice_partner : user_id,
 				        	notice_item : item_title,
-				        	notice_type : 0
+				        	notice_type : 2
 				        };
 				        var notice = new NoticeModel(notice_data);
 				        notice.save(function(err, doc){
