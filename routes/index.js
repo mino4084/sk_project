@@ -841,7 +841,7 @@ router.post('/create_item_url', function(req, res, next){
 			};// for
 			doc.save(function(err, result){
 				if(err) console.log('err=', err);
-				res.json(check);
+				// res.json(check);
 			});
 
 		}
@@ -885,6 +885,16 @@ router.post('/create_item_url', function(req, res, next){
 						    }
 						});
 					});
+					for(var i = 0; i < doc.trip_list.length; i++) {
+						if(doc.trip_list[i].schedule_date == schedule_date) {
+							for (var j = 0; j < doc.trip_list[i].schedule_list.length; j++) {
+								if(doc.trip_list[i].schedule_list[j].item_title == null){
+									num++;
+								}
+							}
+						};
+					};// for
+					console.log('num =', num);
 					console.log('doc =', doc);
 					for(var i = 0; i < doc.trip_list.length; i++) {
 						if(doc.trip_list[i].schedule_date == schedule_date) {
@@ -894,7 +904,7 @@ router.post('/create_item_url', function(req, res, next){
 					};// for
 					doc.save(function(err, result){
 						if(err) console.log('err=', err);
-						res.json(check);
+						// res.json(check);
 					});
 		}
 		else{
@@ -1199,7 +1209,7 @@ router.post('/create_item_map', function(req, res, next){
 				};// for
 				doc.save(function(err, result){
 					if(err) console.log('err=', err);
-					res.json(check);
+					// res.json(check);
 				});
 			}
 			if(user_id == doc.user_id){
@@ -1250,14 +1260,15 @@ router.post('/create_item_map', function(req, res, next){
 				};// for
 				doc.save(function(err, result){
 					if(err) console.log('err=', err);
-					res.json(check);
+					// res.json(check);
 				});
 			}
 			else{
 				check.code = 0;
-				check.message = '잘못된 여행에서 생성했습니다.';
-				res.json(check);
+				check.message = '존재하지 않은 파트너이거나 사용자입니다. 회원가입을 해주세요.';
+				// res.json(check);
 			}
+			res.json(check);
 		});
 });
 // 후보지 지도 검색 생성
