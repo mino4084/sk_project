@@ -1002,7 +1002,8 @@ router.post('/create_item', function(req, res, next){
 		item_long : item_long,
 		item_placeid : item_placeid,
 		item_title : item_title,
-		item_memo : item_memo
+		item_memo : item_memo,
+		item_time : '00:00'
 	};
 
 	var check = {
