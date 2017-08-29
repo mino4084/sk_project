@@ -2123,7 +2123,26 @@ router.post('/check_item', function(req, res, next){
 									       	body: doc.partner_id + '님이 ' + doc.trip_title + '의 '+ item_title + '을 체크 취소하였습니다.'
 									    }
 									};
-								}
+									fcm.send(message, function(err, response){
+									    if (err) {
+									        console.log("Push Fail!");
+									        console.log(err);
+									    }
+									    else {
+									        console.log("Push Success : ", response);
+									        var notice_data = {
+									        	notice_trip : doc.trip_title,
+									        	notice_partner : user_id,
+									        	notice_item : item_title,
+									        	notice_type : 4
+									        };
+									        var notice = new NoticeModel(notice_data);
+									        notice.save(function(err, doc){
+									        	if(err) next(err);
+									        });
+									    }
+									}); // fcm.send()
+								} // if
 								else{
 									doc.trip_list[i].schedule_list[j].item_check = 1;
 									var message = {
@@ -2137,30 +2156,30 @@ router.post('/check_item', function(req, res, next){
 									       	body: doc.partner_id + '님이 ' + doc.trip_title + '의 '+ item_title + '을 체크하였습니다.'
 									    }
 									};
-								}
+									fcm.send(message, function(err, response){
+									    if (err) {
+									        console.log("Push Fail!");
+									        console.log(err);
+									    }
+									    else {
+									        console.log("Push Success : ", response);
+									        var notice_data = {
+									        	notice_trip : doc.trip_title,
+									        	notice_partner : user_id,
+									        	notice_item : item_title,
+									        	notice_type : 3
+									        };
+									        var notice = new NoticeModel(notice_data);
+									        notice.save(function(err, doc){
+									        	if(err) next(err);
+									        });
+									    }
+									}); // fcm.send()
+								}// else
 							}
 						}
 					};
 				};// for
-				fcm.send(message, function(err, response){
-				    if (err) {
-				        console.log("Push Fail!");
-				        console.log(err);
-				    }
-				    else {
-				        console.log("Push Success : ", response);
-				        var notice_data = {
-				        	notice_trip : doc.trip_title,
-				        	notice_partner : user_id,
-				        	notice_item : item_title,
-				        	notice_type : 0
-				        };
-				        var notice = new NoticeModel(notice_data);
-				        notice.save(function(err, doc){
-				        	if(err) next(err);
-				        });
-				    }
-				}); // fcm.send()
 				doc.save(function(err, result){
 					if(err) console.log('err=', err);
 				}); // doc.save()
