@@ -1039,7 +1039,7 @@ router.post('/create_item', function(req, res, next){
 						};
 					};// for
 					console.log('num =', num);
-					data.item_title = '위치' + num;
+					data.item_title = '일정' + num;
 				}
 				console.log('data.item_title =', data.item_title);
 				console.log('user_token =', doc2.user_token);
@@ -1104,7 +1104,7 @@ router.post('/create_item', function(req, res, next){
 						};
 					};// for
 					console.log('num =', num);
-					data.item_title = '위치' + num;
+					data.item_title = '일정' + num;
 				}
 				console.log('user_token =', doc2.user_token);
 				var message = {
@@ -1114,8 +1114,8 @@ router.post('/create_item', function(req, res, next){
 				        your_custom_data_key: 'test_custom_data_value'
 				    },
 				    notification: {
-				        title: doc.partner_id + '님이 ' + doc.trip_title + '에 일정을 업로드하였습니다.',
-				        body: doc.partner_id + '님이 ' + doc.trip_title + '에 '+ data.item_title + '을 업로드하였습니다.'
+				        title: doc.user_id + '님이 ' + doc.trip_title + '에 일정을 업로드하였습니다.',
+				        body: doc.user_id + '님이 ' + doc.trip_title + '에 '+ data.item_title + '을 업로드하였습니다.'
 				    }
 				};
 				fcm.send(message, function(err, response){
@@ -1392,6 +1392,7 @@ router.get('/update_item', function(req, res, next){
 
 router.post('/update_item', function(req, res, next){
 	console.log('req body =', req.body);
+	var user_id = req.body.user_id;
 	var _id =  req.body._id;
 	//5995003689e021714ada80a9
 	var trip_no = req.body.trip_no;
@@ -1424,6 +1425,7 @@ router.post('/update_item', function(req, res, next){
 				check.code = 0;
 				check.message = err;
 			}
+
 			console.log('doc =', doc);
 			for(var i = 0; i < doc.trip_list.length; i++) {
 				if(doc.trip_list[i].schedule_date == schedule_date) {
@@ -1468,31 +1470,140 @@ router.post('/update_item', function(req, res, next){
 				check.code = 0;
 				check.message = err;
 			}
-			console.log('doc =', doc);
-			for(var i = 0; i < doc.trip_list.length; i++) {
-				if(doc.trip_list[i].schedule_date == schedule_date) {
-					for (var j = 0; j < doc.trip_list[i].schedule_list.length; j++) {
-						if(doc.trip_list[i].schedule_list[j]._id == _id){
-							doc.trip_list[i].schedule_list[j].cate_no = cate_no;
-							doc.trip_list[i].schedule_list[j].item_lat = item_lat;
-							doc.trip_list[i].schedule_list[j].item_long = item_long;
-							doc.trip_list[i].schedule_list[j].item_placeid = item_placeid;
-							doc.trip_list[i].schedule_list[j].item_title = item_title;
-							doc.trip_list[i].schedule_list[j].item_memo = item_memo;
-							doc.trip_list[i].schedule_list[j].item_check = item_check;
-						}
+			if(user_id == doc.partner_id){
+				UserModel.findOne({user_id : doc.user_id}, function(err, doc2){
+					if(err) {
+						console.log('err =', err);
+						check.code = 0;
+						check.message = err;
 					}
-				};
-			};// for
-			doc.save(function(err, result){
-				if(err) {
-					console.log('err =', err);
-					check.code = 0;
-					check.message = err;
-				}
+					console.log('user_token =', doc2.user_token);
+					var message = {
+					    to: doc2.user_token,
+					    collapse_key: 'test_collapse_key',
+					    data: {
+					        your_custom_data_key: 'test_custom_data_value'
+					    },
+					    notification: {
+					        title: doc.partner_id + '님이 ' + doc.trip_title + '의 일정을 수정하였습니다.',
+					       	body: doc.partner_id + '님이 ' + doc.trip_title + '의 '+ doc.item_title + '을 수정하였습니다.'
+					    }
+					};
+					fcm.send(message, function(err, response){
+					    if (err) {
+					        console.log("Push Fail!");
+					        console.log(err);
+					    }
+					    else {
+					        console.log("Push Success : ", response);
+					        var notice_data = {
+					        	notice_trip : doc.trip_title,
+					        	notice_partner : doc.partner_id,
+					        	notice_item : doc.item_title,
+					        	notice_type : 0
+					        };
+					        var notice = new NoticeModel(notice_data);
+					        notice.save(function(err, doc){
+					        	if(err) next(err);
+					        });
+					    }
+					});
+					console.log('doc =', doc);
+						for(var i = 0; i < doc.trip_list.length; i++) {
+							if(doc.trip_list[i].schedule_date == schedule_date) {
+								for (var j = 0; j < doc.trip_list[i].schedule_list.length; j++) {
+									if(doc.trip_list[i].schedule_list[j]._id == _id){
+										doc.trip_list[i].schedule_list[j].cate_no = cate_no;
+										doc.trip_list[i].schedule_list[j].item_lat = item_lat;
+										doc.trip_list[i].schedule_list[j].item_long = item_long;
+										doc.trip_list[i].schedule_list[j].item_placeid = item_placeid;
+										doc.trip_list[i].schedule_list[j].item_title = item_title;
+										doc.trip_list[i].schedule_list[j].item_memo = item_memo;
+										doc.trip_list[i].schedule_list[j].item_check = item_check;
+									}
+								}
+							};
+						};// for
+					doc.save(function(err, result){
+						if(err) {
+							console.log('err =', err);
+							check.code = 0;
+							check.message = err;
+						}
+					}); // doc.save()
+					res.json(check);
+				}); // UserModel.findOne
+			} // if(user_id == doc.partner_id)
+			else if(user_id == doc.user_id){
+				UserModel.findOne({user_id : doc.partner_id}, function(err, doc2){
+					if(err) {
+						console.log('err =', err);
+						check.code = 0;
+						check.message = err;
+					}
+					console.log('user_token =', doc2.user_token);
+					var message = {
+					    to: doc2.user_token,
+					    collapse_key: 'test_collapse_key',
+					    data: {
+					        your_custom_data_key: 'test_custom_data_value'
+					    },
+					    notification: {
+					        title: doc.user_id + '님이 ' + doc.trip_title + '의 일정을 수정하였습니다.',
+					       	body: doc.user_id + '님이 ' + doc.trip_title + '의 '+ doc.item_title + '을 수정하였습니다.'
+					    }
+					};
+					fcm.send(message, function(err, response){
+					    if (err) {
+					        console.log("Push Fail!");
+					        console.log(err);
+					    }
+					    else {
+					        console.log("Push Success : ", response);
+					        var notice_data = {
+					        	notice_trip : doc.trip_title,
+					        	notice_partner : doc.partner_id,
+					        	notice_item : doc.item_title,
+					        	notice_type : 0
+					        };
+					        var notice = new NoticeModel(notice_data);
+					        notice.save(function(err, doc){
+					        	if(err) next(err);
+					        });
+					    }
+					}); // fcm.send()
+					console.log('doc =', doc);
+						for(var i = 0; i < doc.trip_list.length; i++) {
+							if(doc.trip_list[i].schedule_date == schedule_date) {
+								for (var j = 0; j < doc.trip_list[i].schedule_list.length; j++) {
+									if(doc.trip_list[i].schedule_list[j]._id == _id){
+										doc.trip_list[i].schedule_list[j].cate_no = cate_no;
+										doc.trip_list[i].schedule_list[j].item_lat = item_lat;
+										doc.trip_list[i].schedule_list[j].item_long = item_long;
+										doc.trip_list[i].schedule_list[j].item_placeid = item_placeid;
+										doc.trip_list[i].schedule_list[j].item_title = item_title;
+										doc.trip_list[i].schedule_list[j].item_memo = item_memo;
+										doc.trip_list[i].schedule_list[j].item_check = item_check;
+									}
+								}
+							};
+						};// for
+					doc.save(function(err, result){
+						if(err) {
+							console.log('err =', err);
+							check.code = 0;
+							check.message = err;
+						}
+					}); // doc
+					res.json(check);
+				}); // UserModel.findOne()
+			} // else if(user_id == doc.user_id)
+			else{
+				check.code = 0;
+				check.message = '존재하지 않은 파트너이거나 사용자입니다. 회원가입을 해주세요.';
 				res.json(check);
-			});
-		});
+			} // else
+		}); // TripModel.findOne
 	}
 });
 //후보지 수정
