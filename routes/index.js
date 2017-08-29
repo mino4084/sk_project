@@ -1041,7 +1041,8 @@ router.post('/create_item', function(req, res, next){
 			};// for
 			doc.save(function(err, result){
 				if(err) console.log('err=', err);
-				res.json(check);
+				console.log('result =', result);
+				// res.json(check);
 			});
 		}
 		if(user_id == doc.user_id){
@@ -1092,15 +1093,17 @@ router.post('/create_item', function(req, res, next){
 			};// for
 			doc.save(function(err, result){
 				if(err) console.log('err=', err);
-				res.json(check);
+				console.log('result =', result);
+				// res.json(check);
 			});
 
 		}
 		else{
 			check.code = 0;
 			check.message = '잘못된 여행에서 생성했습니다.';
-			res.json(check);
+			// res.json(check);
 		}
+		res.json(check);
 	});
 });
 // 후보지 기본 생성
