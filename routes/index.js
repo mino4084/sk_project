@@ -897,6 +897,11 @@ router.post('/create_item_url', function(req, res, next){
 						res.json(check);
 					});
 				}
+				else{
+					check.code = 0;
+					check.message = '잘못된 여행에서 생성했습니다.';
+					res.json(check);
+				}
 	});
 });
 // 후보지 URL 단순 생성
@@ -1036,9 +1041,8 @@ router.post('/create_item', function(req, res, next){
 			};// for
 			doc.save(function(err, result){
 				if(err) console.log('err=', err);
-
+				res.json(check);
 			});
-			res.json(check);
 		}
 		if(user_id == doc.user_id){
 			UserModel.findOne({user_id : doc.partner_id}, function(err, doc2){
@@ -1088,9 +1092,9 @@ router.post('/create_item', function(req, res, next){
 			};// for
 			doc.save(function(err, result){
 				if(err) console.log('err=', err);
-
+				res.json(check);
 			});
-			res.json(check);
+
 		}
 		else{
 			check.code = 0;
@@ -1242,6 +1246,11 @@ router.post('/create_item_map', function(req, res, next){
 					if(err) console.log('err=', err);
 					res.json(check);
 				});
+			}
+			else{
+				check.code = 0;
+				check.message = '잘못된 여행에서 생성했습니다.';
+				res.json(check);
 			}
 		});
 });
