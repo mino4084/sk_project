@@ -776,7 +776,6 @@ router.post('/create_item_url', function(req, res, next){
 		message : message,
 		result : result
 	};
-
 	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
 		if(err) {
 			console.log('err =', err);
@@ -920,7 +919,6 @@ router.post('/create_item_url', function(req, res, next){
 			check.message = '존재하지 않은 파트너이거나 사용자입니다. 회원가입을 해주세요.';
 			res.json(check);
 		}
-		// res.json(check);
 	});
 });
 // 후보지 URL 단순 생성
@@ -1028,7 +1026,20 @@ router.post('/create_item', function(req, res, next){
 					check.code = 0;
 					check.message = err;
 				}
-
+				if(item_title == null){
+					for(var i = 0; i < doc.trip_list.length; i++) {
+						if(doc.trip_list[i].schedule_date == schedule_date) {
+							for (var j = 0; j < doc.trip_list[i].schedule_list.length; j++) {
+								if(doc.trip_list[i].schedule_list[j].item_title == null){
+									num++;
+								}
+							}
+						};
+					};// for
+					console.log('num =', num);
+					data.item_title = '위치' + (num + 1);
+				}
+				console.log('data.item_title =', data.item_title);
 				console.log('user_token =', doc2.user_token);
 				var message = {
 				    to: doc2.user_token,
@@ -1038,19 +1049,20 @@ router.post('/create_item', function(req, res, next){
 				    },
 				    notification: {
 				        title: doc.partner_id + '님이 ' + doc.trip_title + '에 일정을 업로드하였습니다.',
-				        body: doc.partner_id + '님이 ' + doc.trip_title + '에 '+ item_title + '을 업로드하였습니다.'
+				       	body: doc.partner_id + '님이 ' + doc.trip_title + '에 '+ data.item_title + '을 업로드하였습니다.'
 				    }
 				};
 				fcm.send(message, function(err, response){
 				    if (err) {
 				        console.log("Push Fail!");
 				        console.log(err);
-				    } else {
+				    }
+				    else {
 				        console.log("Push Success : ", response);
 				        var notice_data = {
 				        	notice_trip : doc.trip_title,
 				        	notice_partner : doc.partner_id,
-				        	notice_item : item_title,
+				        	notice_item : item_url,
 				        	notice_type : 0
 				        };
 				        var notice = new NoticeModel(notice_data);
@@ -1059,18 +1071,17 @@ router.post('/create_item', function(req, res, next){
 				        });
 				    }
 				});
-			});
-			console.log('doc =', doc);
-			for(var i = 0; i < doc.trip_list.length; i++) {
-				if(doc.trip_list[i].schedule_date == schedule_date) {
-					check.result = doc.trip_list[i];
-					doc.trip_list[i].schedule_list.push(data);
-				};
-			};// for
-			doc.save(function(err, result){
-				if(err) console.log('err=', err);
-				console.log('result =', result);
-				// res.json(check);
+				console.log('doc =', doc);
+				for(var i = 0; i < doc.trip_list.length; i++) {
+					if(doc.trip_list[i].schedule_date == schedule_date) {
+						check.result = doc.trip_list[i];
+						doc.trip_list[i].schedule_list.push(data);
+					};
+				};// for
+				doc.save(function(err, result){
+					if(err) console.log('err=', err);
+				});
+				res.json(check);
 			});
 		}
 		else if(user_id == doc.user_id){
@@ -1080,7 +1091,19 @@ router.post('/create_item', function(req, res, next){
 					check.code = 0;
 					check.message = err;
 				}
-
+				if(item_title == null){
+					for(var i = 0; i < doc.trip_list.length; i++) {
+						if(doc.trip_list[i].schedule_date == schedule_date) {
+							for (var j = 0; j < doc.trip_list[i].schedule_list.length; j++) {
+								if(doc.trip_list[i].schedule_list[j].item_title == null){
+									num++;
+								}
+							}
+						};
+					};// for
+					console.log('num =', num);
+					data.item_title = '위치' + (num + 1);
+				}
 				console.log('user_token =', doc2.user_token);
 				var message = {
 				    to: doc2.user_token,
@@ -1090,48 +1113,46 @@ router.post('/create_item', function(req, res, next){
 				    },
 				    notification: {
 				        title: doc.partner_id + '님이 ' + doc.trip_title + '에 일정을 업로드하였습니다.',
-				        body: doc.partner_id + '님이 ' + doc.trip_title + '에 '+ item_title + '을 업로드하였습니다.'
+				        body: doc.partner_id + '님이 ' + doc.trip_title + '에 '+ data.item_title + '을 업로드하였습니다.'
 				    }
 				};
 				fcm.send(message, function(err, response){
-				    if (err) {
-				        console.log("Push Fail!");
-				        console.log(err);
-				    } else {
-				        console.log("Push Success : ", response);
-				        var notice_data = {
-				        	notice_trip : doc.trip_title,
-				        	notice_partner : doc.partner_id,
-				        	notice_item : item_title,
-				        	notice_type : 0
-				        };
-				        var notice = new NoticeModel(notice_data);
-				        notice.save(function(err, doc){
-				        	if(err) next(err);
-				        });
+					if (err) {
+				    	console.log("Push Fail!");
+			        	console.log(err);
+			    	}
+			    	else {
+			        	console.log("Push Success : ", response);
+			        	var notice_data = {
+				        		notice_trip : doc.trip_title,
+				        		notice_partner : doc.partner_id,
+				        		notice_item : item_url,
+				        		notice_type : 0
+				        	};
+			        	var notice = new NoticeModel(notice_data);
+			        	notice.save(function(err, doc){
+			        		if(err) next(err);
+			        	});
 				    }
 				});
+				console.log('doc =', doc);
+				for(var i = 0; i < doc.trip_list.length; i++) {
+					if(doc.trip_list[i].schedule_date == schedule_date) {
+						check.result = doc.trip_list[i];
+						doc.trip_list[i].schedule_list.push(data);
+					};
+				};// for
+				doc.save(function(err, result){
+					if(err) console.log('err=', err);
+				});
+				res.json(check);
 			});
-			console.log('doc =', doc);
-			for(var i = 0; i < doc.trip_list.length; i++) {
-				if(doc.trip_list[i].schedule_date == schedule_date) {
-					check.result = doc.trip_list[i];
-					doc.trip_list[i].schedule_list.push(data);
-				};
-			};// for
-			doc.save(function(err, result){
-				if(err) console.log('err=', err);
-				console.log('result =', result);
-				// res.json(check);
-			});
-
 		}
 		else{
 			check.code = 0;
 			check.message = '존재하지 않은 파트너이거나 사용자입니다. 회원가입을 해주세요.';
-			// res.json(check);
+			res.json(check);
 		}
-		res.json(check);
 	});
 });
 // 후보지 기본 생성
