@@ -867,7 +867,7 @@ router.post('/create_item_url', function(req, res, next){
 							};
 						};// for
 						console.log('num =', num);
-						data.item_title = '위치' + num;
+
 						console.log('user_token =', doc2.user_token);
 						var message = {
 						    to: doc2.user_token,
@@ -904,6 +904,7 @@ router.post('/create_item_url', function(req, res, next){
 					console.log('doc =', doc);
 					for(var i = 0; i < doc.trip_list.length; i++) {
 						if(doc.trip_list[i].schedule_date == schedule_date) {
+							data.item_title = '위치' + num;
 							check.result = doc.trip_list[i];
 							doc.trip_list[i].schedule_list.push(data);
 						};
