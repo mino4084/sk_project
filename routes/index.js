@@ -1090,20 +1090,7 @@ router.post('/create_item', function(req, res, next){
 				res.json(check);
 			});
 		}
-
-		/*else{
-			console.log('doc =', doc);
-			for(var i = 0; i < doc.trip_list.length; i++) {
-				if(doc.trip_list[i].schedule_date == schedule_date) {
-					check.result = doc.trip_list[i];
-					doc.trip_list[i].schedule_list.push(data);
-				};
-			};// for
-			doc.save(function(err, result){
-				if(err) console.log('err=', err);
-				res.json(check);
-			});
-		}*/
+		res.json(check);
 	});
 });
 // 후보지 기본 생성
