@@ -992,7 +992,9 @@ router.post('/create_item', function(req, res, next){
 			check.code = 0;
 			check.message = err;
 		}
-
+		console.log('user_id =', user_id);
+		console.log('doc.partner_id =', doc.partner_id);
+		console.log('doc.user_id =', doc.user_id);
 		if(user_id == doc.partner_id){
 			UserModel.findOne({user_id : doc.user_id}, function(err, doc2){
 				if(err) {
