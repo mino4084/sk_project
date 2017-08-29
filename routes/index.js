@@ -1061,7 +1061,7 @@ router.post('/create_item', function(req, res, next){
 				// res.json(check);
 			});
 		}
-		if(user_id == doc.user_id){
+		else if(user_id == doc.user_id){
 			UserModel.findOne({user_id : doc.partner_id}, function(err, doc2){
 				if(err) {
 					console.log('err =', err);
@@ -1215,7 +1215,7 @@ router.post('/create_item_map', function(req, res, next){
 					// res.json(check);
 				});
 			}
-			if(user_id == doc.user_id){
+			else if(user_id == doc.user_id){
 				UserModel.findOne({user_id : doc.partner_id}, function(err, doc2){
 					if(err) {
 						console.log('err =', err);
