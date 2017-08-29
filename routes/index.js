@@ -803,7 +803,7 @@ router.post('/create_item_url', function(req, res, next){
 					};
 				};// for
 				console.log('num =', num);
-				data.item_title = '위치' + num;
+				data.item_title = '위치' + num + 1;
 				console.log('data.item_title =', data.item_title);
 				console.log('user_token =', doc2.user_token);
 				var message = {
@@ -845,8 +845,9 @@ router.post('/create_item_url', function(req, res, next){
 				};// for
 				doc.save(function(err, result){
 					if(err) console.log('err=', err);
-					// res.json(check);
+
 				});
+				res.json(check);
 			});
 
 
@@ -868,7 +869,7 @@ router.post('/create_item_url', function(req, res, next){
 							};
 						};// for
 						console.log('num =', num);
-						data.item_title = '위치' + num;
+						data.item_title = '위치' + num + 1;
 						console.log('user_token =', doc2.user_token);
 						var message = {
 						    to: doc2.user_token,
@@ -909,16 +910,17 @@ router.post('/create_item_url', function(req, res, next){
 						};// for
 						doc.save(function(err, result){
 							if(err) console.log('err=', err);
-							// res.json(check);
+
 						});
+						res.json(check);
 					});
 		}
 		else{
 			check.code = 0;
 			check.message = '존재하지 않은 파트너이거나 사용자입니다. 회원가입을 해주세요.';
-			// res.json(check);
+			res.json(check);
 		}
-		res.json(check);
+		// res.json(check);
 	});
 });
 // 후보지 URL 단순 생성
@@ -941,42 +943,49 @@ router.post('/create_item', function(req, res, next){
 	var item_title = req.body.item_title;
 	var item_memo = req.body.item_memo;
 
-	if(req.body.cate_no == ""){ // 입력하는 칸에 아무것도 입력하지 않았을 때
+	if(req.body.cate_no == "null"){ // 입력하는 칸에 아무것도 입력하지 않았을 때
 		var cate_no = 0;
 	}
 	else{ // 입력한 경우
 		var cate_no = req.body.cate_no;
 	}
 
-	if(req.body.item_lat == ""){
+	if(req.body.item_url == "null"){
+		var item_url = null;
+	}
+	else{
+		var item_url = req.body.item_url;
+	}
+
+	if(req.body.item_lat == "null"){
 		var item_lat = null;
 	}
 	else{
 		var item_lat = req.body.item_lat;
 	}
 
-	if(req.body.item_long == ""){
+	if(req.body.item_long == "null"){
 		var item_long = null;
 	}
 	else{
  		var item_long = req.body.item_long;
 	}
 
-	if(req.body.item_placeid == ""){
+	if(req.body.item_placeid == "null"){
 		var item_placeid = null;
 	}
 	else{
 		var item_placeid = req.body.item_placeid;
 	}
 
-	if(req.body.item_title == ""){
+	if(req.body.item_title == "null"){
 		var item_title = null;
 	}
 	else{
 		var item_title = req.body.item_title;
 	}
 
-	if(req.body.item_memo == ""){
+	if(req.body.item_memo == "null"){
 		var item_memo = null;
 	}
 	else{
