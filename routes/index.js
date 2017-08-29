@@ -1063,7 +1063,7 @@ router.post('/create_item', function(req, res, next){
 				        console.log("Push Success : ", response);
 				        var notice_data = {
 				        	notice_trip : doc.trip_title,
-				        	notice_partner : doc.user_id,
+				        	notice_partner : user_id,
 				        	notice_item : data.item_title,
 				        	notice_type : 0
 				        };
@@ -1127,7 +1127,7 @@ router.post('/create_item', function(req, res, next){
 			        	console.log("Push Success : ", response);
 			        	var notice_data = {
 				        		notice_trip : doc.trip_title,
-				        		notice_partner : doc.partner_id,
+				        		notice_partner : user_id,
 				        		notice_item : data.item_title,
 				        		notice_type : 0
 				        	};
@@ -1461,7 +1461,7 @@ router.post('/update_item', function(req, res, next){
 					        console.log("Push Success : ", response);
 					        var notice_data = {
 					        	notice_trip : doc.trip_title,
-					        	notice_partner : doc.user_id,
+					        	notice_partner : user_id,
 					        	notice_item : item_title,
 					        	notice_type : 0
 					        };
@@ -1537,7 +1537,7 @@ router.post('/update_item', function(req, res, next){
 					        console.log("Push Success : ", response);
 					        var notice_data = {
 					        	notice_trip : doc.trip_title,
-					        	notice_partner : doc.partner_id,
+					        	notice_partner : user_id,
 					        	notice_item : item_title,
 					        	notice_type : 0
 					        };
@@ -1627,7 +1627,7 @@ router.post('/update_item', function(req, res, next){
 					        console.log("Push Success : ", response);
 					        var notice_data = {
 					        	notice_trip : doc.trip_title,
-					        	notice_partner : doc.partner_id,
+					        	notice_partner : user_id,
 					        	notice_item : item_title,
 					        	notice_type : 0
 					        };
@@ -1692,7 +1692,7 @@ router.post('/update_item', function(req, res, next){
 					        console.log("Push Success : ", response);
 					        var notice_data = {
 					        	notice_trip : doc.trip_title,
-					        	notice_partner : doc.partner_id,
+					        	notice_partner : user_id,
 					        	notice_item : item_title,
 					        	notice_type : 0
 					        };
