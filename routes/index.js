@@ -1050,7 +1050,7 @@ router.post('/create_item', function(req, res, next){
 				        your_custom_data_key: 'test_custom_data_value'
 				    },
 				    notification: {
-				        title: doc.partner_id + '님이 ' + doc.trip_title + '에 일정을 업로드하였습니다.',
+				        title: doc.partner_id + '님의 일정 업로드',
 				       	body: doc.partner_id + '님이 ' + doc.trip_title + '에 '+ data.item_title + '을 업로드하였습니다.'
 				    }
 				};
@@ -1114,7 +1114,7 @@ router.post('/create_item', function(req, res, next){
 				        your_custom_data_key: 'test_custom_data_value'
 				    },
 				    notification: {
-				        title: doc.user_id + '님이 ' + doc.trip_title + '에 일정을 업로드하였습니다.',
+				        title: doc.partner_id + '님의 일정 업로드',
 				        body: doc.user_id + '님이 ' + doc.trip_title + '에 '+ data.item_title + '을 업로드하였습니다.'
 				    }
 				};
@@ -1458,7 +1458,7 @@ router.post('/update_item', function(req, res, next){
 					        your_custom_data_key: 'test_custom_data_value'
 					    },
 					    notification: {
-					        title: doc.partner_id + '님이 ' + doc.trip_title + '의 일정을 수정하였습니다.',
+					        title: doc.partner_id + '님의 일정 수정',
 					       	body: doc.partner_id + '님이 ' + doc.trip_title + '의 '+ title + '을 수정하였습니다.'
 					    }
 					};
@@ -1543,7 +1543,7 @@ router.post('/update_item', function(req, res, next){
 					        your_custom_data_key: 'test_custom_data_value'
 					    },
 					    notification: {
-					        title: doc.user_id + '님이 ' + doc.trip_title + '의 일정을 수정하였습니다.',
+					        title: doc.partner_id + '님의 일정 수정',
 					       	body: doc.user_id + '님이 ' + doc.trip_title + '의 '+ title + '을 수정하였습니다.'
 					    }
 					};
@@ -1642,7 +1642,7 @@ router.post('/update_item', function(req, res, next){
 					        your_custom_data_key: 'test_custom_data_value'
 					    },
 					    notification: {
-					        title: doc.partner_id + '님이 ' + doc.trip_title + '의 일정을 수정하였습니다.',
+					        title: doc.partner_id + '님의 일정 수정',
 					       	body: doc.partner_id + '님이 ' + doc.trip_title + '의 '+ title + '을 수정하였습니다.'
 					    }
 					};
@@ -1716,7 +1716,7 @@ router.post('/update_item', function(req, res, next){
 					        your_custom_data_key: 'test_custom_data_value'
 					    },
 					    notification: {
-					        title: doc.user_id + '님이 ' + doc.trip_title + '의 일정을 수정하였습니다.',
+					        title: doc.partner_id + '님의 일정 수정',
 					       	body: doc.user_id + '님이 ' + doc.trip_title + '의 '+ title + '을 수정하였습니다.'
 					    }
 					};
@@ -1830,8 +1830,8 @@ router.post('/delete_item', function(req, res, next){
 				        your_custom_data_key: 'test_custom_data_value'
 				    },
 				    notification: {
-				        title: doc.partner_id + '님이 ' + doc.trip_title + '의 일정을 수정하였습니다.',
-				       	body: doc.partner_id + '님이 ' + doc.trip_title + '의 '+ item_title + '을 수정하였습니다.'
+				        title: doc.partner_id + '님의 일정 삭제',
+				       	body: doc.partner_id + '님이 ' + doc.trip_title + '의 '+ item_title + '을 삭제하였습니다.'
 				    }
 				};
 				fcm.send(message, function(err, response){
@@ -1903,8 +1903,8 @@ router.post('/delete_item', function(req, res, next){
 				        your_custom_data_key: 'test_custom_data_value'
 				    },
 				    notification: {
-				        title: doc.user_id + '님이 ' + doc.trip_title + '의 일정을 수정하였습니다.',
-				       	body: doc.user_id + '님이 ' + doc.trip_title + '의 '+ item_title + '을 수정하였습니다.'
+				        title: doc.user_id + '님의 일정 삭제',
+				       	body: doc.user_id + '님이 ' + doc.trip_title + '의 '+ item_title + '을 삭제하였습니다.'
 				    }
 				};
 				fcm.send(message, function(err, response){
@@ -2007,17 +2007,44 @@ router.post('/check_item', function(req, res, next){
 						}
 					};
 				};// for
-				var message = {
-				    to: doc2.user_token,
-				    collapse_key: 'test_collapse_key',
-				    data: {
-				        your_custom_data_key: 'test_custom_data_value'
-				    },
-				    notification: {
-				        title: doc.partner_id + '님이 ' + doc.trip_title + '의 일정을 수정하였습니다.',
-				       	body: doc.partner_id + '님이 ' + doc.trip_title + '의 '+ item_title + '을 수정하였습니다.'
-				    }
-				};
+				console.log('doc =', doc);
+				for(var i = 0; i < doc.trip_list.length; i++) {
+					if(doc.trip_list[i].schedule_date == schedule_date) {
+						for (var j = 0; j < doc.trip_list[i].schedule_list.length; j++) {
+							if(doc.trip_list[i].schedule_list[j]._id == _id){
+								if(doc.trip_list[i].schedule_list[j].item_check == 1){
+									doc.trip_list[i].schedule_list[j].item_check = 0;
+									var message = {
+									    to: doc2.user_token,
+									    collapse_key: 'test_collapse_key',
+									    data: {
+									        your_custom_data_key: 'test_custom_data_value'
+									    },
+									    notification: {
+									        title: doc.partner_id + '님의 최종 일정 체크 취소',
+									       	body: doc.partner_id + '님이 ' + doc.trip_title + '의 '+ item_title + '을 체크 취소하였습니다.'
+									    }
+									};
+								}
+								else{
+									doc.trip_list[i].schedule_list[j].item_check = 1;
+									var message = {
+									    to: doc2.user_token,
+									    collapse_key: 'test_collapse_key',
+									    data: {
+									        your_custom_data_key: 'test_custom_data_value'
+									    },
+									    notification: {
+									        title: doc.partner_id + '님의 최종 일정 체크',
+									       	body: doc.partner_id + '님이 ' + doc.trip_title + '의 '+ item_title + '을 체크하였습니다.'
+									    }
+									};
+								}
+							}
+						}
+					};
+				};// for
+
 				fcm.send(message, function(err, response){
 				    if (err) {
 				        console.log("Push Fail!");
@@ -2037,21 +2064,7 @@ router.post('/check_item', function(req, res, next){
 				        });
 				    }
 				}); // fcm.send()
-				console.log('doc =', doc);
-				for(var i = 0; i < doc.trip_list.length; i++) {
-					if(doc.trip_list[i].schedule_date == schedule_date) {
-						for (var j = 0; j < doc.trip_list[i].schedule_list.length; j++) {
-							if(doc.trip_list[i].schedule_list[j]._id == _id){
-								if(doc.trip_list[i].schedule_list[j].item_check == 1){
-									doc.trip_list[i].schedule_list[j].item_check = 0;
-								}
-								else{
-									doc.trip_list[i].schedule_list[j].item_check = 1;
-								}
-							}
-						}
-					};
-				};// for
+
 				doc.save(function(err, result){
 					if(err) console.log('err=', err);
 				}); // doc.save()
@@ -2075,17 +2088,43 @@ router.post('/check_item', function(req, res, next){
 						}
 					};
 				};// for
-				var message = {
-				    to: doc2.user_token,
-				    collapse_key: 'test_collapse_key',
-				    data: {
-				        your_custom_data_key: 'test_custom_data_value'
-				    },
-				    notification: {
-				        title: doc.user_id + '님이 ' + doc.trip_title + '의 일정을 수정하였습니다.',
-				       	body: doc.user_id + '님이 ' + doc.trip_title + '의 '+ item_title + '을 수정하였습니다.'
-				    }
-				};
+				console.log('doc =', doc);
+				for(var i = 0; i < doc.trip_list.length; i++) {
+					if(doc.trip_list[i].schedule_date == schedule_date) {
+						for (var j = 0; j < doc.trip_list[i].schedule_list.length; j++) {
+							if(doc.trip_list[i].schedule_list[j]._id == _id){
+								if(doc.trip_list[i].schedule_list[j].item_check == 1){
+									doc.trip_list[i].schedule_list[j].item_check = 0;
+									var message = {
+									    to: doc2.user_token,
+									    collapse_key: 'test_collapse_key',
+									    data: {
+									        your_custom_data_key: 'test_custom_data_value'
+									    },
+									    notification: {
+									        title: doc.partner_id + '님의 최종 일정 체크 취소',
+									       	body: doc.partner_id + '님이 ' + doc.trip_title + '의 '+ item_title + '을 체크 취소하였습니다.'
+									    }
+									};
+								}
+								else{
+									doc.trip_list[i].schedule_list[j].item_check = 1;
+									var message = {
+									    to: doc2.user_token,
+									    collapse_key: 'test_collapse_key',
+									    data: {
+									        your_custom_data_key: 'test_custom_data_value'
+									    },
+									    notification: {
+									        title: doc.partner_id + '님의 최종 일정 체크',
+									       	body: doc.partner_id + '님이 ' + doc.trip_title + '의 '+ item_title + '을 체크하였습니다.'
+									    }
+									};
+								}
+							}
+						}
+					};
+				};// for
 				fcm.send(message, function(err, response){
 				    if (err) {
 				        console.log("Push Fail!");
@@ -2105,21 +2144,6 @@ router.post('/check_item', function(req, res, next){
 				        });
 				    }
 				}); // fcm.send()
-				console.log('doc =', doc);
-				for(var i = 0; i < doc.trip_list.length; i++) {
-					if(doc.trip_list[i].schedule_date == schedule_date) {
-						for (var j = 0; j < doc.trip_list[i].schedule_list.length; j++) {
-							if(doc.trip_list[i].schedule_list[j]._id == _id){
-								if(doc.trip_list[i].schedule_list[j].item_check == 1){
-									doc.trip_list[i].schedule_list[j].item_check = 0;
-								}
-								else{
-									doc.trip_list[i].schedule_list[j].item_check = 1;
-								}
-							}
-						}
-					};
-				};// for
 				doc.save(function(err, result){
 					if(err) console.log('err=', err);
 				}); // doc.save()
