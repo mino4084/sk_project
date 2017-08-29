@@ -1039,7 +1039,7 @@ router.post('/create_item', function(req, res, next){
 						};
 					};// for
 					console.log('num =', num);
-					data.item_title = '위치' + (num + 1);
+					data.item_title = '위치' + num;
 				}
 				console.log('data.item_title =', data.item_title);
 				console.log('user_token =', doc2.user_token);
@@ -1104,7 +1104,7 @@ router.post('/create_item', function(req, res, next){
 						};
 					};// for
 					console.log('num =', num);
-					data.item_title = '위치' + (num + 1);
+					data.item_title = '위치' + num;
 				}
 				console.log('user_token =', doc2.user_token);
 				var message = {
