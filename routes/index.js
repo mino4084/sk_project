@@ -1036,8 +1036,9 @@ router.post('/create_item', function(req, res, next){
 			};// for
 			doc.save(function(err, result){
 				if(err) console.log('err=', err);
-				res.json(check);
+
 			});
+			res.json(check);
 		}
 		if(user_id == doc.user_id){
 			UserModel.findOne({user_id : doc.partner_id}, function(err, doc2){
@@ -1087,10 +1088,10 @@ router.post('/create_item', function(req, res, next){
 			};// for
 			doc.save(function(err, result){
 				if(err) console.log('err=', err);
-				res.json(check);
+
 			});
+			res.json(check);
 		}
-		res.json(check);
 	});
 });
 // 후보지 기본 생성
