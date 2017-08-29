@@ -940,6 +940,7 @@ router.post('/create_item', function(req, res, next){
 	var item_placeid = req.body.item_placeid;
 	var item_title = req.body.item_title;
 	var item_memo = req.body.item_memo;
+	var num = 0;
 
 	if(req.body.cate_no == "null"){ // 입력하는 칸에 아무것도 입력하지 않았을 때
 		var cate_no = 0;
