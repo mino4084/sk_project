@@ -1092,6 +1092,11 @@ router.post('/create_item', function(req, res, next){
 			});
 			res.json(check);
 		}
+		else{
+			check.code = 0;
+			check.message = '잘못된 여행에서 생성했습니다.';
+			res.json(check);
+		}
 	});
 });
 // 후보지 기본 생성
