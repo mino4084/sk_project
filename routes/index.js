@@ -848,8 +848,7 @@ router.post('/create_item_url', function(req, res, next){
 			});
 
 		}
-
-		if(user_id == doc.user_id){
+		else if(user_id == doc.user_id){
 					UserModel.findOne({user_id : doc.partner_id}, function(err, doc2){
 						if(err) {
 							console.log('err =', err);
