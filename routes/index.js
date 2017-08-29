@@ -758,7 +758,7 @@ router.post('/create_item_url', function(req, res, next){
 	var trip_no = req.body.trip_no;
 	var schedule_date = req.body.schedule_date;
 	var item_url = req.body.item_url;
-
+	var num = 0;
 	var code = 1;
 	var message = "OK";
 	var result = {};
@@ -822,7 +822,16 @@ router.post('/create_item_url', function(req, res, next){
 				    }
 				});
 			});
-
+			for(var i = 0; i < doc.trip_list.length; i++) {
+				if(doc.trip_list[i].schedule_date == schedule_date) {
+					for (var j = 0; j < doc.trip_list[i].schedule_list.length; j++) {
+						if(doc.trip_list[i].schedule_list[j].item_title == null){
+							num++;
+						}
+					}
+				};
+			};// for
+			console.log('num =', num);
 			console.log('doc =', doc);
 			for(var i = 0; i < doc.trip_list.length; i++) {
 				if(doc.trip_list[i].schedule_date == schedule_date) {
@@ -1726,7 +1735,7 @@ router.post('/time_final', function(req, res, next){
 // express-validator 사용
 
 ////////////////////////////////////////////////////
-//알림 디비 수정
+//알림 - 삭제, 체크, 체크 해제, 비밀번호 랜덤 요청 페이지
 
 /*	var notice = new NoticeModel(data);
 	notice.save(function(err, doc){
