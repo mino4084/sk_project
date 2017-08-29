@@ -1442,6 +1442,15 @@ router.post('/update_item', function(req, res, next){
 						check.message = err;
 					}
 					console.log('user_token =', doc2.user_token);
+					for(var i = 0; i < doc.trip_list.length; i++) {
+						if(doc.trip_list[i].schedule_date == schedule_date) {
+							for (var j = 0; j < doc.trip_list[i].schedule_list.length; j++) {
+								if(doc.trip_list[i].schedule_list[j]._id == _id){
+									title = doc.trip_list[i].schedule_list[j].item_title;
+								}
+							}
+						};
+					};// for
 					var message = {
 					    to: doc2.user_token,
 					    collapse_key: 'test_collapse_key',
@@ -1450,7 +1459,7 @@ router.post('/update_item', function(req, res, next){
 					    },
 					    notification: {
 					        title: doc.partner_id + '님이 ' + doc.trip_title + '의 일정을 수정하였습니다.',
-					       	body: doc.partner_id + '님이 ' + doc.trip_title + '의 '+ item_title + '을 수정하였습니다.'
+					       	body: doc.partner_id + '님이 ' + doc.trip_title + '의 '+ title + '을 수정하였습니다.'
 					    }
 					};
 					fcm.send(message, function(err, response){
@@ -1463,7 +1472,7 @@ router.post('/update_item', function(req, res, next){
 					        var notice_data = {
 					        	notice_trip : doc.trip_title,
 					        	notice_partner : user_id,
-					        	notice_item : item_title,
+					        	notice_item : title,
 					        	notice_type : 0
 					        };
 					        var notice = new NoticeModel(notice_data);
@@ -1518,6 +1527,15 @@ router.post('/update_item', function(req, res, next){
 						check.message = err;
 					}
 					console.log('user_token =', doc2.user_token);
+					for(var i = 0; i < doc.trip_list.length; i++) {
+						if(doc.trip_list[i].schedule_date == schedule_date) {
+							for (var j = 0; j < doc.trip_list[i].schedule_list.length; j++) {
+								if(doc.trip_list[i].schedule_list[j]._id == _id){
+									title = doc.trip_list[i].schedule_list[j].item_title;
+								}
+							}
+						};
+					};// for
 					var message = {
 					    to: doc2.user_token,
 					    collapse_key: 'test_collapse_key',
@@ -1526,7 +1544,7 @@ router.post('/update_item', function(req, res, next){
 					    },
 					    notification: {
 					        title: doc.user_id + '님이 ' + doc.trip_title + '의 일정을 수정하였습니다.',
-					       	body: doc.user_id + '님이 ' + doc.trip_title + '의 '+ item_title + '을 수정하였습니다.'
+					       	body: doc.user_id + '님이 ' + doc.trip_title + '의 '+ title + '을 수정하였습니다.'
 					    }
 					};
 					fcm.send(message, function(err, response){
@@ -1539,7 +1557,7 @@ router.post('/update_item', function(req, res, next){
 					        var notice_data = {
 					        	notice_trip : doc.trip_title,
 					        	notice_partner : user_id,
-					        	notice_item : item_title,
+					        	notice_item : title,
 					        	notice_type : 0
 					        };
 					        var notice = new NoticeModel(notice_data);
@@ -1608,6 +1626,15 @@ router.post('/update_item', function(req, res, next){
 						check.message = err;
 					}
 					console.log('user_token =', doc2.user_token);
+					for(var i = 0; i < doc.trip_list.length; i++) {
+						if(doc.trip_list[i].schedule_date == schedule_date) {
+							for (var j = 0; j < doc.trip_list[i].schedule_list.length; j++) {
+								if(doc.trip_list[i].schedule_list[j]._id == _id){
+									title = doc.trip_list[i].schedule_list[j].item_title;
+								}
+							}
+						};
+					};// for
 					var message = {
 					    to: doc2.user_token,
 					    collapse_key: 'test_collapse_key',
@@ -1616,7 +1643,7 @@ router.post('/update_item', function(req, res, next){
 					    },
 					    notification: {
 					        title: doc.partner_id + '님이 ' + doc.trip_title + '의 일정을 수정하였습니다.',
-					       	body: doc.partner_id + '님이 ' + doc.trip_title + '의 '+ item_title + '을 수정하였습니다.'
+					       	body: doc.partner_id + '님이 ' + doc.trip_title + '의 '+ title + '을 수정하였습니다.'
 					    }
 					};
 					fcm.send(message, function(err, response){
@@ -1629,7 +1656,7 @@ router.post('/update_item', function(req, res, next){
 					        var notice_data = {
 					        	notice_trip : doc.trip_title,
 					        	notice_partner : user_id,
-					        	notice_item : item_title,
+					        	notice_item : title,
 					        	notice_type : 0
 					        };
 					        var notice = new NoticeModel(notice_data);
@@ -1673,6 +1700,15 @@ router.post('/update_item', function(req, res, next){
 						check.message = err;
 					}
 					console.log('user_token =', doc2.user_token);
+					for(var i = 0; i < doc.trip_list.length; i++) {
+						if(doc.trip_list[i].schedule_date == schedule_date) {
+							for (var j = 0; j < doc.trip_list[i].schedule_list.length; j++) {
+								if(doc.trip_list[i].schedule_list[j]._id == _id){
+									title = doc.trip_list[i].schedule_list[j].item_title;
+								}
+							}
+						};
+					};// for
 					var message = {
 					    to: doc2.user_token,
 					    collapse_key: 'test_collapse_key',
@@ -1681,7 +1717,7 @@ router.post('/update_item', function(req, res, next){
 					    },
 					    notification: {
 					        title: doc.user_id + '님이 ' + doc.trip_title + '의 일정을 수정하였습니다.',
-					       	body: doc.user_id + '님이 ' + doc.trip_title + '의 '+ item_title + '을 수정하였습니다.'
+					       	body: doc.user_id + '님이 ' + doc.trip_title + '의 '+ title + '을 수정하였습니다.'
 					    }
 					};
 					fcm.send(message, function(err, response){
@@ -1694,7 +1730,7 @@ router.post('/update_item', function(req, res, next){
 					        var notice_data = {
 					        	notice_trip : doc.trip_title,
 					        	notice_partner : user_id,
-					        	notice_item : item_title,
+					        	notice_item : title,
 					        	notice_type : 0
 					        };
 					        var notice = new NoticeModel(notice_data);
