@@ -1062,6 +1062,7 @@ router.post('/create_item', function(req, res, next){
 				    else {
 				        console.log("Push Success : ", response);
 				        var notice_data = {
+				        	trip_no : doc.trip_no,
 				        	notice_trip : doc.trip_title,
 				        	notice_partner : user_id,
 				        	notice_item : data.item_title,
@@ -1126,6 +1127,7 @@ router.post('/create_item', function(req, res, next){
 			    	else {
 			        	console.log("Push Success : ", response);
 			        	var notice_data = {
+			        			trip_no : doc.trip_no,
 				        		notice_trip : doc.trip_title,
 				        		notice_partner : user_id,
 				        		notice_item : data.item_title,
@@ -1470,6 +1472,7 @@ router.post('/update_item', function(req, res, next){
 					    else {
 					        console.log("Push Success : ", response);
 					        var notice_data = {
+					        	trip_no : doc.trip_no,
 					        	notice_trip : doc.trip_title,
 					        	notice_partner : user_id,
 					        	notice_item : title,
@@ -1555,6 +1558,7 @@ router.post('/update_item', function(req, res, next){
 					    else {
 					        console.log("Push Success : ", response);
 					        var notice_data = {
+					        	trip_no : doc.trip_no,
 					        	notice_trip : doc.trip_title,
 					        	notice_partner : user_id,
 					        	notice_item : title,
@@ -1654,6 +1658,7 @@ router.post('/update_item', function(req, res, next){
 					    else {
 					        console.log("Push Success : ", response);
 					        var notice_data = {
+					        	trip_no : doc.trip_no,
 					        	notice_trip : doc.trip_title,
 					        	notice_partner : user_id,
 					        	notice_item : title,
@@ -1728,6 +1733,7 @@ router.post('/update_item', function(req, res, next){
 					    else {
 					        console.log("Push Success : ", response);
 					        var notice_data = {
+					        	trip_no : doc.trip_no,
 					        	notice_trip : doc.trip_title,
 					        	notice_partner : user_id,
 					        	notice_item : title,
@@ -1842,6 +1848,7 @@ router.post('/delete_item', function(req, res, next){
 				    else {
 				        console.log("Push Success : ", response);
 				        var notice_data = {
+				        	trip_no : doc.trip_no,
 				        	notice_trip : doc.trip_title,
 				        	notice_partner : user_id,
 				        	notice_item : item_title,
@@ -1915,6 +1922,7 @@ router.post('/delete_item', function(req, res, next){
 				    else {
 				        console.log("Push Success : ", response);
 				        var notice_data = {
+				        	trip_no : doc.trip_no,
 				        	notice_trip : doc.trip_title,
 				        	notice_partner : user_id,
 				        	notice_item : item_title,
@@ -2033,6 +2041,7 @@ router.post('/check_item', function(req, res, next){
 									    else {
 									        console.log("Push Success : ", response);
 									        var notice_data = {
+									        	trip_no : doc.trip_no,
 									        	notice_trip : doc.trip_title,
 									        	notice_partner : user_id,
 									        	notice_item : item_title,
@@ -2066,6 +2075,7 @@ router.post('/check_item', function(req, res, next){
 									    else {
 									        console.log("Push Success : ", response);
 									        var notice_data = {
+									        	trip_no : doc.trip_no,
 									        	notice_trip : doc.trip_title,
 									        	notice_partner : user_id,
 									        	notice_item : item_title,
@@ -2336,9 +2346,19 @@ router.post('/time_final', function(req, res, next){
 });
 // 최종일정 시간 입력
 
-// 알림
+// 알림 리스트 조회
+router.get('/list_notice', function(req, res, next){
+	res.render('list_notice', {title : "list_notice"});
+});
 
-// 알림
+router.post('/list_notice', function(req, res, next){
+	console.log('req body =', req.body);
+	var user_id = req.body.user_id;
+});
+
+// 알림 리스트 조회
+
+
 // express-validator 사용
 
 ////////////////////////////////////////////////////
