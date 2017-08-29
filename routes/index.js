@@ -896,12 +896,13 @@ router.post('/create_item_url', function(req, res, next){
 						if(err) console.log('err=', err);
 						res.json(check);
 					});
-				}
-				else{
-					check.code = 0;
-					check.message = '잘못된 여행에서 생성했습니다.';
-					res.json(check);
-				}
+		}
+		else{
+			check.code = 0;
+			check.message = '존재하지 않은 파트너이거나 사용자입니다. 회원가입을 해주세요.';
+			// res.json(check);
+		}
+		res.json(check);
 	});
 });
 // 후보지 URL 단순 생성
