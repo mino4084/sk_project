@@ -1063,7 +1063,7 @@ router.post('/create_item', function(req, res, next){
 				        var notice_data = {
 				        	notice_trip : doc.trip_title,
 				        	notice_partner : doc.partner_id,
-				        	notice_item : item_url,
+				        	notice_item : data.item_title,
 				        	notice_type : 0
 				        };
 				        var notice = new NoticeModel(notice_data);
@@ -1127,7 +1127,7 @@ router.post('/create_item', function(req, res, next){
 			        	var notice_data = {
 				        		notice_trip : doc.trip_title,
 				        		notice_partner : doc.partner_id,
-				        		notice_item : item_url,
+				        		notice_item : data.item_title,
 				        		notice_type : 0
 				        	};
 			        	var notice = new NoticeModel(notice_data);
