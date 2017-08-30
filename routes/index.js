@@ -2347,10 +2347,10 @@ router.post('/list_notice', function(req, res, next){
 		message : message,
 		result : result
 	};
-	var arr = [];
+
 	// $or: [{ user_id: user_id }, { partner_id : user_id } ]
 	TripModel.find({$or: [{ user_id: user_id }, { partner_id : user_id } ]}, null, {sort : {trip_no : -1}}, function(err, docs1){
-
+		var arr = [];
 		if(err){
 			console.log('err =', err);
 			check.code = 0;
