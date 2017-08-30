@@ -2398,15 +2398,23 @@ router.post('/list_notice', function(req, res, next){
 			check.code = 0;
 			check.message = err;
 		}
-		async.eachSeries(docs1, function(item, callbackIn){ // 반복
-			/*NoticeModel.find({trip_no : item.trip_no}, function(err, docs2){
+		async.eachSeries(docs1, function(item1, callbackIn1){ // 반복
+			NoticeModel.find({trip_no : item.trip_no}, function(err, docs2){
 				if(err){
 					console.log('err =', err);
 				}
-				arr.push(docs2);
-			});*/
-			arr.push(item.trip_no);
-			callbackIn();
+				async.eachSeries(docs2, function(item2, callbackIn2){ // 반복
+					arr.push(item2);
+					callbackIn2();
+				}, function(err){ // eachSeries 완료
+					if(err){
+						console.log('err =', err);
+					}
+				});
+				// arr.push(docs2);
+			});
+			// arr.push(item.trip_no);
+			callbackIn1();
 		}, function(err){ // eachSeries 완료
 			if(err){
 				console.log('err =', err);
