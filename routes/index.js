@@ -2357,7 +2357,10 @@ router.post('/list_notice', function(req, res, next){
 		}
 		for (var i = 0; i < docs.length; i++) {
 			// console.log('docs[i].trip_no =', docs[i].trip_no);
-			NoticeModel.findOne({notice_no : doc.trip_no}, function(){
+			NoticeModel.findOne({notice_no : doc.trip_no}, function(err, doc){
+				if(err){
+					console.log('err =', err);
+				}
 				if(doc.trip_no == docs[i].trip_no){
 					console.log('docs[i].trip_no =', docs[i].trip_no);
 				}
