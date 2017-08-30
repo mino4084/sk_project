@@ -2358,9 +2358,9 @@ router.post('/list_notice', function(req, res, next){
 		check.result = docs;
 		res.json(check);
 	});
-	NoticeModel.findOne({no : trip_no}, function(){
+	/*NoticeModel.findOne({no : trip_no}, function(){
 
-	});
+	});*/
 
 });
 
