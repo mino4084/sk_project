@@ -2347,20 +2347,23 @@ router.post('/list_notice', function(req, res, next){
 		message : message,
 		result : result
 	};
-	TripModel.find({$or: [{ user_id: user_id }, { partner_id : user_id } ]}, null, {sort : {trip_no : -1}}, function(err, docs){
-		var arr = {};
+	// $or: [{ user_id: user_id }, { partner_id : user_id } ]
+	TripModel.find({user_id : user_id}, null, {sort : {trip_no : -1}}, function(err, docs){
+		// var arr = {};
 		if(err){
 			console.log('err =', err);
 			check.code = 0;
 			check.message = err;
 		}
+		console.log('docs.length =', docs.length);
+		/*NoticeModel.findOne({notice_no : doc.trip_no}, function(){
+
+		});*/
 		console.log('list docs =', docs);
 		check.result = docs;
 		res.json(check);
 	});
-	/*NoticeModel.findOne({no : trip_no}, function(){
 
-	});*/
 
 });
 

@@ -12,7 +12,8 @@ var NoticeSchema = new Schema({
 	notice_trip : String,
 	notice_partner : String,
 	notice_item : String,
-	notice_type : Number // 후보지 업로드 : 0, 후보지 체크 : 1, 후보지 체크 해제 : 2, 후보지 삭제 : 3
+	notice_type : Number, // 후보지 업로드 : 0, 후보지 체크 : 1, 후보지 체크 해제 : 2, 후보지 삭제 : 3
+	notice_time : { type : Date, default : Date.now }
 });
 
 
