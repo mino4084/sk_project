@@ -2416,12 +2416,10 @@ router.post('/list_notice', function(req, res, next){
 					}
 					else{
 						// console.log('arr =', arr);
-						return arr;
-
 					}
 				});
+				callbackIn1();
 			});
-			callbackIn1();
 		}, function(err){ // eachSeries 완료
 			if(err){
 				console.log('err =', err);
