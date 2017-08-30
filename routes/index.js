@@ -2399,7 +2399,7 @@ router.post('/list_notice', function(req, res, next){
 			check.message = err;
 		}
 		async.eachSeries(docs1, function(item1, callbackIn1){ // 반복
-			NoticeModel.find({trip_no : item.trip_no}, function(err, docs2){
+			NoticeModel.find({trip_no : item1.trip_no}, function(err, docs2){
 				if(err){
 					console.log('err =', err);
 				}
