@@ -2410,6 +2410,9 @@ router.post('/list_notice', function(req, res, next){
 					if(err){
 						console.log('err =', err);
 					}
+					else{
+						console.log('arr =', arr);
+					}
 				});
 				// arr.push(docs2);
 			});
@@ -2418,9 +2421,6 @@ router.post('/list_notice', function(req, res, next){
 		}, function(err){ // eachSeries 완료
 			if(err){
 				console.log('err =', err);
-			}
-			else{
-				console.log('arr =', arr);
 			}
 		});
 		res.json(check);
