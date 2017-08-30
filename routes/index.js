@@ -2364,7 +2364,7 @@ router.post('/list_notice', function(req, res, next){
 	};
 
 	// $or: [{ user_id: user_id }, { partner_id : user_id } ]
-	/*TripModel.find({$or: [{ user_id: user_id }, { partner_id : user_id } ]}, null, {sort : {trip_no : -1}}, function(err, docs1){
+	TripModel.find({$or: [{ user_id: user_id }, { partner_id : user_id } ]}, null, {sort : {trip_no : -1}}, function(err, docs1){
 		var arr = [];
 		if(err){
 			console.log('err =', err);
@@ -2379,19 +2379,20 @@ router.post('/list_notice', function(req, res, next){
 				}
 				// console.log('arr =', arr);
 				for (var i = 0; i < docs2.length; i++) {
-					if(docs2[i].notice_partner !== user_id){
+					/*if(docs2[i].notice_partner !== user_id){
 						arr.push(docs2[i]);
-						console.log('docs2[i] =', docs2[i]);
-					}
+
+					}*/
+					console.log('docs2[i] =', docs2[i]);
 				}
 			});
 		}
 		console.log('arr =', arr);
 		check.result = arr;
 		res.json(check);
-	});*/
+	});
 
-	TripModel.find({$or: [{ user_id: user_id }, { partner_id : user_id } ]}, null, {sort : {trip_no : -1}}, function(err, docs1){
+	/*TripModel.find({$or: [{ user_id: user_id }, { partner_id : user_id } ]}, null, {sort : {trip_no : -1}}, function(err, docs1){
 		var arr = [];
 		if(err){
 			console.log('err =', err);
@@ -2425,7 +2426,7 @@ router.post('/list_notice', function(req, res, next){
 		});
 		check.result = arr;
 		res.json(check);
-	});
+	});*/
 });
 
 // 알림 리스트 조회
