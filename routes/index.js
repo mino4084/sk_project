@@ -2364,7 +2364,7 @@ router.post('/list_notice', function(req, res, next){
 	};
 
 	// $or: [{ user_id: user_id }, { partner_id : user_id } ]
-	TripModel.find({$or: [{ user_id: user_id }, { partner_id : user_id } ]}, null, {sort : {trip_no : -1}}, function(err, docs1){
+	/*TripModel.find({$or: [{ user_id: user_id }, { partner_id : user_id } ]}, null, {sort : {trip_no : -1}}, function(err, docs1){
 		var arr = [];
 		if(err){
 			console.log('err =', err);
@@ -2382,7 +2382,7 @@ router.post('/list_notice', function(req, res, next){
 					/*if(docs2[i].notice_partner !== user_id){
 						arr.push(docs2[i]);
 
-					}*/
+					}
 					console.log('docs2[i] =', docs2[i]);
 				}
 			});
@@ -2390,9 +2390,9 @@ router.post('/list_notice', function(req, res, next){
 		console.log('arr =', arr);
 		check.result = arr;
 		res.json(check);
-	});
+	});*/
 
-	/*TripModel.find({$or: [{ user_id: user_id }, { partner_id : user_id } ]}, null, {sort : {trip_no : -1}}, function(err, docs1){
+	TripModel.find({$or: [{ user_id: user_id }, { partner_id : user_id } ]}, null, {sort : {trip_no : -1}}, function(err, docs1){
 		var arr = [];
 		if(err){
 			console.log('err =', err);
@@ -2405,15 +2405,16 @@ router.post('/list_notice', function(req, res, next){
 					console.log('err =', err);
 				}
 				async.eachSeries(docs2, function(item2, callbackIn2){ // 반복
-					arr.push(item2);
+					// arr.push(item2);
+					console.log('item2 =', item2);
 					callbackIn2();
 				}, function(err){ // eachSeries 완료
 					if(err){
 						console.log('err =', err);
 					}
-					else{
+					/*else{
 						console.log('arr =', arr);
-					}
+					}*/
 				});
 				// arr.push(docs2);
 			});
@@ -2424,9 +2425,9 @@ router.post('/list_notice', function(req, res, next){
 				console.log('err =', err);
 			}
 		});
-		check.result = arr;
+		// check.result = arr;
 		res.json(check);
-	});*/
+	});
 });
 
 // 알림 리스트 조회
