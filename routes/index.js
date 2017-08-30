@@ -2349,7 +2349,7 @@ router.post('/list_notice', function(req, res, next){
 	};
 	// $or: [{ user_id: user_id }, { partner_id : user_id } ]
 	TripModel.find({$or: [{ user_id: user_id }, { partner_id : user_id } ]}, null, {sort : {trip_no : -1}}, function(err, docs1){
-		var arr = new Array();
+		var arr = {};
 		if(err){
 			console.log('err =', err);
 			check.code = 0;
@@ -2361,23 +2361,18 @@ router.post('/list_notice', function(req, res, next){
 				if(err){
 					console.log('err =', err);
 				}
+				arr = docs2
 				for (var i = 0; i < docs2.length; i++) {
-					if(docs2[i].notice_partner !== user_id){
-						arr.push(docs2[i]);
+					if(docs2[i].notice_partner == user_id){
+						arr.splice(i, 1);
 						console.log('docs2[i] =', docs2[i]);
 					}
 				}
-				// console.log('docs2 =', docs2);
-
 			});
 		}
-		// console.log('docs1.length =', docs1.length);
-		// console.log('list docs1 =', docs1);
 		check.result = arr;
 		res.json(check);
 	});
-
-
 });
 
 // 알림 리스트 조회
