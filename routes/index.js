@@ -2405,7 +2405,7 @@ router.post('/list_notice', function(req, res, next){
 				}
 				arr.push(docs2);
 			});*/
-			arr.push(item);
+			arr.push(item.trip_no);
 			callbackIn();
 		}, function(err){ // eachSeries 완료
 			if(err){
