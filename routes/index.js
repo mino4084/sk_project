@@ -2141,6 +2141,7 @@ router.post('/check_item', function(req, res, next){
 									    else {
 									        console.log("Push Success : ", response);
 									        var notice_data = {
+									        	trip_no : doc.trip_no,
 									        	notice_trip : doc.trip_title,
 									        	notice_partner : user_id,
 									        	notice_item : item_title,
@@ -2174,6 +2175,7 @@ router.post('/check_item', function(req, res, next){
 									    else {
 									        console.log("Push Success : ", response);
 									        var notice_data = {
+									        	trip_no : doc.trip_no,
 									        	notice_trip : doc.trip_title,
 									        	notice_partner : user_id,
 									        	notice_item : item_title,
@@ -2354,9 +2356,14 @@ router.get('/list_notice', function(req, res, next){
 router.post('/list_notice', function(req, res, next){
 	console.log('req body =', req.body);
 	var user_id = req.body.user_id;
+	//
 });
 
 // 알림 리스트 조회
+
+// 프로필 사진 변경
+// 매개변수
+// 프로필 사진 변경
 
 
 // express-validator 사용
