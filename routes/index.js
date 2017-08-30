@@ -2361,7 +2361,7 @@ router.post('/list_notice', function(req, res, next){
 				if(err){
 					console.log('err =', err);
 				}
-				arr = docs2
+				arr = docs2;
 				for (var i = 0; i < docs2.length; i++) {
 					if(docs2[i].notice_partner == user_id){
 						arr.splice(i, 1);
