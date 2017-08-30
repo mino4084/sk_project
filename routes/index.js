@@ -2414,10 +2414,10 @@ router.post('/list_notice', function(req, res, next){
 					if(err){
 						console.log('err =', err);
 					}
-					else{
+					/*else{
 						check.result = arr;
-						console.log('arr =', arr);
-					}
+
+					}*/
 				});
 				// arr.push(docs2);
 			});
@@ -2429,6 +2429,7 @@ router.post('/list_notice', function(req, res, next){
 			}
 		});
 		// check.result = arr;
+		console.log('arr =', arr);
 		res.json(check);
 	});
 });
