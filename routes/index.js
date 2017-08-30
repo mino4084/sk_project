@@ -2362,7 +2362,7 @@ router.post('/list_notice', function(req, res, next){
 	};
 
 	// $or: [{ user_id: user_id }, { partner_id : user_id } ]
-	TripModel.find({$or: [{ user_id: user_id }, { partner_id : user_id } ]}, null, {sort : {trip_no : -1}}, function(err, docs1){
+	/*TripModel.find({$or: [{ user_id: user_id }, { partner_id : user_id } ]}, null, {sort : {trip_no : -1}}, function(err, docs1){
 		var arr = [];
 		if(err){
 			console.log('err =', err);
@@ -2386,6 +2386,32 @@ router.post('/list_notice', function(req, res, next){
 		}
 		console.log('arr =', arr);
 		check.result = arr;
+		res.json(check);
+	});*/
+
+	TripModel.find({$or: [{ user_id: user_id }, { partner_id : user_id } ]}, null, {sort : {trip_no : -1}}, function(err, docs1){
+		var arr = [];
+		if(err){
+			console.log('err =', err);
+			check.code = 0;
+			check.message = err;
+		}
+		async.eachSeries(docs1, function(item, callbackIn){ // 반복
+			NoticeModel.find({trip_no : item.trip_no}, function(err, docs2){
+				if(err){
+					console.log('err =', err);
+				}
+				arr.push(docs2);
+			});
+			callbackIn();
+		}, function(err){ // eachSeries 완료
+			if(err){
+				console.log('err =', err);
+			}
+			else{
+				console.log('arr =', arr);
+			}
+		});
 		res.json(check);
 	});
 });
