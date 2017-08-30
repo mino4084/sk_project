@@ -2363,6 +2363,7 @@ router.post('/list_notice', function(req, res, next){
 				}
 				for (var i = 0; i < docs2.length; i++) {
 					if(docs2[i].notice_partner !== user_id){
+						arr.push(docs2[i]);
 						console.log('docs2[i] =', docs2[i]);
 					}
 				}
@@ -2372,7 +2373,7 @@ router.post('/list_notice', function(req, res, next){
 		}
 		// console.log('docs1.length =', docs1.length);
 		// console.log('list docs1 =', docs1);
-		check.result = docs1;
+		check.result = arr;
 		res.json(check);
 	});
 
