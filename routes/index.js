@@ -2349,7 +2349,7 @@ router.post('/list_notice', function(req, res, next){
 	};
 	// $or: [{ user_id: user_id }, { partner_id : user_id } ]
 	TripModel.find({$or: [{ user_id: user_id }, { partner_id : user_id } ]}, null, {sort : {trip_no : -1}}, function(err, docs1){
-		// var arr = {};
+		var arr = {};
 		if(err){
 			console.log('err =', err);
 			check.code = 0;
@@ -2357,16 +2357,21 @@ router.post('/list_notice', function(req, res, next){
 		}
 		for (var i = 0; i < docs1.length; i++) {
 			console.log('docs1[i].trip_no =', docs1[i].trip_no);
-			NoticeModel.find({trip_no : 59}, function(err, docs2){
+			NoticeModel.find({trip_no : docs1[i].trip_no}, function(err, docs2){
 				if(err){
 					console.log('err =', err);
 				}
-				console.log('docs2 =', docs2);
+				for (var i = 0; i < docs2.length; i++) {
+					if(docs2[i].notice_partner !== user_id){
+						console.log('docs2[i] =', docs2[i]);
+					}
+				}
+				// console.log('docs2 =', docs2);
 
 			});
 		}
 		// console.log('docs1.length =', docs1.length);
-		console.log('list docs1 =', docs1);
+		// console.log('list docs1 =', docs1);
 		check.result = docs1;
 		res.json(check);
 	});
