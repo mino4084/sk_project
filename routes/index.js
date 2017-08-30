@@ -3,9 +3,11 @@ var router = express.Router();
 var moment = require('moment');
 var bcrypt = require('bcrypt-node'); // 암호화 모듈
 var multer = require('multer'); // 파일전송 모듈
+var async = require('async'); // 동기화 모듈
 var UserModel = require('../models/user');
 var TripModel = require('../models/trip');
 var NoticeModel = require('../models/notice');
+
 // fcm 알림
 var FCM = require('fcm-push');
 var serverKey = 'AAAAkn8Pa7w:APA91bFRQVUYGjvvugJokF6-yUAKUZM2sFFiprSqo-PFsPLvbDKZwShLnrls7X8GbzNkWufDz_MZuScFtzI1KfW5DoXvzRUBKZ5tAItKbfe-kM7oaztVmJdQ0Jgy151I9jLhSuu2PByO';
