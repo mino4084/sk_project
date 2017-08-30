@@ -388,6 +388,8 @@ router.get('/change_img', function(req, res, next){
 router.post('/change_img', upload.single('picture'), function(req, res, next) {
 	console.log('req.body =', req.body); // name, title, content
 	console.log('req.file =', req.file); // picture 사진파일이 넘어온다.
+	var user_id = req.body.user_id;
+	var user_image = req.body.user_image;
 	res.json(req.file);
 });
 // 10. 프로필 사진 변경
