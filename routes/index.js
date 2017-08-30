@@ -2426,7 +2426,7 @@ router.post('/list_notice', function(req, res, next){
 			}
 			else{
 				check.result = arr;
-				console.log('arr =', arr);
+				console.log('arr222 =', arr);
 			}
 		});
 		res.json(check);
