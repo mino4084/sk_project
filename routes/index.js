@@ -2423,6 +2423,7 @@ router.post('/list_notice', function(req, res, next){
 				console.log('err =', err);
 			}
 		});
+		check.result = arr;
 		res.json(check);
 	});
 });
