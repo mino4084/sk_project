@@ -2348,31 +2348,26 @@ router.post('/list_notice', function(req, res, next){
 		result : result
 	};
 	// $or: [{ user_id: user_id }, { partner_id : user_id } ]
-	TripModel.find({$or: [{ user_id: user_id }, { partner_id : user_id } ]}, null, {sort : {trip_no : -1}}, function(err, docs){
+	TripModel.find({$or: [{ user_id: user_id }, { partner_id : user_id } ]}, null, {sort : {trip_no : -1}}, function(err, docs1){
 		// var arr = {};
 		if(err){
 			console.log('err =', err);
 			check.code = 0;
 			check.message = err;
 		}
-		for (var i = 0; i < docs.length; i++) {
-			console.log('docs[i].trip_no =', docs[i].trip_no);
-			NoticeModel.findOne({trip_no : 59}, function(err, doc){
+		for (var i = 0; i < docs1.length; i++) {
+			console.log('docs1[i].trip_no =', docs1[i].trip_no);
+			NoticeModel.find({trip_no : 59}, function(err, docs2){
 				if(err){
 					console.log('err =', err);
 				}
-				console.log('doc =', doc);
-				/*if(doc.trip_no == docs[i].trip_no){
-					console.log('docs[i].trip_no =', docs[i].trip_no);
-				}*/
+				console.log('docs2 =', docs2);
+
 			});
 		}
-		console.log('docs.length =', docs.length);
-		/*NoticeModel.findOne({notice_no : doc.trip_no}, function(){
-
-		});*/
-		console.log('list docs =', docs);
-		check.result = docs;
+		// console.log('docs1.length =', docs1.length);
+		console.log('list docs1 =', docs1);
+		check.result = docs1;
 		res.json(check);
 	});
 
