@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var moment = require('moment');
-var bcrypt = require('bcrypt-node');
+var bcrypt = require('bcrypt-node'); // 암호화 모듈
+var multer = require('multer'); // 파일전송 모듈
 var UserModel = require('../models/user');
 var TripModel = require('../models/trip');
 var NoticeModel = require('../models/notice');
@@ -21,13 +22,31 @@ let transporter = nodemailer.createTransport({
     }
 });
 
+// 이미지 저장소
+var storage = multer.diskStorage({
+	destination : function(req, file, callback){
+		//callback의 첫번째 인자는 error이다.
+		callback(null, './public/images')
+	},
+	filename : function(req, file, callback){
+		var index = file.originalname.lastIndexOf('.'); //abcde.jpg => 4
+		var prefix = file.originalname.substring(0, index); //abc
+		var suffix = file.originalname.substring(index); //jpg
+		var uploadedName = prefix + Date.now() + suffix; // "abc" + "xxx.xxx" + ".jpg"
+		callback(null, uploadedName);
+	},
+	limits : {fileSize : 10 * 1024 * 1024}
+});
+var upload = multer({storage : storage});
+
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
   	res.render('index', { title: user_id });
 });
 
-//프로필 조회
+
+// 1. 회원 간단정보 조회
 router.get('/simple', function(req, res, next){
 	res.render('simple', {title : "simple"});
 });
@@ -62,9 +81,9 @@ router.post('/simple', function(req, res, next) {
   		res.json(check);
   	});
 });
-//프로필 조회
+// 1. 회원 간단정보 조회
 
-// 로그인
+// 2. 로그인
 router.get('/login', function(req, res, next){
 	res.render('loginform', {title : "login"});
 });
@@ -115,9 +134,9 @@ router.post('/login', function(req, res, next){
 		res.json(check);
 	});
 });
-// 로그인
+// 2. 로그인
 
-//로그아웃
+// 3. 로그아웃
 /*router.post('/logout', function(req, res, next){
 	var id = req.session.user_id;
 	//var id = req.body.id; 비회원일 경우 uuid나 토큰으로 저장
@@ -139,9 +158,9 @@ router.post('/login', function(req, res, next){
 		res.json(check);
 	});
 });*/
-//로그아웃
+// 3. 로그아웃
 
-// 회원가입
+// 4. 회원가입
 router.get('/join', function(req, res, next){
 	res.render('joinform', {title : "회원가입"});
 });
@@ -200,9 +219,9 @@ router.post('/join', function(req, res, next){
 		}
 	});
 });
-//회원가입
+// 4. 회원가입
 
-// 비밀번호 찾기
+// 5. 비밀번호 찾기
 router.get('/find_pw', function(req, res, next){
 	res.render('find_pw', {title : "findpw"});
 });
@@ -237,9 +256,9 @@ router.post('/find_pw', function(req, res, next){
 		res.json(check);
 	});
 });
-//비밀번호 찾기
+// 5. 비밀번호 찾기
 
-// 닉네임 설정
+// 6. 닉네임 설정
 router.get('/nick', function(req, res, next){
 	res.render('nick', {title : "nick"});
 });
@@ -275,9 +294,12 @@ router.post('/nick', function(req, res, next){
 		res.json(check);
 	});
 });
-// 닉네임 설정
+// 6. 닉네임 설정
 
-// 비밀번호 변경(1차 확인)
+// 7. 비밀번호 초기화
+// 7. 비밀번호 초기화
+
+// 8. 비밀번호 변경(1차 확인)
 router.get('/check_pw', function(req, res, next){
 	res.render('check_pw', {title : "check pw"});
 });
@@ -317,9 +339,9 @@ router.post('/check_pw', function(req, res, next){
 		res.json(check);
 	});
 });
-// 비밀번호 변경(1차 확인)
+// 8. 비밀번호 변경(1차 확인)
 
-// 비밀번호 변경
+// 9. 비밀번호 변경
 router.get('/change_pw', function(req, res, next){
 	res.render('change_pw', {title : "change pw"});
 });
@@ -356,9 +378,21 @@ router.post('/change_pw', function(req, res, next){
 		res.json(check);
 	});
 });
-// 비밀번호 변경
+// 9. 비밀번호 변경
 
-//회원 탈퇴
+// 10. 프로필 사진 변경
+router.get('/change_img', function(req, res, next){
+	res.render('change_img', {title : "change_img"});
+});
+
+router.post('/change_img', upload.single('picture'), function(req, res, next) {
+	console.log('req.body =', req.body); // name, title, content
+	console.log('req.file =', req.file); // picture 사진파일이 넘어온다.
+	res.json(req.file);
+});
+// 10. 프로필 사진 변경
+
+// 11. 회원 탈퇴
 router.get('/stop', function(req, res, next){
 	res.render('stop', {title : "stop"});
 });
@@ -393,9 +427,9 @@ router.post('/stop', function(req, res, next){
 		res.json(check);
 	});
 });
-//회원 탈퇴
+// 11. 회원 탈퇴
 
-// 여행 생성
+// 12. 여행 생성하기
 router.get('/create_trip', function(req, res, next){
 	res.render('create_trip', {title : "create_trip"});
 });
@@ -457,9 +491,9 @@ router.post('/create_trip', function(req, res, next){
 		res.json(check);
 	});
 });
-// 여행 생성
+// 12. 여행 생성하기
 
-// 파트너 찾기
+// 13. 여행 파트너 찾기
 router.get('/find_partner', function(req, res, next){
 	res.render('find_partner', {title : "find_partner"});
 });
@@ -505,64 +539,9 @@ router.post('/find_partner', function(req, res, next){
 		});
 	}
 });
-// 파트너 찾기
+// 13. 여행 파트너 찾기
 
-// 여행 파트너 끊기
-/*router.get('/cut_partner', function(req, res, next){
-	res.render('cut_partner', {title : "cut_partner"});
-});
-
-router.post('/cut_partner', function(req, res, next){
-	console.log('req.body =', req.body);
-	var trip_no = req.body.trip_no;
-	var	user_id = req.body.user_id;
-	var stop = 1;
-	var code = 1;
-	var message = "OK";
-	var result = [];
-	var check = {
-		code : code,
-		message : message,
-		result : result
-	};
-	TripModel.findOne({trip_no : trip_no}, function(err, doc){
-		if(err) {
-			console.log('err =', err);
-			check.code = 0;
-			check.message = err;
-		}
-		if(doc){
-			console.log('doc =', doc);
-			if(doc.user_id == user_id){
-				TripModel.findOneAndUpdate({trip_no : trip_no}, {partner_id: null}, function(err, doc){
-					if(err) {
-						console.log('err =', err);
-						check.code = 0;
-						check.message = err;
-					}
-					if(doc){
-						console.log('doc =', doc);
-					}
-					else{
-						check.code = 0;
-						check.message = '실패';
-					}
-					res.json(check);
-				});
-			}
-			if(doc.partner_id == user_id){
-
-			}
-		}
-		else{
-			check.code = 0;
-			check.message = '실패';
-		}
-	});
-});*/
-// 여행 파트너 끊기
-
-// 여행 리스트 조회
+// 14. 여행 리스트 조회
 router.get('/list_trip', function(req, res, next){
 	res.render('list_trip', {title : "list_trip"});
 });
@@ -592,9 +571,9 @@ router.post('/list_trip', function(req, res, next){
 		res.json(check);
 	});
 });
-// 여행 리스트 조회
+// 14. 여행 리스트 조회
 
-// 여행 수정
+// 15. 여행 수정
 router.get('/update_trip', function(req, res, next){
 	res.render('update_trip', {title : "update_trip"});
 });
@@ -708,9 +687,9 @@ router.post('/update_trip', function(req, res, next){
 		res.json(check);
 	});
 });
-// 여행 수정
+// 15. 여행 수정
 
-// 여행 삭제
+// 16. 여행 삭제
 router.get('/delete_trip', function(req, res, next){
 	res.render('delete_trip', {title : "delete_trip"});
 });
@@ -745,7 +724,7 @@ router.post('/delete_trip', function(req, res, next){
 		res.json(check);
 	});
 });
-// 여행 삭제
+// 16. 여행 삭제
 
 // 후보지 URL 단순 생성
 router.get('/create_item_url', function(req, res, next){
@@ -2360,11 +2339,6 @@ router.post('/list_notice', function(req, res, next){
 });
 
 // 알림 리스트 조회
-
-// 프로필 사진 변경
-// 매개변수
-// 프로필 사진 변경
-
 
 // express-validator 사용
 
