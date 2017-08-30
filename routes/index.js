@@ -2361,9 +2361,10 @@ router.post('/list_notice', function(req, res, next){
 				if(err){
 					console.log('err =', err);
 				}
-				if(doc.trip_no == docs[i].trip_no){
+				console.log('doc =', doc);
+				/*if(doc.trip_no == docs[i].trip_no){
 					console.log('docs[i].trip_no =', docs[i].trip_no);
-				}
+				}*/
 			});
 		}
 		console.log('docs.length =', docs.length);
