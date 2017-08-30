@@ -2337,7 +2337,31 @@ router.get('/list_notice', function(req, res, next){
 router.post('/list_notice', function(req, res, next){
 	console.log('req body =', req.body);
 	var user_id = req.body.user_id;
-	//
+
+	var code = 1;
+	var message = "OK";
+	var result = {};
+
+	var check = {
+		code : code,
+		message : message,
+		result : result
+	};
+	TripModel.find({$or: [{ user_id: user_id }, { partner_id : user_id } ]}, null, {sort : {trip_no : -1}}, function(err, docs){
+		var arr = {};
+		if(err){
+			console.log('err =', err);
+			check.code = 0;
+			check.message = err;
+		}
+		console.log('list docs =', docs);
+		check.result = docs;
+		res.json(check);
+	});
+	NoticeModel.findOne({no : trip_no}, function(){
+
+	});
+
 });
 
 // 알림 리스트 조회
