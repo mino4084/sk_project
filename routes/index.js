@@ -2427,9 +2427,12 @@ router.post('/list_notice', function(req, res, next){
 			if(err){
 				console.log('err =', err);
 			}
+			else{
+				console.log('arr =', arr);
+			}
 		});
 		// check.result = arr;
-		console.log('arr =', arr);
+
 		res.json(check);
 	});
 });
