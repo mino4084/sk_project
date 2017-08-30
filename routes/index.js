@@ -2348,7 +2348,7 @@ router.post('/list_notice', function(req, res, next){
 		result : result
 	};
 	// $or: [{ user_id: user_id }, { partner_id : user_id } ]
-	TripModel.find({user_id : user_id}, null, {sort : {trip_no : -1}}, function(err, docs){
+	TripModel.find({$or: [{ user_id: user_id }, { partner_id : user_id } ]}, null, {sort : {trip_no : -1}}, function(err, docs){
 		// var arr = {};
 		if(err){
 			console.log('err =', err);
