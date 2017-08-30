@@ -2407,16 +2407,16 @@ router.post('/list_notice', function(req, res, next){
 				async.eachSeries(docs2, function(item2, callbackIn2){ // 반복
 					// arr.push(item2);
 					if(user_id !== item2.notice_partner){
-						console.log('item2 =', item2);
+						arr.push(item2);
 					}
 					callbackIn2();
 				}, function(err){ // eachSeries 완료
 					if(err){
 						console.log('err =', err);
 					}
-					/*else{
+					else{
 						console.log('arr =', arr);
-					}*/
+					}
 				});
 				// arr.push(docs2);
 			});
