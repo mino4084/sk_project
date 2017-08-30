@@ -2355,6 +2355,9 @@ router.post('/list_notice', function(req, res, next){
 			check.code = 0;
 			check.message = err;
 		}
+		for (var i = 0; i < docs.length; i++) {
+			console.log('docs[i].trip_no =', docs[i].trip_no);
+		}
 		console.log('docs.length =', docs.length);
 		/*NoticeModel.findOne({notice_no : doc.trip_no}, function(){
 
