@@ -2415,9 +2415,8 @@ router.post('/list_notice', function(req, res, next){
 						console.log('err =', err);
 					}
 					else{
-						console.log('arr =', arr);
+						// console.log('arr =', arr);
 						check.result = arr;
-						res.json(check);
 					}
 				});
 				// arr.push(docs2);
@@ -2429,14 +2428,14 @@ router.post('/list_notice', function(req, res, next){
 				console.log('err =', err);
 			}
 			else{
-				// console.log('arr =', arr);
+				console.log('arr =', arr);
 				// check.result = arr;
 				// res.json(check);
 			}
 		});
 		// check.result = arr;
 
-		// res.json(check);
+		res.json(check);
 	});
 });
 
