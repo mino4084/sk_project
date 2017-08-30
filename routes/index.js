@@ -2416,12 +2416,11 @@ router.post('/list_notice', function(req, res, next){
 					}
 					else{
 						// console.log('arr =', arr);
-						check.result = arr;
+						return arr;
+
 					}
 				});
-				// arr.push(docs2);
 			});
-			// arr.push(item.trip_no);
 			callbackIn1();
 		}, function(err){ // eachSeries 완료
 			if(err){
@@ -2429,12 +2428,8 @@ router.post('/list_notice', function(req, res, next){
 			}
 			else{
 				console.log('arr =', arr);
-				// check.result = arr;
-				// res.json(check);
 			}
 		});
-		// check.result = arr;
-
 		res.json(check);
 	});
 });
