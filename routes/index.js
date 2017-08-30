@@ -388,7 +388,18 @@ router.get('/change_img', function(req, res, next){
 router.post('/change_img', upload.single('user_image'), function(req, res, next) {
 	console.log('req.body =', req.body); // name, title, content
 	console.log('req.file =', req.file); // picture 사진파일이 넘어온다.
-
+	var code = 1;
+	var message = "OK";
+	var result = {};
+	var check = {
+		code : code,
+		message : message,
+		result : result
+	};
+	// var index = file.originalname.lastIndexOf('.'); //abcde.jpg => 4
+	// var prefix = file.originalname.substring(0, index); //abc
+	var index = req.file.path.IndeOf('/');
+	console.log('index =', index);
 	// console.log('req.file.path = '. req.file.path);
 	var user_id = req.body.user_id;
 	var user_image = req.body.user_image;
