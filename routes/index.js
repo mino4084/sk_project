@@ -398,8 +398,9 @@ router.post('/change_img', upload.single('user_image'), function(req, res, next)
 	};
 	// var index = file.originalname.lastIndexOf('.'); //abcde.jpg => 4
 	// var prefix = file.originalname.substring(0, index); //abc
-	var index = req.file.path.IndexOf('/');
-	console.log('index =', index);
+	var arr = req.file.paht.split('/');
+	var filename = arr[1] + arr[2];
+	console.log('filename =', filename);
 	// console.log('req.file.path = '. req.file.path);
 	var user_id = req.body.user_id;
 	var user_image = req.body.user_image;
