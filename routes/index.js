@@ -2417,6 +2417,7 @@ router.post('/list_notice', function(req, res, next){
 					else{
 						console.log('arr =', arr);
 						check.result = arr;
+						res.json(check);
 					}
 				});
 				// arr.push(docs2);
@@ -2430,7 +2431,7 @@ router.post('/list_notice', function(req, res, next){
 			else{
 				// console.log('arr =', arr);
 				// check.result = arr;
-				res.json(check);
+				// res.json(check);
 			}
 		});
 		// check.result = arr;
