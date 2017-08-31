@@ -25,12 +25,12 @@ let transporter = nodemailer.createTransport({
         pass: '1111' //
     }
 });
-/*aws.config.update(
+aws.config.update(
     {
-        accessKeyId: 'AKIAJPA2LPBH44BVIXZA',
-        secretAccessKey: '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'
+        accessKeyId: 'AKIAJKZA5RA2FRMJZFEA',
+        secretAccessKey: '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'
     }
-);*/
+);
 var s3 = new aws.S3({});
 
 // 이미지 저장소
