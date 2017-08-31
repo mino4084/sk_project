@@ -420,6 +420,7 @@ router.post('/change_img', upload.single('user_image'), function(req, res, next)
 		}
 		if(doc){
 			console.log('doc =', doc);
+			check.result = image;
 		}
 		else{
 			check.code = 0;
