@@ -341,9 +341,9 @@ router.post('/send_pw', function(req, res, next){
 			    from: '"admin_tripco" <adm.tripco@gmail.com>', // sender address (보내는 사람)
 			    to: doc.user_id, // list of receivers (받는 사람)
 			    subject: 'Tripco 비밀번호 초기화',
-			    text: doc.user_id + '님의 비밀번호 초기화 요청에 따라 새 비밀번호를 알려드립니다. 받으신 비밀번호를 즉시 변경해주세요! 새 비밀번호 : '
+			    text: doc.user_id + '님의 비밀번호 초기화 요청에 따라 새 비밀번호를 알려드립니다. 받으신 비밀번호로 즉시 변경해주세요! 새 비밀번호 : '
 			    + rand,
-			    html: doc.user_id + '님의 비밀번호 초기화 요청에 따라 새 비밀번호를 알려드립니다. 받으신 비밀번호를 즉시 변경해주세요! 새 비밀번호 : '
+			    html: doc.user_id + '님의 비밀번호 초기화 요청에 따라 새 비밀번호를 알려드립니다. 받으신 비밀번호로 즉시 변경해주세요! 새 비밀번호 : '
 			    + rand // html body
 			};
 			transporter.sendMail(mailOptions, (error, info) => {
@@ -351,6 +351,22 @@ router.post('/send_pw', function(req, res, next){
 			        return console.log(error);
 			    }
 			    console.log('Message %s sent: %s', info.messageId, info.response);
+			});
+			var hash = bcrypt.hashSync(rand);
+			UserModel.updateOne({user_id : user_id}, {$set : {user_pw : hash}}, function(err, doc){
+				if(err) {
+					console.log('err =', err);
+					check.code = 0;
+					check.message = err;
+				}
+				if(doc){
+					console.log('doc =', doc);
+				}
+				else{
+					check.code = 0;
+					check.message = '로그인 접속 오류';
+				}
+				res.json(check);
 			});
 		}
 		else{
