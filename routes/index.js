@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var moment = require('moment');
 var bcrypt = require('bcrypt-node'); // 암호화 모듈
+AWS.config.region = 'ap-northeast-2';
 var aws = require('aws-sdk') // asw S3 사용 모듈
 var multer = require('multer'); // 파일전송 모듈
 var multerS3 = require('multer-s3') // s3에 저장
@@ -32,7 +33,7 @@ var s3 = new aws.S3({ /* ... */ })
 var upload = multer({
 	storage: multerS3({
 		s3: s3,
-    	bucket: 'tripcoproject',
+    	bucket: 'tripco-project',
     	metadata: function (req, file, cb) {
       		cb(null, {fieldName: file.fieldname});
     	},
