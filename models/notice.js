@@ -15,7 +15,7 @@ var NoticeSchema = new Schema({
 	notice_partner : String,
 	notice_item : String,
 	notice_type : Number, // 후보지 업로드 : 0, 후보지 체크 : 1, 후보지 체크 해제 : 2, 후보지 삭제 : 3
-	notice_time : { type : Date, default : date }
+	notice_time : { type : String, default : date }
 });
 
 NoticeSchema.plugin(autoIncrement.plugin, { model : 'Notice', field : 'notice_no', startAt : 1, incrementBy : 1});
