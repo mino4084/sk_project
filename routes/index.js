@@ -22,7 +22,7 @@ let transporter = nodemailer.createTransport({
     secure: true, // secure:true for port 465, secure:false for port 587
     auth: {
         user: 'adm.tripco@gmail.com',
-        pass: 'sk_project' //
+        pass: '1111' //
     }
 });
 aws.config.update(
@@ -366,12 +366,11 @@ router.post('/send_pw', function(req, res, next){
 					check.code = 0;
 					check.message = '로그인 접속 오류';
 				}
-				// res.json(check);
 			});
 		}
 		else{
 			check.code = 0;
-			check.message = err;
+			check.message = '존재하지 않는 아이디입니다.';
 		}
 		res.json(check);
 	});;
