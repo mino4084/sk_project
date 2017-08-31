@@ -350,7 +350,7 @@ router.post('/send_pw', function(req, res, next){
 			    console.log('Message %s sent: %s', info.messageId, info.response);
 			});
 
-			check.result = doc.user_pw;
+			check.result = mailOptions;
 		}
 		else{
 			check.code = 0;
