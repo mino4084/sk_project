@@ -411,6 +411,9 @@ router.post('/change_img', upload.single('user_image'), function(req, res, next)
 		message : message,
 		result : result
 	};
+	var data = {
+		user_image : user_image
+	};
 	console.log('image =', image);
 	UserModel.findOneAndUpdate({user_id : user_id}, {$set : {user_image : image}}, {safe : true, upsert : true, new : true}, function(err, doc){
 		if(err) {
@@ -420,7 +423,8 @@ router.post('/change_img', upload.single('user_image'), function(req, res, next)
 		}
 		if(doc){
 			console.log('doc =', doc);
-			check.result = image;
+			data.user_image = image;
+			check.result = data;
 		}
 		else{
 			check.code = 0;
