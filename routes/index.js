@@ -26,11 +26,12 @@ let transporter = nodemailer.createTransport({
         pass: '1111' //
     }
 });
-aws.config.update({
-    secretAccessKey: 'tripco',
-    accessKeyId: 'tripco',
-    region: 'ap-northeast-2'
-});
+AWS.config.update(
+    {
+        accessKeyId: 'AKIAJLBCOKZ3MGJ6ILMQ',
+        secretAccessKey: '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'
+    }
+);
 var s3 = new aws.S3({});
 
 // 이미지 저장소
