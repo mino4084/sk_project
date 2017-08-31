@@ -21,6 +21,8 @@ NoticeSchema.virtual('notice_regdate').get(function(){
 	});
 
 
+NoticeSchema.set('toJSON', { virtuals : true });
+
 NoticeSchema.plugin(autoIncrement.plugin, { model : 'Notice', field : 'notice_no', startAt : 1, incrementBy : 1});
 
 var Notice = db.model('Notice', NoticeSchema);
