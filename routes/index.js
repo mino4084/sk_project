@@ -22,7 +22,7 @@ let transporter = nodemailer.createTransport({
     secure: true, // secure:true for port 465, secure:false for port 587
     auth: {
         user: 'adm.tripco@gmail.com',
-        pass: '1111' //
+        pass: 'sk_project' //
     }
 });
 aws.config.update(
@@ -338,7 +338,7 @@ router.post('/send_pw', function(req, res, next){
 			console.log('doc.user_id', doc.user_id);
 			let mailOptions = {
 			    from: '"admin_tripco" <adm.tripco@gmail.com>', // sender address (보내는 사람)
-			    to: 'mino4084@gmail.com', // list of receivers (받는 사람)
+			    to: doc.user_id, // list of receivers (받는 사람)
 			    subject: 'Hello Test', // Subject line (제목)
 			    text: 'Hello world ?', // plain text body (내용)
 			    html: '<b>Hello world ?</b>' // html body
