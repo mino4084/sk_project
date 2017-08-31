@@ -22,7 +22,7 @@ let transporter = nodemailer.createTransport({
     secure: true, // secure:true for port 465, secure:false for port 587
     auth: {
         user: 'adm.tripco@gmail.com',
-        pass: '1111' //
+        pass: 'sk_project' //
     }
 });
 aws.config.update(
@@ -337,11 +337,12 @@ router.post('/send_pw', function(req, res, next){
 			console.log('doc =', doc);
 			console.log('doc.user_id', doc.user_id);
 			var rand = Math.floor(Math.random()*9999);
-			/*let mailOptions = {
+			let mailOptions = {
 			    from: '"admin_tripco" <adm.tripco@gmail.com>', // sender address (보내는 사람)
 			    to: doc.user_id, // list of receivers (받는 사람)
-			    subject: 'Hello Test', // Subject line (제목)
-			    text: 'Hello world ?', // plain text body (내용)
+			    subject: 'Tripco 비밀번호 초기화',
+			    text: doc.user_id + '님의 비밀번호 초기화 요청에 따라 새 비밀번호를 알려드립니다. 받으신 비밀번호를 즉시 변경해주세요! 새 비밀번호 : '
+			    + rand,
 			    html: '<b>Hello world ?</b>' // html body
 			};
 			transporter.sendMail(mailOptions, (error, info) => {
@@ -349,10 +350,7 @@ router.post('/send_pw', function(req, res, next){
 			        return console.log(error);
 			    }
 			    console.log('Message %s sent: %s', info.messageId, info.response);
-			});*/
-
-			// check.result = mailOptions;
-			check.result = rand;
+			});
 		}
 		else{
 			check.code = 0;
