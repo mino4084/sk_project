@@ -401,11 +401,11 @@ router.post('/change_img', upload.single('user_image'), function(req, res, next)
 	// var index = file.originalname.lastIndexOf('.'); //abcde.jpg => 4
 	// var prefix = file.originalname.substring(0, index); //abc
 	var arr = req.file.path.substr(0, 6);
-	console.log('req.file.path =', req.file.path);
+	console.log('req.file.location =', req.file.location);
 	// console.log('req.file.path = '. req.file.path);
 	var user_id = req.body.user_id;
 	var user_image = req.body.user_image;
-	res.json(req.file.path);
+	res.json(req.file.location);
 });
 // 10. 프로필 사진 변경
 
