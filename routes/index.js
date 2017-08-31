@@ -2437,21 +2437,17 @@ router.post('/list_notice', function(req, res, next){
 					if(err){
 						console.log('err =', err);
 					}
-					else{
-						// console.log('arr =', arr);
-					}
 				});
 				callbackIn1();
 			});
-			console.log('item1 =', item1);
-
+			// console.log('item1 =', item1);
 		}, function(err){ // eachSeries 완료
 			if(err){
 				console.log('err =', err);
 			}
 			else{
 				check.result = arr;
-				console.log('arr =', arr);
+				// console.log('arr =', arr);
 				res.json(check);
 			}
 		});
