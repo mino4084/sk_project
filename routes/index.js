@@ -336,7 +336,7 @@ router.post('/send_pw', function(req, res, next){
 		if(doc){
 			console.log('doc =', doc);
 			console.log('doc.user_id', doc.user_id);
-			var rand = Math.floor(Math.random()*1000);
+			var rand = Math.floor(Math.random()*9999);
 			/*let mailOptions = {
 			    from: '"admin_tripco" <adm.tripco@gmail.com>', // sender address (보내는 사람)
 			    to: doc.user_id, // list of receivers (받는 사람)
