@@ -2386,34 +2386,6 @@ router.post('/list_notice', function(req, res, next){
 	};
 
 	// $or: [{ user_id: user_id }, { partner_id : user_id } ]
-	/*TripModel.find({$or: [{ user_id: user_id }, { partner_id : user_id } ]}, null, {sort : {trip_no : -1}}, function(err, docs1){
-		var arr = [];
-		if(err){
-			console.log('err =', err);
-			check.code = 0;
-			check.message = err;
-		}
-		for (var i = 0; i < docs1.length; i++) {
-			console.log('docs1[i].trip_no =', docs1[i].trip_no);
-			NoticeModel.find({trip_no : docs1[i].trip_no}, function(err, docs2){
-				if(err){
-					console.log('err =', err);
-				}
-				// console.log('arr =', arr);
-				for (var i = 0; i < docs2.length; i++) {
-					/*if(docs2[i].notice_partner !== user_id){
-						arr.push(docs2[i]);
-
-					}
-					console.log('docs2[i] =', docs2[i]);
-				}
-			});
-		}
-		console.log('arr =', arr);
-		check.result = arr;
-		res.json(check);
-	});*/
-
 	TripModel.find({$or: [{ user_id: user_id }, { partner_id : user_id } ]}, null, {sort : {trip_no : -1}}, function(err, docs1){
 		var arr = [];
 		if(err){
@@ -2421,37 +2393,33 @@ router.post('/list_notice', function(req, res, next){
 			check.code = 0;
 			check.message = err;
 		}
-		async.eachSeries(docs1, function(item1, callbackIn1){ // 반복
+		async.eachSeries(docs1, function(item1, callbackIn1){
 			NoticeModel.find({trip_no : item1.trip_no}, function(err, docs2){
 				if(err){
 					console.log('err =', err);
 				}
-				async.eachSeries(docs2, function(item2, callbackIn2){ // 반복
-					// arr.push(item2);
+				async.eachSeries(docs2, function(item2, callbackIn2){
 					if(user_id !== item2.notice_partner){
 						arr.push(item2);
 					}
-					// arr.push(item2);
 					callbackIn2();
 				}, function(err){ // eachSeries 완료
 					if(err){
 						console.log('err =', err);
 					}
-				});
+				}); // async.eachSeries()
 				callbackIn1();
-			});
-			// console.log('item1 =', item1);
+			}); // NoticeModel.find()
 		}, function(err){ // eachSeries 완료
 			if(err){
 				console.log('err =', err);
 			}
 			else{
 				check.result = arr;
-				// console.log('arr =', arr);
 				res.json(check);
 			}
-		});
-	});
+		});// async.eachSeries()
+	}); // TripModel.find()
 });
 
 // 알림 리스트 조회
