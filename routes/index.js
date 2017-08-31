@@ -26,7 +26,7 @@ let transporter = nodemailer.createTransport({
         pass: '1111' //
     }
 });
-AWS.config.update(
+aws.config.update(
     {
         accessKeyId: 'AKIAJLBCOKZ3MGJ6ILMQ',
         secretAccessKey: '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'
