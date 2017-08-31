@@ -343,7 +343,8 @@ router.post('/send_pw', function(req, res, next){
 			    subject: 'Tripco 비밀번호 초기화',
 			    text: doc.user_id + '님의 비밀번호 초기화 요청에 따라 새 비밀번호를 알려드립니다. 받으신 비밀번호를 즉시 변경해주세요! 새 비밀번호 : '
 			    + rand,
-			    html: '<b>Hello world ?</b>' // html body
+			    html: doc.user_id + '님의 비밀번호 초기화 요청에 따라 새 비밀번호를 알려드립니다. 받으신 비밀번호를 즉시 변경해주세요! 새 비밀번호 : '
+			    + rand // html body
 			};
 			transporter.sendMail(mailOptions, (error, info) => {
 			    if (error) {
