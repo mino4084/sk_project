@@ -3,7 +3,7 @@ var router = express.Router();
 var moment = require('moment');
 var bcrypt = require('bcrypt-node'); // 암호화 모듈
 var aws = require('aws-sdk') // asw S3 사용 모듈
-aws.config.region = 'ap-northeast-2';
+
 var multer = require('multer'); // 파일전송 모듈
 var multerS3 = require('multer-s3') // s3에 저장
 var async = require('async'); // 동기화 모듈
@@ -26,8 +26,12 @@ let transporter = nodemailer.createTransport({
         pass: '1111' //
     }
 });
-
-var s3 = new aws.S3({ /* ... */ })
+aws.config.update({
+    secretAccessKey: 'tripco',
+    accessKeyId: 'tripco',
+    region: 'ap-northeast-2'
+});
+var s3 = new aws.S3({});
 
 // 이미지 저장소
 var upload = multer({
