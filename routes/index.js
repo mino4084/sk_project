@@ -290,7 +290,7 @@ router.post('/nick', function(req, res, next){
 		result : result
 	};
 
-	UserModel.updateOne({user_id : id}, {$set : {user_nick : nick}}, {safe : true, upsert : true, new : true}, function(err, doc){
+	UserModel.findOne({user_id : id}, function(err, doc){
 		if(err) {
 			console.log('err =', err);
 			check.code = 0;
@@ -298,10 +298,11 @@ router.post('/nick', function(req, res, next){
 		}
 		if(doc){
 			console.log('doc =', doc);
+			check.result = doc.user_pw;
 		}
 		else{
 			check.code = 0;
-			check.message = '존재하지 아이디이거나 오류';
+			check.message = err;
 		}
 		res.json(check);
 	});
@@ -309,6 +310,56 @@ router.post('/nick', function(req, res, next){
 // 6. 닉네임 설정
 
 // 7. 비밀번호 초기화
+router.get('/send_pw', function(req, res, next){
+	res.render('send_pw', {title : "send pw"});
+});
+
+router.post('/send_pw', function(req, res, next){
+	console.log('req.body =', req.body);
+	var user_id = req.body.user_id; // 비회원일 경우 uuid나 토큰으로 저장
+
+	var code = 1;
+	var message = "OK";
+	var result = {};
+	var check = {
+		code : code,
+		message : message,
+		result : result
+	};
+
+	UserModel.findOne({user_id : user_id}, function(err, doc){
+		if(err) {
+			console.log('err =', err);
+			check.code = 0;
+			check.message = err;
+		}
+		if(doc){
+			console.log('doc =', doc);
+			console.log('doc.user_id', doc.user_id);
+			let mailOptions = {
+			    from: '"admin_tripco" <adm.tripco@gmail.com>', // sender address (보내는 사람)
+			    to: 'mino4084@gmail.com', // list of receivers (받는 사람)
+			    subject: 'Hello Test', // Subject line (제목)
+			    text: 'Hello world ?', // plain text body (내용)
+			    html: '<b>Hello world ?</b>' // html body
+			};
+			transporter.sendMail(mailOptions, (error, info) => {
+			    if (error) {
+			        return console.log(error);
+			    }
+			    console.log('Message %s sent: %s', info.messageId, info.response);
+			});
+
+			check.result = doc.user_pw;
+		}
+		else{
+			check.code = 0;
+			check.message = err;
+		}
+		res.json(check);
+	});;
+});
+
 // 7. 비밀번호 초기화
 
 // 8. 비밀번호 변경(1차 확인)
