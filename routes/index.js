@@ -28,8 +28,8 @@ let transporter = nodemailer.createTransport({
 });
 aws.config.update(
     {
-        accessKeyId: 'AKIAJLBCOKZ3MGJ6ILMQ',
-        secretAccessKey: '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'
+        accessKeyId: 'AKIAJPA2LPBH44BVIXZA',
+        secretAccessKey: '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'
     }
 );
 var s3 = new aws.S3({});
