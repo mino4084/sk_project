@@ -42,7 +42,7 @@ var upload = multer({
     		var uploadedName = prefix + Date.now() + suffix; // "abc" + "xxx.xxx" + ".jpg"
       		cb(null, uploadedName);
     	}
-  	});
+  	})
 });
 
 
