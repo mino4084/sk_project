@@ -412,7 +412,7 @@ router.post('/change_img', upload.single('user_image'), function(req, res, next)
 		result : result
 	};
 
-	UserModel.updateOne({user_id : user_id}, {$set : {user_image : image}}, {safe : true, upsert : true, new : true}, function(err, doc){
+	UserModel.findOneAndUpdate({user_id : user_id}, {$set : {user_image : image}}, {safe : true, upsert : true, new : true}, function(err, doc){
 		if(err) {
 			console.log('err =', err);
 			check.code = 0;
