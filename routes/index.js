@@ -3,6 +3,7 @@ var router = express.Router();
 var moment = require('moment');
 var bcrypt = require('bcrypt-node'); // 암호화 모듈
 var multer = require('multer'); // 파일전송 모듈
+var multerS3 = require('multer-s3') // s3에 저장
 var async = require('async'); // 동기화 모듈
 var UserModel = require('../models/user');
 var TripModel = require('../models/trip');
@@ -24,22 +25,25 @@ let transporter = nodemailer.createTransport({
     }
 });
 
+var s3 = new aws.S3({ /* ... */ })
+
 // 이미지 저장소
-var storage = multer.diskStorage({
-	destination : function(req, file, callback){
-		//callback의 첫번째 인자는 error이다.
-		callback(null, './public/images')
-	},
-	filename : function(req, file, callback){
-		var index = file.originalname.lastIndexOf('.'); //abcde.jpg => 4
-		var prefix = file.originalname.substring(0, index); //abc
-		var suffix = file.originalname.substring(index); //jpg
-		var uploadedName = prefix + Date.now() + suffix; // "abc" + "xxx.xxx" + ".jpg"
-		callback(null, uploadedName);
-	},
-	limits : {fileSize : 10 * 1024 * 1024}
+var upload = multer({
+	storage: multerS3({
+		s3: s3,
+    	bucket: 'tripcoproject',
+    	metadata: function (req, file, cb) {
+      		cb(null, {fieldName: file.fieldname});
+    	},
+    	key: function (req, file, cb) {
+    		var index = file.originalname.lastIndexOf('.'); //abcde.jpg => 4
+    		var prefix = file.originalname.substring(0, index); //abc
+    		var suffix = file.originalname.substring(index); //jpg
+    		var uploadedName = prefix + Date.now() + suffix; // "abc" + "xxx.xxx" + ".jpg"
+      		cb(null, uploadedName);
+    	}
+  	});
 });
-var upload = multer({storage : storage});
 
 
 /* GET home page. */
@@ -398,11 +402,7 @@ router.post('/change_img', upload.single('user_image'), function(req, res, next)
 		message : message,
 		result : result
 	};
-	// var index = file.originalname.lastIndexOf('.'); //abcde.jpg => 4
-	// var prefix = file.originalname.substring(0, index); //abc
-	var arr = req.file.path.substr(0, 6);
 	console.log('req.file.location =', req.file.location);
-	// console.log('req.file.path = '. req.file.path);
 	var user_id = req.body.user_id;
 	var user_image = req.body.user_image;
 	res.json(req.file.location);
