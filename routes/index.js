@@ -400,6 +400,9 @@ router.get('/change_img', function(req, res, next){
 router.post('/change_img', upload.single('user_image'), function(req, res, next) {
 	console.log('req.body =', req.body); // name, title, content
 	console.log('req.file =', req.file); // picture 사진파일이 넘어온다.
+	var user_id = req.body.user_id;
+	var user_image = req.body.user_image;
+	var image = req.file.location;
 	var code = 1;
 	var message = "OK";
 	var result = {};
@@ -408,10 +411,22 @@ router.post('/change_img', upload.single('user_image'), function(req, res, next)
 		message : message,
 		result : result
 	};
-	console.log('req.file.location =', req.file.location);
-	var user_id = req.body.user_id;
-	var user_image = req.body.user_image;
-	res.json(req.file.location);
+
+	UserModel.updateOne({user_id : id}, {$set : {user_image : image}}, {safe : true, upsert : true, new : true}, function(err, doc){
+		if(err) {
+			console.log('err =', err);
+			check.code = 0;
+			check.message = err;
+		}
+		if(doc){
+			console.log('doc =', doc);
+		}
+		else{
+			check.code = 0;
+			check.message = '존재하지 아이디이거나 오류';
+		}
+		res.json(check);
+	});
 });
 // 10. 프로필 사진 변경
 
