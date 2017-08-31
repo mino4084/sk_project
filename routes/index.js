@@ -366,7 +366,7 @@ router.post('/send_pw', function(req, res, next){
 					check.code = 0;
 					check.message = '로그인 접속 오류';
 				}
-				res.json(check);
+				// res.json(check);
 			});
 		}
 		else{
