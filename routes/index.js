@@ -2422,16 +2422,16 @@ router.post('/list_notice', function(req, res, next){
 			check.message = err;
 		}
 		async.eachSeries(docs1, function(item1, callbackIn1){ // 반복
-			NoticeModel.find({trip_no : item1.trip_no}, function(err, docs2){
+			/*NoticeModel.find({trip_no : item1.trip_no}, function(err, docs2){
 				if(err){
 					console.log('err =', err);
 				}
 				async.eachSeries(docs2, function(item2, callbackIn2){ // 반복
 					// arr.push(item2);
-					/*if(user_id !== item2.notice_partner){
+					if(user_id !== item2.notice_partner){
 						arr.push(item2);
-					}*/
-					arr.push(item2);
+					}
+					// arr.push(item2);
 					callbackIn2();
 				}, function(err){ // eachSeries 완료
 					if(err){
@@ -2441,8 +2441,10 @@ router.post('/list_notice', function(req, res, next){
 						// console.log('arr =', arr);
 					}
 				});
-				callbackIn1();
-			});
+
+			});*/
+			console.log('item1 =', item1);
+			callbackIn1();
 		}, function(err){ // eachSeries 완료
 			if(err){
 				console.log('err =', err);
