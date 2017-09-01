@@ -292,8 +292,7 @@ router.post('/nick', function(req, res, next){
 		message : message,
 		result : result
 	};
-
-	UserModel.findOne({user_id : id}, function(err, doc){
+	UserModel.findOneAndUpdate({user_id : user_id}, {$set : {user_nick : nick}}, {safe : true, upsert : true, new : true}, function(err, doc){
 		if(err) {
 			console.log('err =', err);
 			check.code = 0;
@@ -301,11 +300,10 @@ router.post('/nick', function(req, res, next){
 		}
 		if(doc){
 			console.log('doc =', doc);
-			check.result = doc.user_pw;
 		}
 		else{
 			check.code = 0;
-			check.message = err;
+			check.message = '존재하지 아이디이거나 오류';
 		}
 		res.json(check);
 	});
