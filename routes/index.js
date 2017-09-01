@@ -1133,7 +1133,7 @@ router.post('/create_item', function(req, res, next){
 				}
 				console.log('data.item_title =', data.item_title);
 				console.log('user_token =', doc2.user_token);
-				UserModel.findOne({user_id : doc.partner_id}, function(err, doc3){
+				UserModel.findOne({user_id : user_id}, function(err, doc3){
 					if(err) {
 						console.log('err =', err);
 						check.code = 0;
@@ -1161,7 +1161,7 @@ router.post('/create_item', function(req, res, next){
 					        	trip_no : doc.trip_no,
 					        	notice_trip : doc.trip_title,
 					        	notice_partner : user_id,
-					        	notice_image : doc2.user_image,
+					        	notice_image : doc3.user_image,
 					        	notice_item : data.item_title,
 					        	notice_type : 0
 					        };
@@ -1206,50 +1206,53 @@ router.post('/create_item', function(req, res, next){
 					console.log('num =', num);
 					data.item_title = '일정' + num;
 				}
-				console.log('user_token =', doc2.user_token);
-				var message = {
-				    to: doc2.user_token,
-				    collapse_key: 'test_collapse_key',
-				    data: {
-				        your_custom_data_key: 'test_custom_data_value'
-				    },
-				    notification: {
-				        title: doc.partner_id + '님의 일정 업로드',
-				        body: doc.user_id + '님이 ' + doc.trip_title + '에 '+ data.item_title + '을 업로드하였습니다.'
-				    }
-				};
-				fcm.send(message, function(err, response){
-					if (err) {
-				    	console.log("Push Fail!");
-			        	console.log(err);
-			    	}
-			    	else {
-			        	console.log("Push Success : ", response);
-			        	var notice_data = {
-			        			trip_no : doc.trip_no,
-				        		notice_trip : doc.trip_title,
-				        		notice_partner : user_id,
-				        		notice_image : doc2.user_image,
-				        		notice_item : data.item_title,
-				        		notice_type : 0
-				        	};
-			        	var notice = new NoticeModel(notice_data);
-			        	notice.save(function(err, doc){
-			        		if(err) next(err);
-			        	});
-				    }
-				}); // fcm.send()
-				console.log('doc =', doc);
-				for(var i = 0; i < doc.trip_list.length; i++) {
-					if(doc.trip_list[i].schedule_date == schedule_date) {
-						check.result = doc.trip_list[i];
-						doc.trip_list[i].schedule_list.push(data);
-					};
-				};// for
-				doc.save(function(err, result){
-					if(err) console.log('err=', err);
-				}); // doc.save()
-				res.json(check);
+				UserModel.findOne({user_id : user_id}, function(err, doc3){
+						console.log('user_token =', doc2.user_token);
+						var message = {
+						    to: doc2.user_token,
+						    collapse_key: 'test_collapse_key',
+						    data: {
+						        your_custom_data_key: 'test_custom_data_value'
+						    },
+						    notification: {
+						        title: doc.partner_id + '님의 일정 업로드',
+						        body: doc.user_id + '님이 ' + doc.trip_title + '에 '+ data.item_title + '을 업로드하였습니다.'
+						    }
+						};
+						fcm.send(message, function(err, response){
+							if (err) {
+						    	console.log("Push Fail!");
+					        	console.log(err);
+					    	}
+					    	else {
+					        	console.log("Push Success : ", response);
+					        	var notice_data = {
+					        			trip_no : doc.trip_no,
+						        		notice_trip : doc.trip_title,
+						        		notice_partner : user_id,
+						        		notice_image : doc3.user_image,
+						        		notice_item : data.item_title,
+						        		notice_type : 0
+						        	};
+					        	var notice = new NoticeModel(notice_data);
+					        	notice.save(function(err, doc){
+					        		if(err) next(err);
+					        	});
+						    }
+						}); // fcm.send()
+						console.log('doc =', doc);
+						for(var i = 0; i < doc.trip_list.length; i++) {
+							if(doc.trip_list[i].schedule_date == schedule_date) {
+								check.result = doc.trip_list[i];
+								doc.trip_list[i].schedule_list.push(data);
+							};
+						};// for
+						doc.save(function(err, result){
+							if(err) console.log('err=', err);
+						}); // doc.save()
+						res.json(check);
+				});
+
 			}); // UserModel.find()
 		} // else if(user_id == doc.user_id)
 		else{
