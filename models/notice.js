@@ -1,7 +1,7 @@
 // memo.js
 var mongoose = require('mongoose');
 var moment = require('moment-timezone');
-var time = moment().tz("Asia/Seoul").format("YYYY년MM월DD일 HH:mm");
+var time = moment().tz("Asia/Seoul").format("YYYY-MM-DD HH:mm");
 var db = require('./db');
 var autoIncrement = require('mongoose-auto-increment');
 autoIncrement.initialize(db);
