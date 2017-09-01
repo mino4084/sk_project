@@ -1426,19 +1426,19 @@ router.post('/list_item', function(req, res, next){
 		message : message,
 		result : result
 	};
-	process.on('uncaughtException', (err) => {
-		TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
-			if(err) {
-				console.log('err =', err);
-				check.code = 0;
-				check.message = err;
-			}
-			console.log('doc =', doc);
-			arr = doc.trip_list[schedule_date].schedule_list;
-			check.result = arr;
-			res.json(check);
-		}); // TripModel()
-	});
+	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
+		if(err) {
+			console.log('err =', err);
+			check.code = 0;
+			check.message = err;
+		}
+
+		console.log('doc =', doc);
+		arr = doc.trip_list[schedule_date].schedule_list;
+		check.result = arr;
+		res.json(check);
+	}); // TripModel()
+
 
 });
 // 후보지 리스트 조회
