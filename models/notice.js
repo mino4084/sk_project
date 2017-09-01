@@ -1,13 +1,14 @@
 // memo.js
 var mongoose = require('mongoose');
+var moment = require('moment');
+var m = moment();
 var db = require('./db');
 var autoIncrement = require('mongoose-auto-increment');
 autoIncrement.initialize(db);
 
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
-var date = new Date();
-date =  formatDate(date);
+var output = m.format("YYYY년MM월DD일 HH:mm:ss dddd");
 
 var NoticeSchema = new Schema({
 	trip_no : Number,
@@ -16,7 +17,7 @@ var NoticeSchema = new Schema({
 	notice_image : String,
 	notice_item : String,
 	notice_type : Number, // 후보지 업로드 : 0, 후보지 체크 : 1, 후보지 체크 해제 : 2, 후보지 삭제 : 3
-	notice_time : { type : String, default : date }
+	notice_time : { type : String, default : output }
 });
 
 NoticeSchema.plugin(autoIncrement.plugin, { model : 'Notice', field : 'notice_no', startAt : 1, incrementBy : 1});
