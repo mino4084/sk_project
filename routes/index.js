@@ -292,7 +292,7 @@ router.post('/nick', function(req, res, next){
 		message : message,
 		result : result
 	};
-	UserModel.findOneAndUpdate({user_id : user_id}, {$set : {user_nick : nick}}, {safe : true, upsert : true, new : true}, function(err, doc){
+	UserModel.findOneAndUpdate({user_id : id}, {$set : {user_nick : nick}}, {safe : true, upsert : true, new : true}, function(err, doc){
 		if(err) {
 			console.log('err =', err);
 			check.code = 0;
