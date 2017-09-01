@@ -14,6 +14,7 @@ var NoticeModel = require('../models/notice');
 var FCM = require('fcm-push');
 var serverKey = 'AAAAkn8Pa7w:APA91bFRQVUYGjvvugJokF6-yUAKUZM2sFFiprSqo-PFsPLvbDKZwShLnrls7X8GbzNkWufDz_MZuScFtzI1KfW5DoXvzRUBKZ5tAItKbfe-kM7oaztVmJdQ0Jgy151I9jLhSuu2PByO';
 var fcm = new FCM(serverKey);
+
 // 이메일전송
 const nodemailer = require('nodemailer');
 let transporter = nodemailer.createTransport({
@@ -92,7 +93,7 @@ router.post('/simple', function(req, res, next) {
   			check.message = '로그인 접속이 끊겼거나 아이디가 존재하지 않습니다.';
   		}
   		res.json(check);
-  	});
+  	}); // UserModel.find()
 });
 // 1. 회원 간단정보 조회
 
@@ -139,13 +140,14 @@ router.post('/login', function(req, res, next){
 				check.code = 0;
 				check.message = '비밀번호가 틀렸습니다.';
 			} // 비밀번호 체크
-		}
+		} // if(doc)
+
 		else{
 			check.code = 0;
 			check.message = '아이디가 존재하지 않습니다.';
 		}
 		res.json(check);
-	});
+	}); // UserModel.find()
 });
 // 2. 로그인
 
@@ -185,8 +187,8 @@ router.post('/join', function(req, res, next){
 	var user_token = req.body.user_token;
 	var user_uuid = req.body.user_uuid;
 	var user_nick = req.body.user_nick;
-	//bcrypt 사용
-	var hash = bcrypt.hashSync(user_pw);
+
+	var hash = bcrypt.hashSync(user_pw); //bcrypt 사용
 
 	var code = 1;
 	var message = "OK";
@@ -230,7 +232,7 @@ router.post('/join', function(req, res, next){
 				res.json(check);
 			});
 		}
-	});
+	}); // UserModel.find()
 });
 // 4. 회원가입
 
@@ -267,7 +269,7 @@ router.post('/find_pw', function(req, res, next){
 			check.message = err;
 		}
 		res.json(check);
-	});
+	}); // UserModel.find()
 });
 // 5. 비밀번호 찾기
 
@@ -1424,18 +1426,20 @@ router.post('/list_item', function(req, res, next){
 		message : message,
 		result : result
 	};
-
-	TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
-		if(err) {
-			console.log('err =', err);
-			check.code = 0;
-			check.message = err;
-		}
-		console.log('doc =', doc);
-		arr = doc.trip_list[schedule_date].schedule_list;
-		check.result = arr;
-		res.json(check);
+	process.on('uncaughtException', (err) => {
+		TripModel.findOne({trip_no : trip_no, "trip_list.schedule_date" : schedule_date}, function(err, doc){
+			if(err) {
+				console.log('err =', err);
+				check.code = 0;
+				check.message = err;
+			}
+			console.log('doc =', doc);
+			arr = doc.trip_list[schedule_date].schedule_list;
+			check.result = arr;
+			res.json(check);
+		}); // TripModel()
 	});
+
 });
 // 후보지 리스트 조회
 
@@ -2308,7 +2312,8 @@ router.post('/check_item', function(req, res, next){
 	}); // TripModel.findOne()
 });
 // 후보지 체크
-
+process.on('uncaughtException', (err) => {
+});
 // 최종일정 리스트 조회
 router.get('/list_final', function(req, res, next){
 	res.render('list_final', {title : "list_final"});
@@ -2404,9 +2409,7 @@ router.get('/time_final', function(req, res, next){
 
 router.post('/time_final', function(req, res, next){
 	console.log('req body =', req.body);
-
 	var _id =  req.body._id;
-	//5995003689e021714ada80a9
 	var trip_no = req.body.trip_no;
 	var schedule_date = req.body.schedule_date;
 	var item_time = req.body.item_time;
@@ -2445,8 +2448,8 @@ router.post('/time_final', function(req, res, next){
 				check.message = err;
 			}
 			res.json(check);
-		});
-	});
+		}); // doc.save()
+	}); // TripModel.findOne()
 });
 // 최종일정 시간 입력
 
@@ -2469,7 +2472,6 @@ router.post('/list_notice', function(req, res, next){
 		result : result
 	};
 
-	// $or: [{ user_id: user_id }, { partner_id : user_id } ]
 	TripModel.find({$or: [{ user_id: user_id }, { partner_id : user_id } ]}, null, {sort : {trip_no : -1}}, function(err, docs1){
 		var arr = [];
 		if(err){
@@ -2507,54 +2509,4 @@ router.post('/list_notice', function(req, res, next){
 });
 
 // 알림 리스트 조회
-
-// express-validator 사용
-
-////////////////////////////////////////////////////
-//알림 - 삭제, 체크, 체크 해제, 비밀번호 랜덤 요청 페이지
-
-/*	var notice = new NoticeModel(data);
-	notice.save(function(err, doc){
-		if(err){
-			console.log('err =', err);
-			return next(err);
-		}
-		console.log('notice data =', doc);
-		res.json(check);
-	});*/
-
-//callback style
-/*
-var message = {
-    to: doc.user_token,
-    collapse_key: 'test_collapse_key',
-    data: {
-        your_custom_data_key: 'test_custom_data_value'
-    },
-    notification: {
-        title: 'Title of your push notification',
-        body: 'Body of your push notification'
-    }
-};
-
-
-
-
-fcm.send(message, function(err, response){
-    if (err) {
-        console.log("Push Fail!");
-    } else {
-        console.log("Push Success : ", response);
-        var notice_data = {
-        	notice_trip : trip_title,
-        	notice_partner : partner_id,
-        	notice_item : item_title
-        };
-        var notice = new NoticeModel(notice_data);
-        notice.save(function(err, doc){
-        	if(err) next(err);
-
-        });
-    }
-});*/
 module.exports = router;
