@@ -1155,6 +1155,7 @@ router.post('/create_item', function(req, res, next){
 				        	trip_no : doc.trip_no,
 				        	notice_trip : doc.trip_title,
 				        	notice_partner : user_id,
+				        	notice_image : doc2.user_image,
 				        	notice_item : data.item_title,
 				        	notice_type : 0
 				        };
@@ -1163,7 +1164,7 @@ router.post('/create_item', function(req, res, next){
 				        	if(err) next(err);
 				        });
 				    }
-				});
+				}); // fcm.send()
 				console.log('doc =', doc);
 				for(var i = 0; i < doc.trip_list.length; i++) {
 					if(doc.trip_list[i].schedule_date == schedule_date) {
@@ -1173,10 +1174,10 @@ router.post('/create_item', function(req, res, next){
 				};// for
 				doc.save(function(err, result){
 					if(err) console.log('err=', err);
-				});
+				}); // doc.save()
 				res.json(check);
-			});
-		}
+			}); // UserModel.find()
+		} // if(user_id == doc.partner_id)
 		else if(user_id == doc.user_id){
 			UserModel.findOne({user_id : doc.partner_id}, function(err, doc2){
 				if(err) {
@@ -1220,6 +1221,7 @@ router.post('/create_item', function(req, res, next){
 			        			trip_no : doc.trip_no,
 				        		notice_trip : doc.trip_title,
 				        		notice_partner : user_id,
+				        		notice_image : doc2.user_image,
 				        		notice_item : data.item_title,
 				        		notice_type : 0
 				        	};
@@ -1228,7 +1230,7 @@ router.post('/create_item', function(req, res, next){
 			        		if(err) next(err);
 			        	});
 				    }
-				});
+				}); // fcm.send()
 				console.log('doc =', doc);
 				for(var i = 0; i < doc.trip_list.length; i++) {
 					if(doc.trip_list[i].schedule_date == schedule_date) {
@@ -1238,10 +1240,10 @@ router.post('/create_item', function(req, res, next){
 				};// for
 				doc.save(function(err, result){
 					if(err) console.log('err=', err);
-				});
+				}); // doc.save()
 				res.json(check);
-			});
-		}
+			}); // UserModel.find()
+		} // else if(user_id == doc.user_id)
 		else{
 			check.code = 0;
 			check.message = '존재하지 않은 파트너이거나 사용자입니다. 회원가입을 해주세요.';
@@ -1565,6 +1567,7 @@ router.post('/update_item', function(req, res, next){
 					        	trip_no : doc.trip_no,
 					        	notice_trip : doc.trip_title,
 					        	notice_partner : user_id,
+					        	notice_image : doc2.user_image,
 					        	notice_item : title,
 					        	notice_type : 1
 					        };
@@ -1651,6 +1654,7 @@ router.post('/update_item', function(req, res, next){
 					        	trip_no : doc.trip_no,
 					        	notice_trip : doc.trip_title,
 					        	notice_partner : user_id,
+					        	notice_image : doc2.user_image,
 					        	notice_item : title,
 					        	notice_type : 1
 					        };
@@ -1751,6 +1755,7 @@ router.post('/update_item', function(req, res, next){
 					        	trip_no : doc.trip_no,
 					        	notice_trip : doc.trip_title,
 					        	notice_partner : user_id,
+					        	notice_image : doc2.user_image,
 					        	notice_item : title,
 					        	notice_type : 1
 					        };
@@ -1826,6 +1831,7 @@ router.post('/update_item', function(req, res, next){
 					        	trip_no : doc.trip_no,
 					        	notice_trip : doc.trip_title,
 					        	notice_partner : user_id,
+					        	notice_image : doc2.user_image,
 					        	notice_item : title,
 					        	notice_type : 1
 					        };
@@ -1941,6 +1947,7 @@ router.post('/delete_item', function(req, res, next){
 				        	trip_no : doc.trip_no,
 				        	notice_trip : doc.trip_title,
 				        	notice_partner : user_id,
+				        	notice_image : doc2.user_image,
 				        	notice_item : item_title,
 				        	notice_type : 2
 				        };
@@ -2015,6 +2022,7 @@ router.post('/delete_item', function(req, res, next){
 				        	trip_no : doc.trip_no,
 				        	notice_trip : doc.trip_title,
 				        	notice_partner : user_id,
+				        	notice_image : doc2.user_image,
 				        	notice_item : item_title,
 				        	notice_type : 2
 				        };
@@ -2134,6 +2142,7 @@ router.post('/check_item', function(req, res, next){
 									        	trip_no : doc.trip_no,
 									        	notice_trip : doc.trip_title,
 									        	notice_partner : user_id,
+									        	notice_image : doc2.user_image,
 									        	notice_item : item_title,
 									        	notice_type : 4
 									        };
@@ -2168,6 +2177,7 @@ router.post('/check_item', function(req, res, next){
 									        	trip_no : doc.trip_no,
 									        	notice_trip : doc.trip_title,
 									        	notice_partner : user_id,
+									        	notice_image : doc2.user_image,
 									        	notice_item : item_title,
 									        	notice_type : 3
 									        };
@@ -2234,6 +2244,7 @@ router.post('/check_item', function(req, res, next){
 									        	trip_no : doc.trip_no,
 									        	notice_trip : doc.trip_title,
 									        	notice_partner : user_id,
+									        	notice_image : doc2.user_image,
 									        	notice_item : item_title,
 									        	notice_type : 4
 									        };
@@ -2268,6 +2279,7 @@ router.post('/check_item', function(req, res, next){
 									        	trip_no : doc.trip_no,
 									        	notice_trip : doc.trip_title,
 									        	notice_partner : user_id,
+									        	notice_image : doc2.user_image,
 									        	notice_item : item_title,
 									        	notice_type : 3
 									        };
