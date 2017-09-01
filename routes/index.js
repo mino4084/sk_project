@@ -1432,8 +1432,11 @@ router.post('/list_item', function(req, res, next){
 			check.code = 0;
 			check.message = err;
 		}
-
-		console.log('doc =', doc);
+		process.on('uncaughtException', function (err) {
+			console.log('doc =', doc);
+			console.log('err =', err);
+			process.exit(1)
+		})
 		arr = doc.trip_list[schedule_date].schedule_list;
 		check.result = arr;
 		res.json(check);
