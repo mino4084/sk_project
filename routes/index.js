@@ -23,7 +23,7 @@ let transporter = nodemailer.createTransport({
     secure: true, // secure:true for port 465, secure:false for port 587
     auth: {
         user: 'adm.tripco@gmail.com',
-        pass: '1111' //
+        pass: 'sk_project' //
     }
 });
 aws.config.update(
